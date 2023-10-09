@@ -27,6 +27,8 @@ Duarte Assunção, Guilherme Matos, João Ferreira
 7. Registo cronológico de todas as mudanças e permitir restauro de mudanças recentes
 8. Documentação Doxygen
 
+---
+
 #### Apresentação em 7 de Novembro
 
 (TBD)
