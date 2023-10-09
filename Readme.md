@@ -1,7 +1,7 @@
 ### L.EIC Schedules
 
 Projeto de AED |
-Entrega até 3/11 |
+Entrega até 3/11  
 Duarte Assunção, Guilherme Matos, João Ferreira
 
 ---
