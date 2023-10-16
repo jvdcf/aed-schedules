@@ -26,6 +26,7 @@ Duarte Assunção, Guilherme Matos, João Ferreira
 6. Documentação Doxygen
 
 ---
+
 #### Estrutura em memória
 > [!NOTE]
 > Este ainda é um design inicial e está suscetível a alterações, nomeadamente a favor de eficiência em certa funções.
