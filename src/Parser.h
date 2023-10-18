@@ -6,12 +6,11 @@
 
 #ifndef CLASSPERUC_H
 #define CLASSPERUC_H
-
+void parse_csv_line(std::string s, std::vector<std::string>& res);
 class ClassPerUC {
 private: 
   uint16_t uc_codes_;
   uint16_t class_codes_;
-
 
 public:
   ClassPerUC(std::string line);

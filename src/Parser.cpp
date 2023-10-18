@@ -13,7 +13,7 @@
 uint8_t hash_str(std::string s) {
   uint64_t hash = 5381;
   for (char c : s) {
-    hash = (hash << 5) + hash + c;
+    hash = (hash << 6) + hash + c;
   }
   return (uint8_t)(hash % 256);
 }
@@ -40,7 +40,7 @@ uint16_t ClassPerUC::parse_uc(std::string uc_code) {
   std::string num_part;
   for (char c : uc_code) {
     if (!isnum(c)) {
-      hash = (hash << 5) + hash + c;
+      hash = (hash << 6) + hash + c;
     } 
     if (isnum(c)){
       num_part.push_back(c);
@@ -53,7 +53,7 @@ uint16_t ClassPerUC::parse_uc(std::string uc_code) {
     }
     return (uint16_t)((hash % 256) << 8) + (uint16_t)(num);
   } catch (std::invalid_argument &e) {
-    std::cerr << e.what() << " uc:failed to parse" << '\n';
+    std::cerr << e.what() << " uc: failed to parse" << '\n';
     std::exit(1);
   }
 }
@@ -73,7 +73,7 @@ uint16_t ClassPerUC::parse_class(std::string class_code) {
     }
     return ((uint16_t)year << 8) + num;
   } catch (std::invalid_argument &e) {
-    std::cerr << e.what() << " class:failed to parse" << '\n';
+    std::cerr << e.what() << " class: failed to parse" << '\n';
     std::exit(1);
   }
 }
@@ -90,8 +90,9 @@ void ClassPerUC::display() {
 void ClassPerUC::class_to_str(std::string& out) {
   std::stringstream s;
   // TODO: use exceptions to handle errors instead of closing.
-  if ((class_codes_ >> 8) == 'C' - 48) {
+  if ((class_codes_ >> 8) == 19) {
     out = "ClassCode";
+    return;
   }
   s << (class_codes_ >> 8) << "LEIC" << std::setfill('0') << std::setw(2) << (class_codes_ & 255);
   out = s.str();

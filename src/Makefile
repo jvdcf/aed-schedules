@@ -1,8 +1,12 @@
+CXXFLAGS = -g
 LDFLAGS = -lstdc++
-main: main.o Parser.o app.o
+all: main
+	rm *.o
+
+main: main.o Parser.o AppCpu.o
 
 main.o: main.cpp
 
 Parser.o: Parser.cpp
 
-app.o: app.cpp
+AppCpu.o: AppCpu.cpp
