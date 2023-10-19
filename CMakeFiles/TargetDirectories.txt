@@ -1,0 +1,4 @@
+/home/lvx/Projects/Aulas/AED/aed-schedules/CMakeFiles/Doxygen.dir
+/home/lvx/Projects/Aulas/AED/aed-schedules/CMakeFiles/AED2324_PRJ1_G23.dir
+/home/lvx/Projects/Aulas/AED/aed-schedules/CMakeFiles/edit_cache.dir
+/home/lvx/Projects/Aulas/AED/aed-schedules/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG CMakeFiles/AED2324_PRJ1_G23.dir/main.cpp.o -o AED2324_PRJ1_G23 
