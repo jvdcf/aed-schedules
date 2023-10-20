@@ -25,4 +25,11 @@ else(DOXYGEN_FOUND)
     message("Doxygen needs to be installed to generate the documentation.")
 endif(DOXYGEN_FOUND)
 
-add_executable(AED2324_PRJ1_G23 main.cpp)
+# Project build
+add_executable(AED2324_PRJ1_G23 main.cpp
+        src/appClasses.cpp src/appClasses.hpp
+        src/appClassesPerUC.cpp src/appClassesPerUC.hpp
+        src/appStudentsClasses.cpp src/appStudentsClasses.hpp
+        src/classes.cpp src/classes.hpp
+        src/classesPerUC.cpp src/classesPerUC.hpp
+        src/studentsClasses.cpp src/studentsClasses.hpp)
