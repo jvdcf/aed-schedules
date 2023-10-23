@@ -1,7 +1,7 @@
 #include "appClassesPerUC.hpp"
 #include <sstream>
 #include <string>
-#include "Parser.h"
+#include "classesPerUC.hpp"
 
 AppCPU::AppCPU(std::string csv) {
     std::stringstream s(csv);
