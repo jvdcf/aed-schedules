@@ -35,3 +35,13 @@
 cmake-build-debug/
 .idea/
 docs/output/
+
+# Custom CMake to Makefile workflow
+AED2324_PRJ1_G23
+cmake_install.cmake
+CMakeCache.txt
+CMakeDoxyfile.in
+CMakeDoxygenDefaults.cmake
+Doxyfile
+Makefile
+CMakeFiles/
