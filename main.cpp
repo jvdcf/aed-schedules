@@ -9,7 +9,7 @@
 #include <sstream>
 #include <string>
 
-int main() {
+int main(int argc, char** argv) {
   std::ifstream file =  std::ifstream("schedule/classes_per_uc.csv");
   std::string contents;
   std::ostringstream sstr;

@@ -11,7 +11,9 @@ class ClassPerUC {
 private:
   uint16_t uc_codes_;
   uint16_t class_codes_;
-  constexpr const static char* types_of_uc[] = {"L.EIC", "UP", "IAPD", "CSR", "IADE", "IR", "MPSAC", "DDS", "SEESTE"};
+  constexpr const static char *types_of_uc[] = {
+      "L.EIC", "UP", "IAPD", "CSR", "IADE", "IR", "MPSAC", "DDS", "SEESTE"};
+
 public:
   ClassPerUC(std::string line);
   uint16_t parse_uc(std::string uc_code);
