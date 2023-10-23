@@ -11,12 +11,7 @@
 #include "Utils.hpp"
 
 
-void parse_csv_line(std::string s, std::vector<std::string> &res) {
-  std::stringstream line(s);
-  std::string buf;
-  while (getline(line, buf, ','))
-    res.push_back(buf);
-}
+
 
 ClassPerUC::ClassPerUC(std::string line) {
   std::vector<std::string> linebuf;
