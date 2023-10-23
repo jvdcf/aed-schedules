@@ -54,3 +54,54 @@ void AppClass::sort_by(std::string category) {
              [] (const Class & first, const Class & second) {return first.getType() < second.getType();});
     }
 }
+
+
+std::vector<Class>::iterator AppClass::search_by_uc(uint16_t uc_code) { // Sorts the entries by UC and returns the iterator of the first found. If not found, returns a past-the-end pointer
+    sort_by(uc_cath_name);
+    vector<Class>::iterator ret = entries.end();
+    size_t mid = entries.size() / 2;
+    while (true) { // Binary search
+        if (mid == entries.size()) {
+            return ret;
+        } else if (entries[mid].getUcCode() == uc_code) {
+            ret = entries.begin() + mid;
+            break;
+        } else if (entries[mid].getUcCode() > uc_code) {
+            mid = mid / 2;
+        } else {
+            mid = mid + mid / 2;
+        }
+    }
+    // ret is an iterator to a class that has the desired uc_code. Let's now find the first one in entries.
+    while (true) {
+        if ((ret - 1)->getUcCode() != uc_code) {
+            return ret;
+        } else --ret;
+    }
+    return ret;
+}
+
+std::vector<Class>::iterator AppClass::search_by_class(uint16_t class_code) {
+    sort_by(class_cath_name);
+    vector<Class>::iterator ret = entries.end();
+    size_t mid = entries.size() / 2;
+    while (true) { // Binary search
+        if (mid == entries.size()) {
+            return ret;
+        } else if (entries[mid].getClassCode() == class_code) {
+            ret = entries.begin() + mid;
+            break;
+        } else if (entries[mid].getClassCode() > class_code) {
+            mid = mid / 2;
+        } else {
+            mid = mid + mid / 2;
+        }
+    }
+    // ret is an iterator to a class that has the desired class_code. Let's now find the first one in entries.
+    while (true) {
+        if ((ret - 1)->getClassCode() != class_code) {
+            return ret;
+        } else --ret;
+    }
+    return ret;
+}

@@ -19,6 +19,8 @@ public:
     AppClass(std::string csv);
     void display();
     void sort_by(std::string category);
+    std::vector<Class>::iterator search_by_uc(uint16_t uc_code);
+    std::vector<Class>::iterator search_by_class(uint16_t class_code);
 };
 
 #endif // APPCLASSES_H
