@@ -1,4 +1,5 @@
 #include "classesPerUC.hpp"
+#include "Utils.hpp"
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
@@ -8,10 +9,6 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
-#include "Utils.hpp"
-
-
-
 
 ClassPerUC::ClassPerUC(std::string line) {
   std::vector<std::string> linebuf;
@@ -100,7 +97,6 @@ void ClassPerUC::uc_to_str(std::string &out) {
     std::cerr << "There is no known uc type with hash " << hash_of_class
               << "!\n";
     std::exit(1);
-
   }
   s << classname << std::setfill('0') << std::setw(3) << (uc_codes_ & 255);
   out = s.str();
