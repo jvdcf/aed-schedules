@@ -27,6 +27,7 @@ class Class{
 private:
     uint16_t uc_code;
     uint16_t class_code;
+    constexpr const static char* types_of_uc[] = {"L.EIC", "UP", "IAPD", "CSR", "IADE", "IR", "MPSAC", "DDS", "SEESTE"};
     WeekDay day;
     float start_hour;
     float duration;
