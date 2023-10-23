@@ -35,18 +35,22 @@ void AppClass::display() {
 
 void AppClass::sort_by(std::string category) {
     if (category == uc_cath_name) {
-        vector<int> i = vector<int>();
-        sort(i.begin(), i.end(), [] (const Class & first, const Class & second) {return first.getUcCode() < first.getUcCode()});
-        this->entries.
+        sort(this->entries.begin(), this->entries.end(),
+             [] (const Class & first, const Class & second) {return first.getUcCode() < second.getUcCode();});
     } else if (category == class_cath_name) {
-
+        sort(this->entries.begin(), this->entries.end(),
+             [] (const Class & first, const Class & second) {return first.getClassCode() < second.getClassCode();});
     } else if (category == weekday_cath_name) {
-
+        sort(this->entries.begin(), this->entries.end(),
+             [] (const Class & first, const Class & second) {return first.getDay() < second.getDay();});
     } else if (category == start_hour_cath_name) {
-
+        sort(this->entries.begin(), this->entries.end(),
+             [] (const Class & first, const Class & second) {return first.getStartHour() < second.getStartHour();});
     } else if (category == duration_cath_name) {
-
+        sort(this->entries.begin(), this->entries.end(),
+             [] (const Class & first, const Class & second) {return first.getDuration() < second.getDuration();});
     } else if (category == type_cath_name) {
-
+        sort(this->entries.begin(), this->entries.end(),
+             [] (const Class & first, const Class & second) {return first.getType() < second.getType();});
     }
 }
