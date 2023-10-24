@@ -108,8 +108,16 @@ void StudentsClasses::class_code_to_str(std::string& class_code) {
 
 // Debug
 void StudentsClasses::display() {
-    std::cout << student_code_ << ","
-              << student_name_ << ","
-              << uc_code_ << ","
-              << class_code_ << '\n';
+    std::string student_code;
+    std::string student_name;
+    std::string uc_code;
+    std::string class_code;
+    student_code_to_str(student_code);
+    student_name_to_str(student_name);
+    uc_code_to_str(uc_code);
+    class_code_to_str(class_code);
+    std::cout << student_code << ","
+              << student_name << ","
+              << uc_code << ","
+              << class_code << '\n';
 }
