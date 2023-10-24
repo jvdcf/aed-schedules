@@ -1,6 +1,7 @@
 #include <cctype>
 #include <iostream>
 #include <string>
+#include <cstdint>
 
 
 #ifndef CLASS_HPP
