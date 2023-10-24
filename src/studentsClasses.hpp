@@ -14,21 +14,27 @@ private:
 
 public:
     // Constructor
-    StudentsClasses(std::string line);
+    StudentsClasses(std::string& line);
+
+    // Getters
+    uint32_t get_student_code() const;
+    std::string get_student_name() const;
+    uint16_t get_uc_code() const;
+    uint16_t get_class_code() const;
 
     // Parsers
-    uint32_t parse_student_code(std::string student_code);
-    uint16_t parse_uc(std::string uc_code);
-    uint16_t parse_class(std::string class_code);
+    uint32_t parse_student_code(const std::string& student_code) const;
+    uint16_t parse_uc(const std::string& uc_code) const;
+    uint16_t parse_class(std::string class_code) const;
 
     // String format
-    void student_code_to_str(std::string& student_code);
-    void student_name_to_str(std::string& student_name);
-    void uc_code_to_str(std::string& uc_code);
-    void class_code_to_str(std::string& class_code);
+    void student_code_to_str(std::string& student_code) const;
+    // void student_name_to_str(std::string& student_name) const; (= get_student_name())
+    void uc_code_to_str(std::string& uc_code) const;
+    void class_code_to_str(std::string& class_code) const;
 
     // Debug
-    void display();
+    void display() const;
 };
 
 #endif // STUDENTSCLASSES_H

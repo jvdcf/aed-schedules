@@ -7,7 +7,7 @@
 #include <iomanip>
 
 // Constructor
-StudentsClasses::StudentsClasses(std::string line) {
+StudentsClasses::StudentsClasses(std::string& line) {
     std::vector<std::string> linebuf;
     parse_csv_line(line, linebuf);
     student_code_ = parse_student_code(linebuf[0]);
@@ -17,12 +17,19 @@ StudentsClasses::StudentsClasses(std::string line) {
 }
 
 
+// Getters
+uint32_t StudentsClasses::get_student_code() const { return student_code_; }
+std::string StudentsClasses::get_student_name() const { return student_name_; }
+uint16_t StudentsClasses::get_uc_code() const { return uc_code_; }
+uint16_t StudentsClasses::get_class_code() const { return class_code_; }
+
+
 // Parsers
-uint32_t StudentsClasses::parse_student_code(std::string student_code) {
+uint32_t StudentsClasses::parse_student_code(const std::string& student_code) const {
     return std::stoi(student_code);
 }
 
-uint16_t StudentsClasses::parse_uc(std::string uc_code) {
+uint16_t StudentsClasses::parse_uc(const std::string& uc_code) const {
     uint64_t hash = 5381;
     std::string num_part;
     for (char c : uc_code) {
@@ -45,7 +52,7 @@ uint16_t StudentsClasses::parse_uc(std::string uc_code) {
     }
 }
 
-uint16_t StudentsClasses::parse_class(std::string class_code) {
+uint16_t StudentsClasses::parse_class(std::string class_code) const {
     uint8_t year = class_code[0] - '0';
     std::string classnum;
     for (int i = 1; i < class_code.size(); ++i) {
@@ -67,13 +74,11 @@ uint16_t StudentsClasses::parse_class(std::string class_code) {
 
 
 // String format
-void StudentsClasses::student_code_to_str(std::string& student_code) {
+void StudentsClasses::student_code_to_str(std::string& student_code) const {
     student_code = std::to_string(student_code_);
 }
-void StudentsClasses::student_name_to_str(std::string& student_name) {
-    student_name = student_name_;
-}
-void StudentsClasses::uc_code_to_str(std::string& uc_code) {
+
+void StudentsClasses::uc_code_to_str(std::string& uc_code) const {
     std::stringstream s;
     std::string classname;
     bool found = false;
@@ -93,7 +98,8 @@ void StudentsClasses::uc_code_to_str(std::string& uc_code) {
     s << classname << std::setfill('0') << std::setw(3) << (uc_code_ & 255);
     uc_code = s.str();
 }
-void StudentsClasses::class_code_to_str(std::string& class_code) {
+
+void StudentsClasses::class_code_to_str(std::string& class_code) const {
     std::stringstream s;
     // TODO: use exceptions to handle errors instead of closing.
     if ((class_code_ >> 8) == 19) {
@@ -107,13 +113,12 @@ void StudentsClasses::class_code_to_str(std::string& class_code) {
 
 
 // Debug
-void StudentsClasses::display() {
+void StudentsClasses::display() const {
     std::string student_code;
-    std::string student_name;
+    std::string student_name = get_student_name();
     std::string uc_code;
     std::string class_code;
     student_code_to_str(student_code);
-    student_name_to_str(student_name);
     uc_code_to_str(uc_code);
     class_code_to_str(class_code);
     std::cout << student_code << ","
