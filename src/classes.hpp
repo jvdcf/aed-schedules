@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <iostream>
 #include <string>
+#include "classesPerUC.hpp"
 
 #ifndef CLASS_HPP
 #define CLASS_HPP
@@ -20,15 +21,10 @@ enum class Type {
   T,
   TP,
   PL,
-
 };
 
-class Class {
+class Class : public ClassPerUC {
 private:
-  uint16_t uc_code;
-  uint16_t class_code;
-  constexpr const static char *types_of_uc[] = {
-      "L.EIC", "UP", "IAPD", "CSR", "IADE", "IR", "MPSAC", "DDS", "SEESTE"};
   WeekDay day;
   float start_hour;
   float duration;
@@ -60,16 +56,13 @@ public:
   Type parse_type(std::string type);
 
   // To String:
-  void uc_to_str(std::string &out);
+  void day_to_str(std::string &out) const;
 
-  void class_to_str(std::string &out);
-
-  void day_to_str(std::string &out);
-
-  void type_to_str(std::string &out);
+  void type_to_str(std::string &out) const;
 
   // Other Methods:
-  void display();
+  void display() const override;
+  //void display();
 };
 
 #endif // CLASS_HPP

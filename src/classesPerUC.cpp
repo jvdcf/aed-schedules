@@ -62,7 +62,7 @@ uint16_t ClassPerUC::parse_class(std::string class_code) {
   }
 }
 
-void ClassPerUC::display() {
+void ClassPerUC::display() const {
   // std::cout << "UcCode,ClassCode\n";
   std::string uc;
   std::string cc;
@@ -71,7 +71,7 @@ void ClassPerUC::display() {
   std::cout << uc << "," << cc << "\n";
 }
 
-void ClassPerUC::class_to_str(std::string &out) {
+void ClassPerUC::class_to_str(std::string &out) const {
   std::stringstream s;
   // TODO: use exceptions to handle errors instead of closing.
   if ((class_codes_ >> 8) == 19) {
@@ -83,7 +83,7 @@ void ClassPerUC::class_to_str(std::string &out) {
   out = s.str();
 }
 
-void ClassPerUC::uc_to_str(std::string &out) {
+void ClassPerUC::uc_to_str(std::string &out) const {
   std::stringstream s;
   std::string classname;
   uint16_t hash_of_class = uc_codes_ >> 8;
