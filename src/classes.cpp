@@ -5,7 +5,7 @@
 using namespace std;
 
 // Constructor:
-Class::Class(std::string line): ClassPerUC("") {
+Class::Class(std::string line) {
   std::vector<std::string> linebuf;
   parse_csv_line(line, linebuf);
   class_codes_ = parse_class(linebuf[0]);

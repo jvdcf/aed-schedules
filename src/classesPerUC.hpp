@@ -46,6 +46,7 @@ protected:
 
 public:
   ClassPerUC(std::string line);
+  ClassPerUC();
   uint16_t parse_uc(std::string uc_code);
   uint16_t parse_class(std::string class_code);
   void class_to_str(std::string &out) const;

@@ -17,6 +17,11 @@ ClassPerUC::ClassPerUC(std::string line) {
   class_codes_ = parse_class(linebuf[1]);
 }
 
+ClassPerUC::ClassPerUC() {
+  uc_codes_ = 0;
+  class_codes_ = 0;
+}
+
 uint16_t ClassPerUC::parse_uc(std::string uc_code) {
   uint64_t hash = 5381;
   std::string num_part;

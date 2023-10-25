@@ -8,7 +8,7 @@
 #include <sstream>
 
 // Constructor
-StudentsClasses::StudentsClasses(std::string& line): ClassPerUC("L.EIC001,1LEIC01") {
+StudentsClasses::StudentsClasses(std::string& line) {
     std::vector<std::string> linebuf;
     parse_csv_line(line, linebuf);
     student_code_ = parse_student_code(linebuf[0]);
