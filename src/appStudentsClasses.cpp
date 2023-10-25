@@ -28,19 +28,19 @@ AppStudentsClasses::AppStudentsClasses(std::string csv) {
 // Methods
 void AppStudentsClasses::sort_by(const std::string& category) {
     if (category == this->student_code_cath_name) {
-        std::sort(this->entries.begin(), this->entries.end(),
+        std::stable_sort(this->entries.begin(), this->entries.end(),
                   [](const StudentsClasses& a, const StudentsClasses& b) {return a.get_student_code() < b.get_student_code();});
 
     } else if (category == this->student_name_cath_name) {
-        std::sort(this->entries.begin(), this->entries.end(),
+        std::stable_sort(this->entries.begin(), this->entries.end(),
                   [](const StudentsClasses& a, const StudentsClasses& b) {return a.get_student_name() < b.get_student_name();});
 
     } else if (category == this->uc_code_cath_name) {
-        std::sort(this->entries.begin(), this->entries.end(),
+        std::stable_sort(this->entries.begin(), this->entries.end(),
                   [](const StudentsClasses& a, const StudentsClasses& b) {return a.get_uc_code() < b.get_uc_code();});
 
     } else if (category == this->class_code_cath_name) {
-        std::sort(this->entries.begin(), this->entries.end(),
+        std::stable_sort(this->entries.begin(), this->entries.end(),
                   [](const StudentsClasses& a, const StudentsClasses& b) {return a.get_class_code() < b.get_class_code();});
 
     } else {
