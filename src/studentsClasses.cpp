@@ -5,6 +5,7 @@
 #include <vector>
 #include <iostream>
 #include <iomanip>
+#include <sstream>
 
 // Constructor
 StudentsClasses::StudentsClasses(std::string& line) {
@@ -26,7 +27,10 @@ uint16_t StudentsClasses::get_class_code() const { return class_code_; }
 
 // Parsers
 uint32_t StudentsClasses::parse_student_code(const std::string& student_code) const {
-    return std::stoi(student_code);
+    std::istringstream iss(student_code);
+    uint32_t student_code_int;
+    iss >> student_code_int;
+    return student_code_int;
 }
 
 uint16_t StudentsClasses::parse_uc(const std::string& uc_code) const {
