@@ -4,7 +4,7 @@
 #include <string>
 #include <algorithm>
 
-AppCPU::AppCPU(std::string csv) {
+AppClassPerUC::AppClassPerUC(std::string csv) {
     std::stringstream s(csv);
     std::string line;
     this->entries = std::vector<ClassPerUC>();
@@ -19,14 +19,14 @@ AppCPU::AppCPU(std::string csv) {
     }
 }
 
-void AppCPU::display() {
+void AppClassPerUC::display() {
     std::cout << this->uc_cath_name << ',' << this->class_cath_name << '\n';
     for (auto e : this->entries) {
         e.display();
     }
 }
 
-void AppCPU::sort_by(std::string category) {
+void AppClassPerUC::sort_by(std::string category) {
     if (category == uc_cath_name) {
         std::stable_sort(this->entries.begin(), this->entries.end(),
                          [](const ClassPerUC &first, const ClassPerUC &second) {
