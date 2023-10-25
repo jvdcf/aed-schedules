@@ -14,9 +14,7 @@ public:
 
     // Getters
     uint32_t get_student_code() const;
-    std::string get_student_name() const;
-    uint16_t get_uc_code() const;
-    uint16_t get_class_code() const;
+    const std::string &get_student_name() const;
 
     // Parsers
     uint32_t parse_student_code(const std::string& student_code) const;

@@ -22,6 +22,14 @@ ClassPerUC::ClassPerUC() {
   class_code_ = 0;
 }
 
+uint16_t ClassPerUC::get_uc_code() const {
+    return uc_code_;
+}
+
+uint16_t ClassPerUC::get_class_code() const {
+    return class_code_;
+}
+
 uint16_t ClassPerUC::parse_uc(std::string uc_code) {
   uint64_t hash = 5381;
   std::string num_part;

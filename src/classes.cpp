@@ -18,17 +18,13 @@ Class::Class(std::string line) {
 
 //______________________________________________________________________________________________________________________
 // Getters:
-unsigned short Class::getUcCode() const { return uc_code_; }
+WeekDay Class::get_day() const { return day; }
 
-unsigned short Class::getClassCode() const { return class_code_; }
+double Class::get_start_hour() const { return start_hour; }
 
-WeekDay Class::getDay() const { return day; }
+double Class::get_duration() const { return duration; }
 
-double Class::getStartHour() const { return start_hour; }
-
-double Class::getDuration() const { return duration; }
-
-Type Class::getType() const { return type; }
+Type Class::get_type() const { return type; }
 
 //______________________________________________________________________________________________________________________
 // Parsers:

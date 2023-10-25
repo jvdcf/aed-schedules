@@ -34,17 +34,13 @@ public:
   Class(std::string line); // Constructor
 
   // Getters:
-  uint16_t getUcCode() const;
+  WeekDay get_day() const;
 
-  uint16_t getClassCode() const;
+  double get_start_hour() const;
 
-  WeekDay getDay() const;
+  double get_duration() const;
 
-  double getStartHour() const;
-
-  double getDuration() const;
-
-  Type getType() const;
+  Type get_type() const;
 
   // Parsers:
   WeekDay parse_day(std::string day);

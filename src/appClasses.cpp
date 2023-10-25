@@ -37,33 +37,39 @@ void AppClass::sort_by(std::string category) {
   if (category == uc_cath_name) {
     std::stable_sort(this->entries.begin(), this->entries.end(),
                      [](const Class &first, const Class &second) {
-                       return first.getUcCode() < second.getUcCode();
+                         std::string first_uc, second_uc;
+                         first.uc_to_str(first_uc);
+                         second.uc_to_str(second_uc);
+                         return first_uc < second_uc;
                      });
   } else if (category == class_cath_name) {
     std::stable_sort(this->entries.begin(), this->entries.end(),
                      [](const Class &first, const Class &second) {
-                       return first.getClassCode() < second.getClassCode();
+                         return first.get_class_code() < second.get_class_code();
                      });
   } else if (category == weekday_cath_name) {
     std::stable_sort(this->entries.begin(), this->entries.end(),
                      [](const Class &first, const Class &second) {
-                       return first.getDay() < second.getDay();
+                         return first.get_day() < second.get_day();
                      });
   } else if (category == start_hour_cath_name) {
     std::stable_sort(this->entries.begin(), this->entries.end(),
                      [](const Class &first, const Class &second) {
-                       return first.getStartHour() < second.getStartHour();
+                         return first.get_start_hour() < second.get_start_hour();
                      });
   } else if (category == duration_cath_name) {
     std::stable_sort(this->entries.begin(), this->entries.end(),
                      [](const Class &first, const Class &second) {
-                       return first.getDuration() < second.getDuration();
+                         return first.get_duration() < second.get_duration();
                      });
   } else if (category == type_cath_name) {
     std::stable_sort(this->entries.begin(), this->entries.end(),
                      [](const Class &first, const Class &second) {
-                       return first.getType() < second.getType();
+                         return first.get_type() < second.get_type();
                      });
+  } else {
+      std::cerr << "Error: invalid category" << '\n';
+      std::exit(1);
   }
 }
 
@@ -77,10 +83,10 @@ std::vector<Class>::iterator AppClass::search_by_uc(
   while (true) { // Binary search
     if (mid == entries.size()) {
       return ret;
-    } else if (entries[mid].getUcCode() == uc_code) {
+    } else if (entries[mid].get_uc_code() == uc_code) {
       ret = entries.begin() + mid;
       break;
-    } else if (entries[mid].getUcCode() > uc_code) {
+    } else if (entries[mid].get_uc_code() > uc_code) {
       mid = mid / 2;
     } else {
       mid = mid + mid / 2;
@@ -89,7 +95,7 @@ std::vector<Class>::iterator AppClass::search_by_uc(
   // ret is an iterator to a class that has the desired uc_code. Let's now find
   // the first one in entries.
   while (true) {
-    if ((ret - 1)->getUcCode() != uc_code) {
+    if ((ret - 1)->get_uc_code() != uc_code) {
       return ret;
     } else
       --ret;
@@ -104,10 +110,10 @@ std::vector<Class>::iterator AppClass::search_by_class(uint16_t class_code) {
   while (true) { // Binary search
     if (mid == entries.size()) {
       return ret;
-    } else if (entries[mid].getClassCode() == class_code) {
+    } else if (entries[mid].get_class_code() == class_code) {
       ret = entries.begin() + mid;
       break;
-    } else if (entries[mid].getClassCode() > class_code) {
+    } else if (entries[mid].get_class_code() > class_code) {
       mid = mid / 2;
     } else {
       mid = mid + mid / 2;
@@ -116,7 +122,7 @@ std::vector<Class>::iterator AppClass::search_by_class(uint16_t class_code) {
   // ret is an iterator to a class that has the desired class_code. Let's now
   // find the first one in entries.
   while (true) {
-    if ((ret - 1)->getClassCode() != class_code) {
+    if ((ret - 1)->get_class_code() != class_code) {
       return ret;
     } else
       --ret;

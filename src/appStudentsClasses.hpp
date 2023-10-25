@@ -6,8 +6,8 @@ class AppStudentsClasses {
 private:
     std::string student_code_cath_name;
     std::string student_name_cath_name;
-    std::string uc_code_cath_name;
-    std::string class_code_cath_name;
+    std::string uc_cath_name;
+    std::string class_cath_name;
     std::vector<StudentsClasses> entries;
 
 public:

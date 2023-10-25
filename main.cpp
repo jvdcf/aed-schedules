@@ -16,7 +16,7 @@ int main(int argc, char** argv) {
   std::ostringstream sstr1;
   sstr1 << file1.rdbuf();
   contents1 = sstr1.str();
-  AppCPU cpu = AppCPU(contents1);
+  AppClassPerUC cpu = AppClassPerUC(contents1);
   cpu.display();
 
   // AppStudentsClasses

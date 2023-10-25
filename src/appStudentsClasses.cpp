@@ -17,8 +17,8 @@ AppStudentsClasses::AppStudentsClasses(std::string csv) {
     parse_csv_line(line,bufs);
     this->student_code_cath_name = bufs[0];
     this->student_name_cath_name = bufs[1];
-    this->uc_code_cath_name = bufs[2];
-    this->class_code_cath_name = bufs[3];
+    this->uc_cath_name = bufs[2];
+    this->class_cath_name = bufs[3];
     line.clear();
     while (std::getline(s,line,'\n')) {
         this->entries.push_back(StudentsClasses(line));
@@ -35,13 +35,19 @@ void AppStudentsClasses::sort_by(const std::string& category) {
         std::stable_sort(this->entries.begin(), this->entries.end(),
                   [](const StudentsClasses& a, const StudentsClasses& b) {return a.get_student_name() < b.get_student_name();});
 
-    } else if (category == this->uc_code_cath_name) {
+    } else if (category == this->uc_cath_name) {
         std::stable_sort(this->entries.begin(), this->entries.end(),
-                  [](const StudentsClasses& a, const StudentsClasses& b) {return a.get_uc_code() < b.get_uc_code();});
-
-    } else if (category == this->class_code_cath_name) {
+                         [](const ClassPerUC &first, const ClassPerUC &second) {
+                             std::string first_uc, second_uc;
+                             first.uc_to_str(first_uc);
+                             second.uc_to_str(second_uc);
+                             return first_uc < second_uc;
+                         });
+    } else if (category == this->class_cath_name) {
         std::stable_sort(this->entries.begin(), this->entries.end(),
-                  [](const StudentsClasses& a, const StudentsClasses& b) {return a.get_class_code() < b.get_class_code();});
+                         [](const ClassPerUC &first, const ClassPerUC &second) {
+                             return first.get_class_code() < second.get_class_code();
+                         });
 
     } else {
         std::cerr << "Error: invalid category" << '\n';
@@ -50,7 +56,7 @@ void AppStudentsClasses::sort_by(const std::string& category) {
 }
 
 std::vector<StudentsClasses>::iterator AppStudentsClasses::search_by_uc(uint16_t uc_code) {
-    sort_by(uc_code_cath_name);
+    sort_by(uc_cath_name);
     auto ret = entries.end();
     size_t mid = entries.size() / 2;
 
@@ -100,7 +106,7 @@ std::vector<StudentsClasses>::iterator AppStudentsClasses::search_by_student(uin
 }
 
 std::vector<StudentsClasses>::iterator AppStudentsClasses::search_by_class(uint16_t class_code) {
-    sort_by(class_code_cath_name);
+    sort_by(class_cath_name);
     auto ret = entries.end();
     size_t mid = entries.size() / 2;
 
@@ -129,8 +135,8 @@ std::vector<StudentsClasses>::iterator AppStudentsClasses::search_by_class(uint1
 void AppStudentsClasses::display() const {
     std::cout << this->student_code_cath_name << ','
               << this->student_name_cath_name << ','
-              << this->uc_code_cath_name << ','
-              << this->class_code_cath_name << '\n';
+              << this->uc_cath_name << ','
+              << this->class_cath_name << '\n';
     for (const auto& e : this->entries) {
         e.display();
     }
