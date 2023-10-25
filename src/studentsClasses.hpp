@@ -1,17 +1,13 @@
 #include <string>
 #include <cstdint>
+#include "classesPerUC.hpp"
 #ifndef STUDENTSCLASSES_H
 #define STUDENTSCLASSES_H
 
-class StudentsClasses {
+class StudentsClasses : public ClassPerUC {
 private:
     uint32_t student_code_;
     std::string student_name_;
-    uint16_t uc_code_;
-    uint16_t class_code_;
-    constexpr const static char *types_of_uc[] = {
-            "L.EIC", "UP", "IAPD", "CSR", "IADE", "IR", "MPSAC", "DDS", "SEESTE"};
-
 public:
     // Constructor
     StudentsClasses(std::string& line);
@@ -30,7 +26,7 @@ public:
     // void student_name_to_str(std::string& student_name) const; (= get_student_name())
 
     // Debug
-    void display() const;
+    void display() const override;
 };
 
 #endif // STUDENTSCLASSES_H
