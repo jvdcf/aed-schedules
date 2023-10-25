@@ -18,10 +18,6 @@ Class::Class(std::string line) {
 
 //______________________________________________________________________________________________________________________
 // Getters:
-unsigned short Class::getUcCode() const { return uc_code_; }
-
-unsigned short Class::getClassCode() const { return class_code_; }
-
 WeekDay Class::getDay() const { return day; }
 
 double Class::getStartHour() const { return start_hour; }

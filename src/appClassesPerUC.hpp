@@ -9,7 +9,7 @@ private:
   std::vector<ClassPerUC> entries;
 
 public:
-  AppCPU(std::string csv);
-  void display();
-  void sort_by(std::string category);
+    AppCPU(std::string csv);
+    void display();
+    void sort_by(std::string category);
 };

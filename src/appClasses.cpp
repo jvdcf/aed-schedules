@@ -37,33 +37,39 @@ void AppClass::sort_by(std::string category) {
   if (category == uc_cath_name) {
     std::stable_sort(this->entries.begin(), this->entries.end(),
                      [](const Class &first, const Class &second) {
-                       return first.getUcCode() < second.getUcCode();
+                         std::string first_uc, second_uc;
+                         first.uc_to_str(first_uc);
+                         second.uc_to_str(second_uc);
+                         return first_uc < second_uc;
                      });
   } else if (category == class_cath_name) {
     std::stable_sort(this->entries.begin(), this->entries.end(),
                      [](const Class &first, const Class &second) {
-                       return first.getClassCode() < second.getClassCode();
+                         return first.getClassCode() < second.getClassCode();
                      });
   } else if (category == weekday_cath_name) {
     std::stable_sort(this->entries.begin(), this->entries.end(),
                      [](const Class &first, const Class &second) {
-                       return first.getDay() < second.getDay();
+                         return first.getDay() < second.getDay();
                      });
   } else if (category == start_hour_cath_name) {
     std::stable_sort(this->entries.begin(), this->entries.end(),
                      [](const Class &first, const Class &second) {
-                       return first.getStartHour() < second.getStartHour();
+                         return first.getStartHour() < second.getStartHour();
                      });
   } else if (category == duration_cath_name) {
     std::stable_sort(this->entries.begin(), this->entries.end(),
                      [](const Class &first, const Class &second) {
-                       return first.getDuration() < second.getDuration();
+                         return first.getDuration() < second.getDuration();
                      });
   } else if (category == type_cath_name) {
     std::stable_sort(this->entries.begin(), this->entries.end(),
                      [](const Class &first, const Class &second) {
-                       return first.getType() < second.getType();
+                         return first.getType() < second.getType();
                      });
+  } else {
+      std::cerr << "Error: invalid category" << '\n';
+      std::exit(1);
   }
 }
 

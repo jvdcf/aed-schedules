@@ -34,10 +34,6 @@ public:
   Class(std::string line); // Constructor
 
   // Getters:
-  uint16_t getUcCode() const;
-
-  uint16_t getClassCode() const;
-
   WeekDay getDay() const;
 
   double getStartHour() const;
