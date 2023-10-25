@@ -37,7 +37,6 @@ cmake-build-debug/
 docs/output/
 
 # Doxygen
-docs/Doxyfile
 Doxyfile
 
 # Custom CMake to Makefile workflow
