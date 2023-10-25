@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include <algorithm>
+#include <fstream>
 
 AppClassPerUC::AppClassPerUC(std::string csv) {
     std::stringstream s(csv);
@@ -17,6 +18,23 @@ AppClassPerUC::AppClassPerUC(std::string csv) {
     while (std::getline(s, line, '\n')) {
         this->entries.push_back(ClassPerUC(line));
     }
+}
+
+/**
+ * Erases the contents of classes_per_uc.csv and saves there the updated values.
+ */
+AppClassPerUC::~AppClassPerUC() {
+    std::ofstream ofs;
+    ofs.open("../schedule/classes_per_uc.csv", std::ofstream::out | std::ofstream::trunc);
+    ofs << uc_cath_name << ',' << class_cath_name << '\n';
+    for (ClassPerUC entry: entries) {
+        std::string value;
+        entry.uc_to_str(value);
+        ofs << value << ',';
+        entry.class_to_str(value);
+        ofs << value << ',' << '\n';
+    }
+    ofs.close();
 }
 
 void AppClassPerUC::display() {

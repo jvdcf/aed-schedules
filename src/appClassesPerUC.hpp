@@ -10,6 +10,7 @@ private:
 
 public:
     AppClassPerUC(std::string csv);
+    ~AppClassPerUC();
     void display();
     void sort_by(std::string category);
 };
