@@ -22,7 +22,7 @@ uint16_t ClassPerUC::parse_uc(std::string uc_code) {
   std::string num_part;
   for (char c : uc_code) {
     if (!isnum(c)) {
-      printf("%c",c);
+      // DEBUG : printf("%c",c);
       hash = (hash << 5) + hash + c;
     }
     if (isnum(c)) {
@@ -34,7 +34,7 @@ uint16_t ClassPerUC::parse_uc(std::string uc_code) {
     if (num_part != "") {
       num = std::stoi(num_part);
     }
-    printf(" -> code : %d\n", (uint8_t)hash);
+    // DEBUG : printf(" -> code : %d\n", (uint8_t)hash);
     return (uint16_t)((hash % 256) << 8) + (uint16_t)(num);
   } catch (std::invalid_argument &e) {
     std::cerr << e.what() << " uc: failed to parse" << '\n';
