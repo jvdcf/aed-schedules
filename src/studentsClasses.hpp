@@ -24,14 +24,10 @@ public:
 
     // Parsers
     uint32_t parse_student_code(const std::string& student_code) const;
-    uint16_t parse_uc(const std::string& uc_code) const;
-    uint16_t parse_class(std::string class_code) const;
 
     // String format
     void student_code_to_str(std::string& student_code) const;
     // void student_name_to_str(std::string& student_name) const; (= get_student_name())
-    void uc_code_to_str(std::string& uc_code) const;
-    void class_code_to_str(std::string& class_code) const;
 
     // Debug
     void display() const;

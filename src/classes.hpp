@@ -51,19 +51,11 @@ public:
   Type getType() const;
 
   // Parsers:
-  uint16_t parse_uc(std::string uc_code);
-
-  uint16_t parse_class(std::string class_code);
-
   WeekDay parse_day(std::string day);
 
   Type parse_type(std::string type);
 
   // To String:
-  void uc_to_str(std::string &out);
-
-  void class_to_str(std::string &out);
-
   void day_to_str(std::string &out);
 
   void type_to_str(std::string &out);
