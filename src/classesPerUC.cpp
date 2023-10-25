@@ -84,16 +84,9 @@ void ClassPerUC::class_to_str(std::string &out) {
 void ClassPerUC::uc_to_str(std::string &out) {
   std::stringstream s;
   std::string classname;
-  bool found = false;
   uint16_t hash_of_class = uc_codes_ >> 8;
-  for (int i = 0; i <= sizeof(this->types_of_uc) / sizeof(char *); ++i) {
-    if (hash_of_class == hash_str(std::string(this->types_of_uc[i]))) {
-      classname = this->types_of_uc[i];
-      found = true;
-      break;
-    }
-  }
-  if (!found) {
+  classname = std::string(this->types_of_uc[hash_of_class]);
+  if (classname == "") {
     std::cerr << "There is no known uc type with hash " << hash_of_class
               << "!\n";
     std::exit(1);
