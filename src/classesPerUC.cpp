@@ -18,7 +18,7 @@ ClassPerUC::ClassPerUC(std::string line) {
 }
 
 uint16_t ClassPerUC::parse_uc(std::string uc_code) {
-  unsigned long long hash = 5381;
+  uint64_t hash = 5381;
   std::string num_part;
   for (char c : uc_code) {
     if (!isnum(c)) {
