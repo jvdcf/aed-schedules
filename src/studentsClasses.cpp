@@ -19,8 +19,8 @@ StudentsClasses::StudentsClasses(std::string& line) {
 
 
 // Getters
-uint32_t StudentsClasses::getStudentCode() const {return student_code_;}
-const std::string &StudentsClasses::getStudentName() const {return student_name_;}
+uint32_t StudentsClasses::get_student_code() const {return student_code_;}
+const std::string &StudentsClasses::get_student_name() const {return student_name_;}
 
 
 // Parsers
@@ -40,7 +40,7 @@ void StudentsClasses::student_code_to_str(std::string& student_code) const {
 // Debug
 void StudentsClasses::display() const {
     std::string student_code;
-    std::string student_name = getStudentName();
+    std::string student_name = get_student_name();
     std::string uc_code;
     std::string class_code;
     student_code_to_str(student_code);

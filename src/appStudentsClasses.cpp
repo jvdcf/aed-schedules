@@ -29,11 +29,11 @@ AppStudentsClasses::AppStudentsClasses(std::string csv) {
 void AppStudentsClasses::sort_by(const std::string& category) {
     if (category == this->student_code_cath_name) {
         std::stable_sort(this->entries.begin(), this->entries.end(),
-                  [](const StudentsClasses& a, const StudentsClasses& b) {return a.getStudentCode() < b.getStudentCode();});
+                  [](const StudentsClasses& a, const StudentsClasses& b) {return a.get_student_code() < b.get_student_code();});
 
     } else if (category == this->student_name_cath_name) {
         std::stable_sort(this->entries.begin(), this->entries.end(),
-                  [](const StudentsClasses& a, const StudentsClasses& b) {return a.getStudentName() < b.getStudentName();});
+                  [](const StudentsClasses& a, const StudentsClasses& b) {return a.get_student_name() < b.get_student_name();});
 
     } else if (category == this->uc_cath_name) {
         std::stable_sort(this->entries.begin(), this->entries.end(),
@@ -46,7 +46,7 @@ void AppStudentsClasses::sort_by(const std::string& category) {
     } else if (category == this->class_cath_name) {
         std::stable_sort(this->entries.begin(), this->entries.end(),
                          [](const ClassPerUC &first, const ClassPerUC &second) {
-                             return first.getClassCode() < second.getClassCode();
+                             return first.get_class_code() < second.get_class_code();
                          });
 
     } else {
@@ -63,10 +63,10 @@ std::vector<StudentsClasses>::iterator AppStudentsClasses::search_by_uc(uint16_t
     while (true) { // Binary search
         if (mid == entries.size()) {
             return ret;
-        } else if (entries[mid].getUcCode() == uc_code) {
+        } else if (entries[mid].get_uc_code() == uc_code) {
             ret = entries.begin() + mid;
             break;
-        } else if (entries[mid].getUcCode() > uc_code) {
+        } else if (entries[mid].get_uc_code() > uc_code) {
             mid = mid / 2;
         } else {
             mid = mid + mid / 2;
@@ -74,7 +74,7 @@ std::vector<StudentsClasses>::iterator AppStudentsClasses::search_by_uc(uint16_t
     }
 
     while (true) {
-        if ((ret - 1)->getUcCode() != uc_code) {
+        if ((ret - 1)->get_uc_code() != uc_code) {
             return ret;
         } else --ret;
     }
@@ -88,10 +88,10 @@ std::vector<StudentsClasses>::iterator AppStudentsClasses::search_by_student(uin
     while (true) { // Binary search
         if (mid == entries.size()) {
             return ret;
-        } else if (entries[mid].getStudentCode() == student_code) {
+        } else if (entries[mid].get_student_code() == student_code) {
             ret = entries.begin() + mid;
             break;
-        } else if (entries[mid].getStudentCode() > student_code) {
+        } else if (entries[mid].get_student_code() > student_code) {
             mid = mid / 2;
         } else {
             mid = mid + mid / 2;
@@ -99,7 +99,7 @@ std::vector<StudentsClasses>::iterator AppStudentsClasses::search_by_student(uin
     }
 
     while (true) {
-        if ((ret - 1)->getStudentCode() != student_code) {
+        if ((ret - 1)->get_student_code() != student_code) {
             return ret;
         } else --ret;
     }
@@ -113,10 +113,10 @@ std::vector<StudentsClasses>::iterator AppStudentsClasses::search_by_class(uint1
     while (true) { // Binary search
         if (mid == entries.size()) {
             return ret;
-        } else if (entries[mid].getClassCode() == class_code) {
+        } else if (entries[mid].get_class_code() == class_code) {
             ret = entries.begin() + mid;
             break;
-        } else if (entries[mid].getClassCode() > class_code) {
+        } else if (entries[mid].get_class_code() > class_code) {
             mid = mid / 2;
         } else {
             mid = mid + mid / 2;
@@ -124,7 +124,7 @@ std::vector<StudentsClasses>::iterator AppStudentsClasses::search_by_class(uint1
     }
 
     while (true) {
-        if ((ret - 1)->getClassCode() != class_code) {
+        if ((ret - 1)->get_class_code() != class_code) {
             return ret;
         } else --ret;
     }

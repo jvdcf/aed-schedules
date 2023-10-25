@@ -38,7 +38,7 @@ void AppClassPerUC::sort_by(std::string category) {
     } else if (category == class_cath_name) {
         std::stable_sort(this->entries.begin(), this->entries.end(),
                          [](const ClassPerUC &first, const ClassPerUC &second) {
-                             return first.getClassCode() < second.getClassCode();
+                             return first.get_class_code() < second.get_class_code();
                          });
     } else {
         std::cerr << "Error: invalid category" << '\n';

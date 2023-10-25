@@ -22,11 +22,11 @@ ClassPerUC::ClassPerUC() {
   class_code_ = 0;
 }
 
-uint16_t ClassPerUC::getUcCode() const {
+uint16_t ClassPerUC::get_uc_code() const {
     return uc_code_;
 }
 
-uint16_t ClassPerUC::getClassCode() const {
+uint16_t ClassPerUC::get_class_code() const {
     return class_code_;
 }
 

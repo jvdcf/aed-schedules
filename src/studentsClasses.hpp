@@ -13,8 +13,8 @@ public:
     StudentsClasses(std::string& line);
 
     // Getters
-    uint32_t getStudentCode() const;
-    const std::string &getStudentName() const;
+    uint32_t get_student_code() const;
+    const std::string &get_student_name() const;
 
     // Parsers
     uint32_t parse_student_code(const std::string& student_code) const;
