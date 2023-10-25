@@ -9,8 +9,8 @@
 void parse_csv_line(std::string s, std::vector<std::string> &res);
 class ClassPerUC {
 protected:
-  uint16_t uc_codes_;
-  uint16_t class_codes_;
+  uint16_t uc_code_;
+  uint16_t class_code_;
   // constexpr const static char *types_of_uc[256] = {
   //   ,[0]  = "IR"
   //   ,[14] = "SEESTE"};

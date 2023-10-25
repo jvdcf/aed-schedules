@@ -13,16 +13,16 @@ StudentsClasses::StudentsClasses(std::string& line) {
     parse_csv_line(line, linebuf);
     student_code_ = parse_student_code(linebuf[0]);
     student_name_ = linebuf[1];
-    uc_codes_ = parse_uc(linebuf[2]);
-    class_codes_ = parse_class(linebuf[3]);
+    uc_code_ = parse_uc(linebuf[2]);
+    class_code_ = parse_class(linebuf[3]);
 }
 
 
 // Getters
 uint32_t StudentsClasses::get_student_code() const { return student_code_; }
 std::string StudentsClasses::get_student_name() const { return student_name_; }
-uint16_t StudentsClasses::get_uc_code() const { return uc_codes_; }
-uint16_t StudentsClasses::get_class_code() const { return class_codes_; }
+uint16_t StudentsClasses::get_uc_code() const { return uc_code_; }
+uint16_t StudentsClasses::get_class_code() const { return class_code_; }
 
 
 // Parsers

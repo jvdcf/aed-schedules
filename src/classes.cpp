@@ -8,8 +8,8 @@ using namespace std;
 Class::Class(std::string line) {
   std::vector<std::string> linebuf;
   parse_csv_line(line, linebuf);
-  class_codes_ = parse_class(linebuf[0]);
-  uc_codes_ = parse_uc(linebuf[1]);
+  class_code_ = parse_class(linebuf[0]);
+  uc_code_ = parse_uc(linebuf[1]);
   day = parse_day(linebuf[2]);
   start_hour = stof(linebuf[3]);
   duration = stof(linebuf[4]);
@@ -18,9 +18,9 @@ Class::Class(std::string line) {
 
 //______________________________________________________________________________________________________________________
 // Getters:
-unsigned short Class::getUcCode() const { return uc_codes_; }
+unsigned short Class::getUcCode() const { return uc_code_; }
 
-unsigned short Class::getClassCode() const { return class_codes_; }
+unsigned short Class::getClassCode() const { return class_code_; }
 
 WeekDay Class::getDay() const { return day; }
 

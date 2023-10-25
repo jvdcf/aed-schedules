@@ -13,13 +13,13 @@
 ClassPerUC::ClassPerUC(std::string line) {
   std::vector<std::string> linebuf;
   parse_csv_line(line, linebuf);
-  uc_codes_ = parse_uc(linebuf[0]);
-  class_codes_ = parse_class(linebuf[1]);
+  uc_code_ = parse_uc(linebuf[0]);
+  class_code_ = parse_class(linebuf[1]);
 }
 
 ClassPerUC::ClassPerUC() {
-  uc_codes_ = 0;
-  class_codes_ = 0;
+  uc_code_ = 0;
+  class_code_ = 0;
 }
 
 uint16_t ClassPerUC::parse_uc(std::string uc_code) {
@@ -79,25 +79,25 @@ void ClassPerUC::display() const {
 void ClassPerUC::class_to_str(std::string &out) const {
   std::stringstream s;
   // TODO: use exceptions to handle errors instead of closing.
-  if ((class_codes_ >> 8) == 19) {
+  if ((class_code_ >> 8) == 19) {
     out = "ClassCode";
     return;
   }
-  s << (class_codes_ >> 8) << "LEIC" << std::setfill('0') << std::setw(2)
-    << (class_codes_ & 255);
+  s << (class_code_ >> 8) << "LEIC" << std::setfill('0') << std::setw(2)
+    << (class_code_ & 255);
   out = s.str();
 }
 
 void ClassPerUC::uc_to_str(std::string &out) const {
   std::stringstream s;
   std::string classname;
-  uint16_t hash_of_class = uc_codes_ >> 8;
+  uint16_t hash_of_class = uc_code_ >> 8;
   classname = std::string(this->types_of_uc[hash_of_class]);
   if (classname == "") {
     std::cerr << "There is no known uc type with hash " << hash_of_class
               << "!\n";
     std::exit(1);
   }
-  s << classname << std::setfill('0') << std::setw(3) << (uc_codes_ & 255);
+  s << classname << std::setfill('0') << std::setw(3) << (uc_code_ & 255);
   out = s.str();
 }
