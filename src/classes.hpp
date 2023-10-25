@@ -7,6 +7,11 @@
 #ifndef CLASS_HPP
 #define CLASS_HPP
 
+/**
+ * Since it is quicker to compare numbers instead of strings and there are only 7 days in a week, we decided to store
+ * the days as objects of this class.
+ * This allows us to store the string value of the week day into a single byte.
+ */
 enum class WeekDay {
   SUNDAY,
   MONDAY,
@@ -17,6 +22,11 @@ enum class WeekDay {
   SATURDAY,
 };
 
+/**
+ * Since it is quicker to compare numbers instead of strings and there are only 3 types of classes, we decided to store
+ * the types as objects of this class.
+ * This allows us to store the string value of the class type into a single byte.
+ */
 enum class Type {
   T,
   TP,

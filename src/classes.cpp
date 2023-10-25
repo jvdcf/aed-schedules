@@ -5,6 +5,11 @@
 using namespace std;
 
 // Constructor:
+/**
+ * The constructor reads the line and assigns each string value to its attribute.
+ * @param line
+ * @tparam std::string
+ */
 Class::Class(std::string line) {
   std::vector<std::string> linebuf;
   parse_csv_line(line, linebuf);
@@ -57,6 +62,11 @@ Type Class::parse_type(std::string type) {
   }
 }
 
+/**
+ * This method converts the attribute day into a string and assigns the parameter out with its string value.
+ * @param out
+ * @tparam std::string
+ */
 void Class::day_to_str(std::string &out) const {
   if (day == WeekDay::MONDAY) {
     out = "Monday";
@@ -75,6 +85,11 @@ void Class::day_to_str(std::string &out) const {
   }
 }
 
+/**
+ * This method converts the attribute type into a string and assigns the parameter out with its string value.
+ * @param out
+ * @tparam std::string
+ */
 void Class::type_to_str(std::string &out) const {
   if (type == Type::T) {
     out = "T";
@@ -87,6 +102,9 @@ void Class::type_to_str(std::string &out) const {
 
 //______________________________________________________________________________________________________________________
 // Other Methods:
+/**
+ * This method prints the csv line of the current state of the object.
+ */
 void Class::display() const {
   string uc;
   string cc;
