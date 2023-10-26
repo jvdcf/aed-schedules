@@ -14,8 +14,11 @@ public:
     // Constructor
     AppStudentsClasses(std::string csv);
 
-    //Destructor
-    virtual ~AppStudentsClasses();
+    // Destructor
+    ~AppStudentsClasses();
+
+    // Getter:
+    const std::vector<StudentsClasses> &getEntries() const;
 
     // Methods
     void sort_by(const std::string& category);

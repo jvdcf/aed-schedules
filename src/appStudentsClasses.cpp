@@ -48,6 +48,10 @@ AppStudentsClasses::~AppStudentsClasses() {
     ofs.close();
 }
 
+const std::vector<StudentsClasses> &AppStudentsClasses::getEntries() const {
+    return entries;
+}
+
 // Methods
 void AppStudentsClasses::sort_by(const std::string& category) {
     if (category == this->student_code_cath_name) {
@@ -103,6 +107,7 @@ std::vector<StudentsClasses>::iterator AppStudentsClasses::search_by_uc(uint16_t
     }
 }
 
+
 std::vector<StudentsClasses>::iterator AppStudentsClasses::search_by_student(uint32_t student_code) {
     sort_by(student_code_cath_name);
     auto ret = entries.end();
@@ -127,7 +132,6 @@ std::vector<StudentsClasses>::iterator AppStudentsClasses::search_by_student(uin
         } else --ret;
     }
 }
-
 
 std::vector<StudentsClasses>::iterator AppStudentsClasses::search_by_class(uint16_t class_code) {
     sort_by(class_cath_name);

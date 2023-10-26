@@ -49,6 +49,10 @@ AppClass::~AppClass() {
     ofs.close();
 }
 
+const std::vector<Class> &AppClass::getEntries() const {
+    return entries;
+}
+
 void AppClass::display() {
   std::cout << this->uc_cath_name << ',' << this->class_cath_name << ','
             << this->weekday_cath_name << ',' << this->start_hour_cath_name

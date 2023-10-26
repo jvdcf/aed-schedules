@@ -12,6 +12,7 @@ private:
 public:
     AppClassPerUC(std::string csv, uint8_t cap);
     ~AppClassPerUC();
+    const std::vector<ClassPerUC> &getEntries() const;
     void display();
     void sort_by(std::string category);
 };

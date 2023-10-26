@@ -7,7 +7,7 @@
 
 AppClassPerUC::AppClassPerUC(std::string csv, uint8_t cap) {
     this->cap = cap;
-    
+
     std::stringstream s(csv);
     std::string line;
     this->entries = std::vector<ClassPerUC>();
@@ -37,6 +37,10 @@ AppClassPerUC::~AppClassPerUC() {
         ofs << value << ',' << '\n';
     }
     ofs.close();
+}
+
+const std::vector<ClassPerUC> &AppClassPerUC::getEntries() const {
+    return entries;
 }
 
 void AppClassPerUC::display() {
