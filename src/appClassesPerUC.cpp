@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <fstream>
 
-AppClassPerUC::AppClassPerUC(const std::string& csv, uint8_t cap = 30) {
+AppClassPerUC::AppClassPerUC(const std::string& csv, uint8_t cap) {
     this->cap = cap;
 
     // CSV file into memory

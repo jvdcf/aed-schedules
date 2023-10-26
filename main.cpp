@@ -10,9 +10,7 @@
 #include <string>
 
 int main(int argc, char** argv) {
-  int cap = 30;
-
-  AppClassPerUC cpu = AppClassPerUC("schedule/classes_per_uc.csv", cap);
+  AppClassPerUC cpu = AppClassPerUC("schedule/classes_per_uc.csv");
   cpu.display();
 
   AppStudentsClasses sc("schedule/students_classes.csv");
