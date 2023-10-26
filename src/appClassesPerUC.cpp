@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <fstream>
 
-AppClassPerUC::AppClassPerUC(std::string csv, int cap) {
+AppClassPerUC::AppClassPerUC(std::string csv, uint8_t cap) {
     this->cap = cap;
     
     std::stringstream s(csv);
