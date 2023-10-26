@@ -3,6 +3,8 @@
 #include "classes.hpp"
 #include <algorithm>
 #include <iostream>
+#include <fstream>
+#include <iomanip>
 
 AppClass::AppClass(std::string csv) {
   std::stringstream s(csv);
@@ -21,6 +23,30 @@ AppClass::AppClass(std::string csv) {
   while (std::getline(s, line, '\n')) {
     this->entries.push_back(Class(line));
   }
+}
+
+/**
+ * Erases the contents of classes.csv and saves there the updated values.
+ */
+AppClass::~AppClass() {
+    std::ofstream ofs;
+    ofs.open("../schedule/classes.csv", std::ofstream::out | std::ofstream::trunc);
+    ofs << class_cath_name << ',' << uc_cath_name << ',' << weekday_cath_name << ',' << start_hour_cath_name
+        << ',' << duration_cath_name << ',' << type_cath_name << '\n';
+    for (Class entry: entries) {
+        std::string value;
+        entry.class_to_str(value);
+        ofs << value << ',';
+        entry.uc_to_str(value);
+        ofs << value << ',';
+        entry.day_to_str(value);
+        ofs << value << ',';
+        ofs << std::setprecision(3) << entry.get_start_hour() << ',';
+        ofs << std::setprecision(2) << entry.get_duration() << ',';
+        entry.type_to_str(value);
+        ofs << value << ',' << '\n';
+    }
+    ofs.close();
 }
 
 void AppClass::display() {

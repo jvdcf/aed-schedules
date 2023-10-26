@@ -6,6 +6,7 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include <fstream>
 
 // Constructor
 AppStudentsClasses::AppStudentsClasses(std::string csv) {
@@ -23,6 +24,28 @@ AppStudentsClasses::AppStudentsClasses(std::string csv) {
     while (std::getline(s,line,'\n')) {
         this->entries.push_back(StudentsClasses(line));
     }
+}
+
+//Destructor
+/**
+ * Erases the contents of students_classes.csv and saves there the updated values.
+ */
+AppStudentsClasses::~AppStudentsClasses() {
+    std::ofstream ofs;
+    ofs.open("../schedule/students_classes.csv", std::ofstream::out | std::ofstream::trunc);
+    ofs << student_code_cath_name << ',' << student_name_cath_name << ','
+        << uc_cath_name << ',' << class_cath_name << '\n';
+    for (StudentsClasses entry: entries) {
+        std::string value;
+        entry.student_code_to_str(value);
+        ofs << value << ',';
+        ofs << entry.get_student_name() << ',';
+        entry.uc_to_str(value);
+        ofs << value << ',';
+        entry.class_to_str(value);
+        ofs << value << ',' << '\n';
+    }
+    ofs.close();
 }
 
 // Methods
@@ -105,6 +128,7 @@ std::vector<StudentsClasses>::iterator AppStudentsClasses::search_by_student(uin
     }
 }
 
+
 std::vector<StudentsClasses>::iterator AppStudentsClasses::search_by_class(uint16_t class_code) {
     sort_by(class_cath_name);
     auto ret = entries.end();
@@ -130,8 +154,7 @@ std::vector<StudentsClasses>::iterator AppStudentsClasses::search_by_class(uint1
     }
 }
 
-
-// Degub
+// Debug
 void AppStudentsClasses::display() const {
     std::cout << this->student_code_cath_name << ','
               << this->student_name_cath_name << ','
@@ -141,6 +164,3 @@ void AppStudentsClasses::display() const {
         e.display();
     }
 }
-
-
-

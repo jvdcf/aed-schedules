@@ -14,6 +14,9 @@ public:
     // Constructor
     AppStudentsClasses(std::string csv);
 
+    //Destructor
+    virtual ~AppStudentsClasses();
+
     // Methods
     void sort_by(const std::string& category);
     std::vector<StudentsClasses>::iterator search_by_student(uint32_t student_code);
