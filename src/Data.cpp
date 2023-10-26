@@ -1,18 +1,15 @@
 #include "Data.hpp"
 
-Data::Data(std::string* csv_classes_per_uc, uint8_t cap, std::string* csv_classes, std::string* csv_students_classes) {
-  app_classes_per_uc_ = AppClassPerUC(*csv_classes_per_uc, cap);
-  app_classes_ = AppClass(*csv_classes);
-  app_students_classes_ = AppStudentsClasses(*csv_students_classes);
-}
+Data::Data(std::string& csv_classes_per_uc, uint8_t cap, std::string& csv_classes, std::string& csv_students_classes):
+          app_classes_per_uc_(csv_classes_per_uc, cap), app_classes_(csv_classes), app_students_classes_(csv_students_classes) {}
 
-// ----------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------------------------------------
 
 bool Data::students_with_n_ucs(int n, std::vector<StudentsClasses *> &results) {
   return false;
 }
 
-bool Data::class_ocupance(uint16_t uc_code, std::vector<class_ocupance> &results) {
+bool Data::class_ocupance(uint16_t uc_code, std::vector<class_ocupance_struct> &results) {
   return false;
 }
 
