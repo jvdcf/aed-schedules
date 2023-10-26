@@ -9,7 +9,7 @@
 #include <fstream>
 
 // Constructor
-AppStudentsClasses::AppStudentsClasses(std::string csv) {
+AppStudentsClasses::AppStudentsClasses(const std::string& csv) {
     // CSV file into memory
     std::ifstream file = std::ifstream(csv);
     std::string contents;

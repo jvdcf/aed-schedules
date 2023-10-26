@@ -10,7 +10,7 @@ private:
   uint8_t cap;  // Capacity on any class
 
 public:
-    AppClassPerUC(std::string csv, uint8_t cap);
+    AppClassPerUC(const std::string& csv, uint8_t cap);
     ~AppClassPerUC();
     void display();
     void sort_by(std::string category);

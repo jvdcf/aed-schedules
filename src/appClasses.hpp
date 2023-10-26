@@ -16,7 +16,7 @@ private:
     std::vector<Class> entries;
 
 public:
-    AppClass(std::string csv);
+    AppClass(const std::string& csv);
     ~AppClass();
     void display();
     void sort_by(std::string category);

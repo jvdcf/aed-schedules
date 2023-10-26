@@ -6,7 +6,7 @@
 #include <fstream>
 #include <iomanip>
 
-AppClass::AppClass(std::string csv) {
+AppClass::AppClass(const std::string& csv) {
   // CSV file into memory
   std::ifstream file = std::ifstream(csv);
   std::string contents;
