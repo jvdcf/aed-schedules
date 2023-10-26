@@ -4,6 +4,10 @@
 
 using namespace std;
 
+/**
+ * @file classes.cpp
+ */
+
 // Constructor:
 /**
  * The constructor reads the line and assigns each string value to its attribute.

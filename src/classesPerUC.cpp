@@ -10,6 +10,10 @@
 #include <string>
 #include <vector>
 
+/**
+ * @file classPerUC.cpp
+ */
+
 // Constructor:
 /**
  * The constructor reads the line and assigns each string value to its attribute.

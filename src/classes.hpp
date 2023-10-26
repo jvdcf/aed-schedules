@@ -8,6 +8,10 @@
 #define CLASS_HPP
 
 /**
+ * @file classes.hpp
+ */
+
+/**
  * Since it is quicker to compare numbers instead of strings and there are only 7 days in a week, we decided to store
  * the days as objects of this class.
  * This allows us to store the string value of the week day into a single byte.
