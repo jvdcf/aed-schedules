@@ -8,7 +8,15 @@
 AppClassPerUC::AppClassPerUC(std::string csv, uint8_t cap) {
     this->cap = cap;
 
-    std::stringstream s(csv);
+    // CSV file into memory
+    std::ifstream file = std::ifstream(csv);
+    std::string contents;
+    std::ostringstream sstr;
+    sstr << file.rdbuf();
+    contents = sstr.str();
+
+    // Parse string
+    std::stringstream s(contents);
     std::string line;
     this->entries = std::vector<ClassPerUC>();
     getline(s, line, '\n');
