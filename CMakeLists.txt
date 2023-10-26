@@ -34,4 +34,4 @@ add_executable(AED2324_PRJ1_G23 main.cpp
         src/classesPerUC.cpp src/classesPerUC.hpp
         src/studentsClasses.cpp src/studentsClasses.hpp
         src/Utils.cpp src/Utils.hpp
-        src/Functions.cpp src/Functions.hpp)
+        src/Data.cpp src/Data.hpp)
