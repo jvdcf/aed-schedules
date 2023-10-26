@@ -5,6 +5,10 @@
 #include <algorithm>
 #include <fstream>
 
+/**
+ * @file appClassesPerUC.cpp
+ */
+
 AppClassPerUC::AppClassPerUC(const std::string& csv, uint8_t cap) {
     this->cap = cap;
 

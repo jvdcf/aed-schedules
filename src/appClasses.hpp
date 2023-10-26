@@ -5,6 +5,10 @@
 #ifndef APPCLASSES_H
 #define APPCLASSES_H
 
+/**
+ * @file appClasses.hpp
+ */
+
 class AppClass{
 private:
     std::string class_cath_name;
