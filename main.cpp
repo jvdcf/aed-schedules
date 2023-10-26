@@ -10,13 +10,15 @@
 #include <string>
 
 int main(int argc, char** argv) {
+ int cap = 30;
+
   // AppClassesPerUC
   std::ifstream file1 =  std::ifstream("schedule/classes_per_uc.csv");
   std::string contents1;
   std::ostringstream sstr1;
   sstr1 << file1.rdbuf();
   contents1 = sstr1.str();
-  AppClassPerUC cpu = AppClassPerUC(contents1);
+  AppClassPerUC cpu = AppClassPerUC(contents1, cap);
   cpu.display();
 
   // AppStudentsClasses
