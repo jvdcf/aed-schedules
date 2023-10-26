@@ -26,7 +26,7 @@ else(DOXYGEN_FOUND)
 endif(DOXYGEN_FOUND)
 
 # Project build
-add_executable(main.cpp
+add_executable(AED2324_PRJ1_G23 main.cpp
         src/appClasses.cpp src/appClasses.hpp
         src/appClassesPerUC.cpp src/appClassesPerUC.hpp
         src/appStudentsClasses.cpp src/appStudentsClasses.hpp
