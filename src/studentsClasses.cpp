@@ -8,6 +8,11 @@
 #include <sstream>
 
 // Constructor
+/**
+ * The constructor reads the line and assigns each string value to its attribute.
+ * @param line
+ * @tparam std::string
+ */
 StudentsClasses::StudentsClasses(std::string& line) {
     std::vector<std::string> linebuf;
     parse_csv_line(line, linebuf);
@@ -33,11 +38,19 @@ uint32_t StudentsClasses::parse_student_code(const std::string& student_code) co
 
 
 // String format
+/**
+ * This method converts the attribute student_code_ into a string and assigns the parameter out with its string value.
+ * @param student_code
+ * @tparam std::string
+ */
 void StudentsClasses::student_code_to_str(std::string& student_code) const {
     student_code = std::to_string(student_code_);
 }
 
 // Debug
+/**
+ * This method prints the csv line of the current state of the object.
+ */
 void StudentsClasses::display() const {
     std::string student_code;
     std::string student_name = get_student_name();
