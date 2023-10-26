@@ -6,8 +6,16 @@
 #include <fstream>
 #include <iomanip>
 
-AppClass::AppClass(std::string csv) {
-  std::stringstream s(csv);
+AppClass::AppClass(const std::string& csv) {
+  // CSV file into memory
+  std::ifstream file = std::ifstream(csv);
+  std::string contents;
+  std::ostringstream sstr;
+  sstr << file.rdbuf();
+  contents = sstr.str();
+
+  // Parse string
+  std::stringstream s(contents);
   std::string line;
   this->entries = std::vector<Class>();
   getline(s, line, '\n');

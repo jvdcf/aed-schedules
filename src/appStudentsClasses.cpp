@@ -9,8 +9,16 @@
 #include <fstream>
 
 // Constructor
-AppStudentsClasses::AppStudentsClasses(std::string csv) {
-    std::stringstream s(csv);
+AppStudentsClasses::AppStudentsClasses(const std::string& csv) {
+    // CSV file into memory
+    std::ifstream file = std::ifstream(csv);
+    std::string contents;
+    std::ostringstream sstr;
+    sstr << file.rdbuf();
+    contents = sstr.str();
+
+    // Parse string
+    std::stringstream s(contents);
     std::string line;
     this->entries = std::vector<StudentsClasses>();
     getline(s,line,'\n');

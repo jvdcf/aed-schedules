@@ -12,7 +12,7 @@ private:
 
 public:
     // Constructor
-    AppStudentsClasses(std::string csv);
+    AppStudentsClasses(const std::string& csv);
 
     //Destructor
     virtual ~AppStudentsClasses();
