@@ -14,4 +14,6 @@ public:
     ~AppClassPerUC();
     void display();
     void sort_by(std::string category);
+    std::vector<ClassPerUC>::iterator search_by_uc(uint16_t uc_code) const;
+    int count_classes(uint16_t uc_code) const;
 };

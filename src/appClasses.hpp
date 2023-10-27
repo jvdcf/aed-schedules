@@ -20,8 +20,8 @@ public:
     ~AppClass();
     void display();
     void sort_by(std::string category);
-    std::vector<Class>::iterator search_by_uc(uint16_t uc_code);
-    std::vector<Class>::iterator search_by_class(uint16_t class_code);
+    std::vector<Class>::iterator search_by_class(uint16_t uc_code, uint16_t class_code);
+    int count_classes(uint16_t uc_code) const;
 };
 
 #endif // APPCLASSES_H

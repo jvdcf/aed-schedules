@@ -14,7 +14,7 @@ public:
     // Constructor
     AppStudentsClasses(const std::string& csv);
 
-    //Destructor
+    // Destructor
     virtual ~AppStudentsClasses();
 
     // Methods
@@ -22,6 +22,8 @@ public:
     std::vector<StudentsClasses>::iterator search_by_student(uint32_t student_code);
     std::vector<StudentsClasses>::iterator search_by_uc(uint16_t uc_code);
     std::vector<StudentsClasses>::iterator search_by_class(uint16_t class_code);
+    int count_classes(uint32_t student_code);
+    int count_students(uint16_t uc_code);
 
     // Debug
     void display() const;
