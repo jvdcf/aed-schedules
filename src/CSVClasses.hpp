@@ -1,9 +1,12 @@
-#include "classes.hpp"
+/**
+ * @file CSVClasses.hpp
+ */
+#ifndef APPCLASSES_H
+#define APPCLASSES_H
+#include "Lesson.hpp"
 #include <string>
 #include <vector>
 
-#ifndef APPCLASSES_H
-#define APPCLASSES_H
 
 class AppClass{
 private:
@@ -13,15 +16,16 @@ private:
     std::string start_hour_cath_name;
     std::string duration_cath_name;
     std::string type_cath_name;
-    std::vector<Class> entries;
+    std::vector<Lesson> entries;
 
 public:
     AppClass(const std::string& csv);
     ~AppClass();
     void display();
     void sort_by(std::string category);
-    std::vector<Class>::iterator search_by_uc(uint16_t uc_code);
-    std::vector<Class>::iterator search_by_class(uint16_t class_code);
+    std::vector<Lesson>::iterator search_by_uc(uint16_t uc_code);
+    std::vector<Lesson>::iterator search_by_class(uint16_t class_code);
 };
+
 
 #endif // APPCLASSES_H

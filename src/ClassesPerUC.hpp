@@ -1,12 +1,17 @@
+/**
+ * @file ClassesPerUC.hpp
+ */
+#ifndef CLASSPERUC_H
+#define CLASSPERUC_H
 #include <cctype>
 #include <cstdint>
 #include <iostream>
 #include <string>
 #include <vector>
 
-#ifndef CLASSPERUC_H
-#define CLASSPERUC_H
+
 void parse_csv_line(std::string s, std::vector<std::string> &res);
+
 class ClassPerUC {
 protected:
   uint16_t uc_code_;
@@ -57,5 +62,6 @@ public:
 
   virtual void display() const;
 };
+
 
 #endif // !CLASSPERUC_H

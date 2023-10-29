@@ -1,6 +1,12 @@
-#include "studentsClasses.hpp"
+/**
+ * @file CSVStudentsClasses.hpp
+ */
+#ifndef CSVSTUDENTCLASSES_H
+#define CSVSTUDENTCLASSES_H
+#include "StudentsClasses.hpp"
 #include <string>
 #include <vector>
+
 
 class AppStudentsClasses {
 private:
@@ -26,3 +32,6 @@ public:
     // Debug
     void display() const;
 };
+
+
+#endif // CSVSTUDENTCLASSES_H

@@ -1,3 +1,6 @@
+/**
+ * @file Student.cpp
+ */
 #include "Student.hpp"
 #include "Utils.hpp"
 #include <cstdint>
@@ -13,12 +16,12 @@ Student::Student(uint32_t code, std::string name) {
 std::vector<ClassSchedule *> *Student::get_schedule() { return &this->classes; }
 
 OperationResult Student::add_to_class(ClassSchedule *c) {
-  std::vector<Class *> *new_lessons = c->get_class_schedule();
+  std::vector<Lesson *> *new_lessons = c->get_class_schedule();
   // return false;
   for (ClassSchedule *a : this->classes) {
-    std::vector<Class *> *lessons = a->get_class_schedule();
-    for (Class *lesson : *lessons) {
-      for (Class *new_lesson : *new_lessons) {
+    std::vector<Lesson *> *lessons = a->get_class_schedule();
+    for (Lesson *lesson : *lessons) {
+      for (Lesson *new_lesson : *new_lessons) {
         if (lesson->get_start_hour() < new_lesson->get_start_hour() &&
             new_lesson->get_start_hour() <
                 (lesson->get_start_hour() + lesson->get_duration())) {

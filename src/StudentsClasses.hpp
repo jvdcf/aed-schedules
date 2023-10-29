@@ -1,8 +1,12 @@
-#include <string>
-#include <cstdint>
-#include "classesPerUC.hpp"
+/**
+ * @file StudentsClasses.hpp
+ */
 #ifndef STUDENTSCLASSES_H
 #define STUDENTSCLASSES_H
+#include <string>
+#include <cstdint>
+#include "ClassesPerUC.hpp"
+
 
 class StudentsClasses : public ClassPerUC {
 private:
@@ -26,5 +30,6 @@ public:
     // Debug
     void display() const override;
 };
+
 
 #endif // STUDENTSCLASSES_H

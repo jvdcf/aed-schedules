@@ -1,4 +1,7 @@
-#include "classesPerUC.hpp"
+/**
+ * @file ClassesPerUC.cpp
+ */
+#include "ClassesPerUC.hpp"
 #include "Utils.hpp"
 #include <cstdint>
 #include <cstdio>
@@ -10,7 +13,7 @@
 #include <string>
 #include <vector>
 
-// Constructor:
+
 /**
  * The constructor reads the line and assigns each string value to its attribute.
  * We opted to transform the sting values of uc_code and class_code_ into hashes for sakes of performance,

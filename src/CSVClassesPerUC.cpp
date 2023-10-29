@@ -1,10 +1,20 @@
-#include "appClassesPerUC.hpp"
-#include "classesPerUC.hpp"
+/**
+ * @file CSVClassesPerUC.cpp
+ */
+#include "CSVClassesPerUC.hpp"
+#include "ClassesPerUC.hpp"
 #include <sstream>
 #include <string>
 #include <algorithm>
 #include <fstream>
 
+
+/**
+ * This constructor receives a string containing all the lines of a csv file and creates the AppClassPerUC from it.
+ * The cap parameter is the capacity of each class.
+ * @param csv
+ * @param cap
+ */
 AppClassPerUC::AppClassPerUC(const std::string& csv, uint8_t cap) {
     this->cap = cap;
 

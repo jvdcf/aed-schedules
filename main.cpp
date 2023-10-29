@@ -1,9 +1,9 @@
-#include "src/appClasses.hpp"
-#include "src/appClassesPerUC.hpp"
-#include "src/appStudentsClasses.hpp"
-#include "src/classes.hpp"
-#include "src/classesPerUC.hpp"
-#include "src/studentsClasses.hpp"
+#include "src/CSVClasses.hpp"
+#include "src/CSVClassesPerUC.hpp"
+#include "src/CSVStudentsClasses.hpp"
+#include "src/Lesson.hpp"
+#include "src/ClassesPerUC.hpp"
+#include "src/StudentsClasses.hpp"
 #include <iostream>
 #include <fstream>
 #include <sstream>

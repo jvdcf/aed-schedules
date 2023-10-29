@@ -1,11 +1,19 @@
-#include "appClasses.hpp"
+/**
+ * @file CSVClasses.cpp
+ */
+#include "CSVClasses.hpp"
 #include "Utils.hpp"
-#include "classes.hpp"
+#include "Lesson.hpp"
 #include <algorithm>
 #include <iostream>
 #include <fstream>
 #include <iomanip>
 
+
+/**
+ * This constructor receives a string containing all the lines of a csv file and creates the AppClass from it.
+ * @param csv
+ */
 AppClass::AppClass(const std::string& csv) {
   // CSV file into memory
   std::ifstream file = std::ifstream(csv);
@@ -17,7 +25,7 @@ AppClass::AppClass(const std::string& csv) {
   // Parse string
   std::stringstream s(contents);
   std::string line;
-  this->entries = std::vector<Class>();
+  this->entries = std::vector<Lesson>();
   getline(s, line, '\n');
   std::vector<std::string> bufs;
   parse_csv_line(line, bufs);
@@ -29,7 +37,7 @@ AppClass::AppClass(const std::string& csv) {
   this->type_cath_name = bufs[5];
   line.clear();
   while (std::getline(s, line, '\n')) {
-    this->entries.push_back(Class(line));
+    this->entries.push_back(Lesson(line));
   }
 }
 
@@ -41,7 +49,7 @@ AppClass::~AppClass() {
     ofs.open("../schedule/classes.csv", std::ofstream::out | std::ofstream::trunc);
     ofs << class_cath_name << ',' << uc_cath_name << ',' << weekday_cath_name << ',' << start_hour_cath_name
         << ',' << duration_cath_name << ',' << type_cath_name << '\n';
-    for (Class entry: entries) {
+    for (Lesson entry: entries) {
         std::string value;
         entry.class_to_str(value);
         ofs << value << ',';
@@ -70,7 +78,7 @@ void AppClass::display() {
 void AppClass::sort_by(std::string category) {
   if (category == uc_cath_name) {
     std::stable_sort(this->entries.begin(), this->entries.end(),
-                     [](const Class &first, const Class &second) {
+                     [](const Lesson &first, const Lesson &second) {
                          std::string first_uc, second_uc;
                          first.uc_to_str(first_uc);
                          second.uc_to_str(second_uc);
@@ -78,27 +86,27 @@ void AppClass::sort_by(std::string category) {
                      });
   } else if (category == class_cath_name) {
     std::stable_sort(this->entries.begin(), this->entries.end(),
-                     [](const Class &first, const Class &second) {
+                     [](const Lesson &first, const Lesson &second) {
                          return first.get_class_code() < second.get_class_code();
                      });
   } else if (category == weekday_cath_name) {
     std::stable_sort(this->entries.begin(), this->entries.end(),
-                     [](const Class &first, const Class &second) {
+                     [](const Lesson &first, const Lesson &second) {
                          return first.get_day() < second.get_day();
                      });
   } else if (category == start_hour_cath_name) {
     std::stable_sort(this->entries.begin(), this->entries.end(),
-                     [](const Class &first, const Class &second) {
+                     [](const Lesson &first, const Lesson &second) {
                          return first.get_start_hour() < second.get_start_hour();
                      });
   } else if (category == duration_cath_name) {
     std::stable_sort(this->entries.begin(), this->entries.end(),
-                     [](const Class &first, const Class &second) {
+                     [](const Lesson &first, const Lesson &second) {
                          return first.get_duration() < second.get_duration();
                      });
   } else if (category == type_cath_name) {
     std::stable_sort(this->entries.begin(), this->entries.end(),
-                     [](const Class &first, const Class &second) {
+                     [](const Lesson &first, const Lesson &second) {
                          return first.get_type() < second.get_type();
                      });
   } else {
@@ -107,12 +115,12 @@ void AppClass::sort_by(std::string category) {
   }
 }
 
-std::vector<Class>::iterator AppClass::search_by_uc(
+std::vector<Lesson>::iterator AppClass::search_by_uc(
     uint16_t
         uc_code) { // Sorts the entries by UC and returns the iterator of the
                    // first found. If not found, returns a past-the-end pointer
   sort_by(uc_cath_name);
-  std::vector<Class>::iterator ret = entries.end();
+  std::vector<Lesson>::iterator ret = entries.end();
   size_t mid = entries.size() / 2;
   while (true) { // Binary search
     if (mid == entries.size()) {
@@ -137,9 +145,9 @@ std::vector<Class>::iterator AppClass::search_by_uc(
   return ret;
 }
 
-std::vector<Class>::iterator AppClass::search_by_class(uint16_t class_code) {
+std::vector<Lesson>::iterator AppClass::search_by_class(uint16_t class_code) {
   sort_by(class_cath_name);
-  std::vector<Class>::iterator ret = entries.end();
+  std::vector<Lesson>::iterator ret = entries.end();
   size_t mid = entries.size() / 2;
   while (true) { // Binary search
     if (mid == entries.size()) {

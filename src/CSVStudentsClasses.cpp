@@ -1,5 +1,8 @@
-#include "appStudentsClasses.hpp"
-#include "studentsClasses.hpp"
+/**
+ * @file CSVStudentsClasses.cpp
+ */
+#include "CSVStudentsClasses.hpp"
+#include "StudentsClasses.hpp"
 #include "Utils.hpp"
 #include <sstream>
 #include <string>
@@ -8,7 +11,11 @@
 #include <algorithm>
 #include <fstream>
 
-// Constructor
+
+/**
+ * This constructor receives a string containing all the lines of a csv file and creates the AppSudentClass from it.
+ * @param csv
+ */
 AppStudentsClasses::AppStudentsClasses(const std::string& csv) {
     // CSV file into memory
     std::ifstream file = std::ifstream(csv);
@@ -34,7 +41,6 @@ AppStudentsClasses::AppStudentsClasses(const std::string& csv) {
     }
 }
 
-//Destructor
 /**
  * Erases the contents of students_classes.csv and saves there the updated values.
  */

@@ -27,10 +27,13 @@ endif(DOXYGEN_FOUND)
 
 # Project build
 add_executable(AED2324_PRJ1_G23 main.cpp
-        src/appClasses.cpp src/appClasses.hpp
-        src/appClassesPerUC.cpp src/appClassesPerUC.hpp
-        src/appStudentsClasses.cpp src/appStudentsClasses.hpp
-        src/classes.cpp src/classes.hpp
-        src/classesPerUC.cpp src/classesPerUC.hpp
-        src/studentsClasses.cpp src/studentsClasses.hpp
-        src/Utils.cpp src/Utils.hpp)
+        src/CSVClasses.cpp src/CSVClasses.hpp
+        src/CSVClassesPerUC.cpp src/CSVClassesPerUC.hpp
+        src/CSVStudentsClasses.cpp src/CSVStudentsClasses.hpp
+        src/Lesson.cpp src/Lesson.hpp
+        src/ClassesPerUC.cpp src/ClassesPerUC.hpp
+        src/StudentsClasses.cpp src/StudentsClasses.hpp
+        src/Utils.cpp src/Utils.hpp
+        src/Runtime.cpp src/Runtime.hpp
+        src/ClassSchedule.cpp src/ClassSchedule.hpp
+        src/Student.cpp src/Student.hpp)

@@ -1,6 +1,12 @@
-#include "classesPerUC.hpp"
+/**
+ * @file CSVClassesPerUC.hpp
+ */
+#ifndef CSVCLASSESPERUC_HPP
+#define CSVCLASSESPERUC_HPP
+#include "ClassesPerUC.hpp"
 #include <string>
 #include <vector>
+
 
 class AppClassPerUC {
 private:
@@ -15,3 +21,6 @@ public:
     void display();
     void sort_by(std::string category);
 };
+
+
+#endif // CSVCLASSESPERUC_HPP
