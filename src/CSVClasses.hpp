@@ -8,7 +8,7 @@
 #include <vector>
 
 
-class CSVClasses{
+class CSVClasses {
 private:
     std::string class_cath_name;
     std::string uc_cath_name;

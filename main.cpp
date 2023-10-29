@@ -1,9 +1,23 @@
+<<<<<<< HEAD
 #include "src/CSVClasses.hpp"
 #include "src/CSVClassesPerUC.hpp"
 #include "src/CSVStudentsClasses.hpp"
 #include "src/Lesson.hpp"
 #include "src/ClassesPerUC.hpp"
 #include "src/StudentsClasses.hpp"
+=======
+/*
+ * @file main.cpp
+ * @brief Point of entry of the program.
+ */
+
+#include "src/appClasses.hpp"
+#include "src/appClassesPerUC.hpp"
+#include "src/appStudentsClasses.hpp"
+#include "src/classes.hpp"
+#include "src/classesPerUC.hpp"
+#include "src/studentsClasses.hpp"
+>>>>>>> main
 #include <iostream>
 #include <fstream>
 #include <sstream>
