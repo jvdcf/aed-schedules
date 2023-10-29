@@ -6,6 +6,11 @@
 
 #ifndef CLASSPERUC_H
 #define CLASSPERUC_H
+
+/**
+ * @file classesPerUC.hpp
+ */
+
 void parse_csv_line(std::string s, std::vector<std::string> &res);
 class ClassPerUC {
 protected:

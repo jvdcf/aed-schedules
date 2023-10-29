@@ -4,6 +4,10 @@
 #ifndef STUDENTSCLASSES_H
 #define STUDENTSCLASSES_H
 
+/**
+ * @file studentsClasses.hpp
+ */
+
 class StudentsClasses : public ClassPerUC {
 private:
     uint32_t student_code_;

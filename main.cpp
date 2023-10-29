@@ -1,3 +1,8 @@
+/*
+ * @file main.cpp
+ * @brief Point of entry of the program.
+ */
+
 #include "src/appClasses.hpp"
 #include "src/appClassesPerUC.hpp"
 #include "src/appStudentsClasses.hpp"

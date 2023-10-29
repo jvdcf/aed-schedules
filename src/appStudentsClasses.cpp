@@ -8,7 +8,15 @@
 #include <algorithm>
 #include <fstream>
 
+/**
+ * @file appStudentsClasses.cpp
+ */
+
 // Constructor
+/**
+ * This constructor receives a string containing all the lines of a csv file and creates the AppSudentClass from it.
+ * @param csv
+ */
 AppStudentsClasses::AppStudentsClasses(const std::string& csv) {
     // CSV file into memory
     std::ifstream file = std::ifstream(csv);

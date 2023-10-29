@@ -6,6 +6,14 @@
 #include <fstream>
 #include <iomanip>
 
+/**
+ * @file appClasses.cpp
+ */
+
+/**
+ * This constructor receives a string containing all the lines of a csv file and creates the AppClass from it.
+ * @param csv
+ */
 AppClass::AppClass(const std::string& csv) {
   // CSV file into memory
   std::ifstream file = std::ifstream(csv);

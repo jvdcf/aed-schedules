@@ -2,6 +2,10 @@
 #include <string>
 #include <vector>
 
+/**
+ * @file appStudentsClasses.hpp
+ */
+
 class AppStudentsClasses {
 private:
     std::string student_code_cath_name;

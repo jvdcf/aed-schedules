@@ -2,6 +2,10 @@
 #include <string>
 #include <vector>
 
+/**
+ * @file appClassesPerUC.hpp
+ */
+
 class AppClassPerUC {
 private:
   std::string uc_cath_name;
