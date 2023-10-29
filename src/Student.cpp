@@ -22,27 +22,29 @@ OperationResult Student::add_to_class(ClassSchedule *c) {
     std::vector<Lesson *> *lessons = a->get_class_schedule();
     for (Lesson *lesson : *lessons) {
       for (Lesson *new_lesson : *new_lessons) {
-        if (lesson->get_start_hour() < new_lesson->get_start_hour() &&
-            new_lesson->get_start_hour() <
-                (lesson->get_start_hour() + lesson->get_duration())) {
-          if (lesson->get_type() == Type::T ||
-              new_lesson->get_type() == Type::T) {
-            return OperationResult::Conlicts; // We return conflicts so that the
-                                              // handler function can ask the
-                                              // user whether or not they want
-                                              // to proceed.
+        if (lesson->get_day() == new_lesson->get_day()) {
+          if (lesson->get_start_hour() < new_lesson->get_start_hour() &&
+              new_lesson->get_start_hour() <
+                  (lesson->get_start_hour() + lesson->get_duration())) {
+            if (lesson->get_type() == Type::T ||
+                new_lesson->get_type() == Type::T) {
+              return OperationResult::Conlicts; // We return conflicts so that
+                                                // the handler function can ask
+                                                // the user whether or not they
+                                                // want to proceed.
+            }
+            return OperationResult::Error;
           }
-          return OperationResult::Error;
-        }
-        if (lesson->get_start_hour() <
-                (new_lesson->get_start_hour() + new_lesson->get_duration()) &&
-            (new_lesson->get_start_hour() + new_lesson->get_duration()) <
-                (lesson->get_start_hour() + lesson->get_duration())) {
-          if (lesson->get_type() == Type::T ||
-              new_lesson->get_type() == Type::T) {
-            return OperationResult::Conlicts;
+          if (lesson->get_start_hour() <
+                  (new_lesson->get_start_hour() + new_lesson->get_duration()) &&
+              (new_lesson->get_start_hour() + new_lesson->get_duration()) <
+                  (lesson->get_start_hour() + lesson->get_duration())) {
+            if (lesson->get_type() == Type::T ||
+                new_lesson->get_type() == Type::T) {
+              return OperationResult::Conlicts;
+            }
+            return OperationResult::Error;
           }
-          return OperationResult::Error;
         }
       }
     }
@@ -54,7 +56,8 @@ OperationResult Student::add_to_class(ClassSchedule *c) {
 
 void Student::remove_from_class(ClassSchedule *c) {
   c->remove_student();
-  for (std::vector<ClassSchedule*>::iterator itr = this->classes.begin(); itr != this->classes.end(); ++itr) {
+  for (std::vector<ClassSchedule *>::iterator itr = this->classes.begin();
+       itr != this->classes.end(); ++itr) {
     if (c == *itr) {
       this->classes.erase(itr);
       return;
@@ -63,7 +66,8 @@ void Student::remove_from_class(ClassSchedule *c) {
   this->classes.push_back(c);
 }
 
-OperationResult Student::switch_class_with(Student other, ClassSchedule *thisone,
-                                ClassSchedule *theoother) {
-  return OperationResult::Success; //TODO
+OperationResult Student::switch_class_with(Student other,
+                                           ClassSchedule *thisone,
+                                           ClassSchedule *theoother) {
+  return OperationResult::Success; // TODO
 }
