@@ -8,7 +8,7 @@
 #include <vector>
 
 
-class AppStudentsClasses {
+class CSVStudentsClasses {
 private:
     std::string student_code_cath_name;
     std::string student_name_cath_name;
@@ -18,10 +18,10 @@ private:
 
 public:
     // Constructor
-    AppStudentsClasses(const std::string& csv);
+    CSVStudentsClasses(const std::string& csv);
 
     //Destructor
-    virtual ~AppStudentsClasses();
+    virtual ~CSVStudentsClasses();
 
     // Methods
     void sort_by(const std::string& category);

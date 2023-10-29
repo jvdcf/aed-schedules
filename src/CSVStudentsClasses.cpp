@@ -16,7 +16,7 @@
  * This constructor receives a string containing all the lines of a csv file and creates the AppSudentClass from it.
  * @param csv
  */
-AppStudentsClasses::AppStudentsClasses(const std::string& csv) {
+CSVStudentsClasses::CSVStudentsClasses(const std::string& csv) {
     // CSV file into memory
     std::ifstream file = std::ifstream(csv);
     std::string contents;
@@ -44,7 +44,7 @@ AppStudentsClasses::AppStudentsClasses(const std::string& csv) {
 /**
  * Erases the contents of students_classes.csv and saves there the updated values.
  */
-AppStudentsClasses::~AppStudentsClasses() {
+CSVStudentsClasses::~CSVStudentsClasses() {
     std::ofstream ofs;
     ofs.open("../schedule/students_classes.csv", std::ofstream::out | std::ofstream::trunc);
     ofs << student_code_cath_name << ',' << student_name_cath_name << ','
@@ -63,7 +63,7 @@ AppStudentsClasses::~AppStudentsClasses() {
 }
 
 // Methods
-void AppStudentsClasses::sort_by(const std::string& category) {
+void CSVStudentsClasses::sort_by(const std::string& category) {
     if (category == this->student_code_cath_name) {
         std::stable_sort(this->entries.begin(), this->entries.end(),
                   [](const StudentsClasses& a, const StudentsClasses& b) {return a.get_student_code() < b.get_student_code();});
@@ -92,7 +92,7 @@ void AppStudentsClasses::sort_by(const std::string& category) {
     }
 }
 
-std::vector<StudentsClasses>::iterator AppStudentsClasses::search_by_uc(uint16_t uc_code) {
+std::vector<StudentsClasses>::iterator CSVStudentsClasses::search_by_uc(uint16_t uc_code) {
     sort_by(uc_cath_name);
     auto ret = entries.end();
     size_t mid = entries.size() / 2;
@@ -117,7 +117,7 @@ std::vector<StudentsClasses>::iterator AppStudentsClasses::search_by_uc(uint16_t
     }
 }
 
-std::vector<StudentsClasses>::iterator AppStudentsClasses::search_by_student(uint32_t student_code) {
+std::vector<StudentsClasses>::iterator CSVStudentsClasses::search_by_student(uint32_t student_code) {
     sort_by(student_code_cath_name);
     auto ret = entries.end();
     size_t mid = entries.size() / 2;
@@ -143,7 +143,7 @@ std::vector<StudentsClasses>::iterator AppStudentsClasses::search_by_student(uin
 }
 
 
-std::vector<StudentsClasses>::iterator AppStudentsClasses::search_by_class(uint16_t class_code) {
+std::vector<StudentsClasses>::iterator CSVStudentsClasses::search_by_class(uint16_t class_code) {
     sort_by(class_cath_name);
     auto ret = entries.end();
     size_t mid = entries.size() / 2;
@@ -169,7 +169,7 @@ std::vector<StudentsClasses>::iterator AppStudentsClasses::search_by_class(uint1
 }
 
 // Debug
-void AppStudentsClasses::display() const {
+void CSVStudentsClasses::display() const {
     std::cout << this->student_code_cath_name << ','
               << this->student_name_cath_name << ','
               << this->uc_cath_name << ','

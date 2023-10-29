@@ -14,7 +14,7 @@
  * This constructor receives a string containing all the lines of a csv file and creates the AppClass from it.
  * @param csv
  */
-AppClass::AppClass(const std::string& csv) {
+CSVClasses::CSVClasses(const std::string& csv) {
   // CSV file into memory
   std::ifstream file = std::ifstream(csv);
   std::string contents;
@@ -44,7 +44,7 @@ AppClass::AppClass(const std::string& csv) {
 /**
  * Erases the contents of classes.csv and saves there the updated values.
  */
-AppClass::~AppClass() {
+CSVClasses::~CSVClasses() {
     std::ofstream ofs;
     ofs.open("../schedule/classes.csv", std::ofstream::out | std::ofstream::trunc);
     ofs << class_cath_name << ',' << uc_cath_name << ',' << weekday_cath_name << ',' << start_hour_cath_name
@@ -65,7 +65,7 @@ AppClass::~AppClass() {
     ofs.close();
 }
 
-void AppClass::display() {
+void CSVClasses::display() {
   std::cout << this->uc_cath_name << ',' << this->class_cath_name << ','
             << this->weekday_cath_name << ',' << this->start_hour_cath_name
             << ',' << this->duration_cath_name << ',' << this->type_cath_name
@@ -75,7 +75,7 @@ void AppClass::display() {
   }
 }
 
-void AppClass::sort_by(std::string category) {
+void CSVClasses::sort_by(std::string category) {
   if (category == uc_cath_name) {
     std::stable_sort(this->entries.begin(), this->entries.end(),
                      [](const Lesson &first, const Lesson &second) {
@@ -115,7 +115,7 @@ void AppClass::sort_by(std::string category) {
   }
 }
 
-std::vector<Lesson>::iterator AppClass::search_by_uc(
+std::vector<Lesson>::iterator CSVClasses::search_by_uc(
     uint16_t
         uc_code) { // Sorts the entries by UC and returns the iterator of the
                    // first found. If not found, returns a past-the-end pointer
@@ -145,7 +145,7 @@ std::vector<Lesson>::iterator AppClass::search_by_uc(
   return ret;
 }
 
-std::vector<Lesson>::iterator AppClass::search_by_class(uint16_t class_code) {
+std::vector<Lesson>::iterator CSVClasses::search_by_class(uint16_t class_code) {
   sort_by(class_cath_name);
   std::vector<Lesson>::iterator ret = entries.end();
   size_t mid = entries.size() / 2;

@@ -15,7 +15,7 @@
  * @param csv
  * @param cap
  */
-AppClassPerUC::AppClassPerUC(const std::string& csv, uint8_t cap) {
+CSVClassPerUC::CSVClassPerUC(const std::string& csv, uint8_t cap) {
     this->cap = cap;
 
     // CSV file into memory
@@ -43,7 +43,7 @@ AppClassPerUC::AppClassPerUC(const std::string& csv, uint8_t cap) {
 /**
  * Erases the contents of classes_per_uc.csv and saves there the updated values.
  */
-AppClassPerUC::~AppClassPerUC() {
+CSVClassPerUC::~CSVClassPerUC() {
     std::ofstream ofs;
     ofs.open("../schedule/classes_per_uc.csv", std::ofstream::out | std::ofstream::trunc);
     ofs << uc_cath_name << ',' << class_cath_name << '\n';
@@ -57,14 +57,14 @@ AppClassPerUC::~AppClassPerUC() {
     ofs.close();
 }
 
-void AppClassPerUC::display() {
+void CSVClassPerUC::display() {
     std::cout << this->uc_cath_name << ',' << this->class_cath_name << '\n';
     for (auto e : this->entries) {
         e.display();
     }
 }
 
-void AppClassPerUC::sort_by(std::string category) {
+void CSVClassPerUC::sort_by(std::string category) {
     if (category == uc_cath_name) {
         std::stable_sort(this->entries.begin(), this->entries.end(),
                          [](const ClassPerUC &first, const ClassPerUC &second) {

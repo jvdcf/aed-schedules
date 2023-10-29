@@ -8,7 +8,7 @@
 #include <vector>
 
 
-class AppClassPerUC {
+class CSVClassPerUC {
 private:
   std::string uc_cath_name;
   std::string class_cath_name;
@@ -16,8 +16,8 @@ private:
   uint8_t cap;  // Capacity on any class
 
 public:
-    AppClassPerUC(const std::string& csv, uint8_t cap = 30);
-    ~AppClassPerUC();
+    CSVClassPerUC(const std::string& csv, uint8_t cap = 30);
+    ~CSVClassPerUC();
     void display();
     void sort_by(std::string category);
 };

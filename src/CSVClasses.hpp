@@ -8,7 +8,7 @@
 #include <vector>
 
 
-class AppClass{
+class CSVClasses{
 private:
     std::string class_cath_name;
     std::string uc_cath_name;
@@ -19,8 +19,8 @@ private:
     std::vector<Lesson> entries;
 
 public:
-    AppClass(const std::string& csv);
-    ~AppClass();
+    CSVClasses(const std::string& csv);
+    ~CSVClasses();
     void display();
     void sort_by(std::string category);
     std::vector<Lesson>::iterator search_by_uc(uint16_t uc_code);
