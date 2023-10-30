@@ -3,6 +3,7 @@
  */
 #include "Runtime.hpp"
 #include "ClassSchedule.hpp"
+#include "Student.hpp"
 #include "Utils.hpp"
 #include <algorithm>
 #include <cstddef>
@@ -10,6 +11,7 @@
 #include <cstdio>
 #include <exception>
 #include <iostream>
+#include <ostream>
 #include <queue>
 #include <sstream>
 #include <string>
@@ -92,7 +94,7 @@ void Runtime::run() {
     } else {
       std::cout << "> ";
     }
-    std::cin >> in;
+    getline(std::cin, in);
     stream = std::istringstream(in);
     while (std::getline(stream, buf, ' ')) {
       line.push_back(buf);
@@ -105,6 +107,7 @@ void Runtime::run() {
     if (!is_batching) {
       process_args(line);
       in.clear();
+      line.clear();
       while (procs.size() != 0) {
         Process p = procs.front();
         procs.pop();
@@ -118,21 +121,21 @@ void Runtime::run() {
 void Runtime::process_args(std::vector<std::string> args) {
   if (args[0] == "remove") {
     if (args.size() != 3) {
-      fprintf(stdout, "ERROR: USAGE: remove takes two arguments: remove "
-                      "<student_code> <uc_code>");
+      std::cerr << "ERROR: USAGE: remove takes two arguments: remove " << "<student_code> <uc_code>" << std::endl;
+      return;
     } else {
       Process t(TypeOfRequest::Remove);
       t.add_operand(args[1]);
       t.add_operand(args[2]);
-      t.add_operand(args[3]);
       procs.push(t);
       return;
     }
   }
   if (args[0] == "add") {
     if (args.size() != 4) {
-      fprintf(stderr, "ERROR: USAGE: add takes three arguments: add "
-                      "<student_code> <uc_code> <class_code>");
+      std::cerr << "ERROR: USAGE: add takes three arguments: add " <<
+                      "<student_code> <uc_code> <class_code>" << std::endl;
+      return;
     } else {
       Process t(TypeOfRequest::Add);
       t.add_operand(args[1]);
@@ -144,8 +147,9 @@ void Runtime::process_args(std::vector<std::string> args) {
   }
   if (args[0] == "switch") {
     if (args.size() != 4) {
-      fprintf(stderr, "ERROR: USAGE: switch takes three arguments: switch "
-                      "<student_code> <student_code> <uc_code>");
+      std::cerr << "ERROR: USAGE: switch takes three arguments: switch " <<
+                      "<student_code> <student_code> <uc_code>\n" << std::endl;
+      return;
     } else {
       Process t(TypeOfRequest::Switch);
       t.add_operand(args[1]);
@@ -161,16 +165,17 @@ void Runtime::process_args(std::vector<std::string> args) {
 
 void Runtime::handle_process(Process p) {
   std::vector<std::string> ops = p.get_ops();
+  // handle remove
   if (p.get_type() == TypeOfRequest::Remove) {
     uint32_t student_code;
     try {
       student_code = stoi(ops[0]);
     } catch (std::exception e) {
-      fprintf(stderr, "ERROR: The string %s is not a student_code.", ops[0].c_str());
+      std::cerr << "ERROR: The string " << ops[0].c_str() << " is not a student_code." << std::endl;
       return;
     }
     uint16_t uc_code = parse_uc_gen(ops[1]);
-    if (auto itr = students.find(student_code); itr != students.end()) {
+    if (auto itr = students.find(Student(student_code, "")); itr != students.end()) {
       Student s = *itr;
       std::vector<ClassSchedule*> sched = s.get_schedule();
       for (auto a : sched) {
@@ -180,7 +185,10 @@ void Runtime::handle_process(Process p) {
           return;
         }
       }
-      return;
+    } else {
+      std::cerr << "ERROR: There is no such student with code: " << student_code << std::endl;
     }
+    return;
   }
+  // End Remove
 }

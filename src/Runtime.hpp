@@ -19,7 +19,7 @@
 
 class Runtime {
 private:
-  std::set<Student, std::less<>> students;
+  std::set<Student> students;
   std::vector<ClassSchedule> classes;
   std::queue<Process> procs;
   std::stack<Process> history;

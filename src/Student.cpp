@@ -145,9 +145,15 @@ bool Student::operator<(const Student &other) const {
   return this->code < other.code;
 }
 
-bool Student::operator<(const uint32_t &other) const {
-  return this->code < other;
-}
+// SmolKey::SmolKey(uint32_t a): uc_code_(a) {}
+// uint32_t SmolKey::get_key() const {return uc_code_;}
+
+// bool operator<(const Student& s,const SmolKey &other) {
+//   return s.get_code() < other.get_key();
+// }
+// bool operator<(const SmolKey& s,const Student &other) {
+//   return other.get_code() < s.get_key();
+// }
 
 uint32_t Student::get_code() const { return code; }
 

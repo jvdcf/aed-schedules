@@ -24,6 +24,8 @@ int main(int argc, char** argv) {
   //ac.display();
 
   Runtime rt(sc, cpu, ac);
+  
+  rt.run();
 
   return 0;
 }

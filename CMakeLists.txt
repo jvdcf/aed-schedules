@@ -36,4 +36,5 @@ add_executable(AED2324_PRJ1_G23 main.cpp
         src/Utils.cpp src/Utils.hpp
         src/Runtime.cpp src/Runtime.hpp
         src/ClassSchedule.cpp src/ClassSchedule.hpp
-        src/Student.cpp src/Student.hpp)
+        src/Student.cpp src/Student.hpp
+        src/Process.cpp src/Process.hpp)

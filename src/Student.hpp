@@ -8,6 +8,14 @@
 #include "Utils.hpp"
 #include <string>
 
+// class SmolKey {
+//   uint32_t uc_code_;
+//   public:
+//   SmolKey(uint32_t a);
+//   uint32_t get_key() const;
+
+// };
+
 
 class Student {
 private:
@@ -21,7 +29,6 @@ public:
   Student(uint32_t code, std::string name);
   uint32_t get_code() const;
   bool operator<(const Student& other) const;
-  bool operator<(const uint32_t& other) const;
   std::vector<ClassSchedule*>& get_schedule();
   void add_to_class(ClassSchedule* c);
   OperationResult verify_add(ClassSchedule* c);
