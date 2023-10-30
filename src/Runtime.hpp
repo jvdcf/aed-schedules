@@ -17,7 +17,7 @@ class Runtime {
 private:
   std::set<Student> students;
   std::vector<ClassSchedule> classes;
-  std::vector<Lesson>* lessons;
+  //std::vector<Lesson>* lessons;
 
 public:
   Runtime(CSVStudentsClasses &sc, CSVClassPerUC &cpu, CSVClasses &c);

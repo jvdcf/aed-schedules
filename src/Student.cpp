@@ -63,7 +63,6 @@ void Student::remove_from_class(ClassSchedule *c) {
       return;
     }
   }
-  this->classes.push_back(c);
 }
 
 OperationResult Student::switch_class_with(Student other,

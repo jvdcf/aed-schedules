@@ -3,11 +3,12 @@
  */
 #include "Runtime.hpp"
 #include <algorithm>
+#include <cstddef>
 
 
 Runtime::Runtime(CSVStudentsClasses &sc, CSVClassPerUC &cpu, CSVClasses &c) {
   // 1. Populate lessons
-  lessons = c.get_lessons();
+  auto lessons = c.get_lessons();
   c.sort_by("id");
 
   // 2. Populate classSchedules
@@ -48,18 +49,17 @@ Runtime::Runtime(CSVStudentsClasses &sc, CSVClassPerUC &cpu, CSVClasses &c) {
  * @return Pointer to the found ClassSchedule
  */
 ClassSchedule* Runtime::find_class(uint32_t id) {
-  size_t ret = classes.size();
-  size_t mid = classes.size() / 2;
+  size_t high = classes.size();
+  size_t low = 0;
 
-  while (true) { // Binary search
-    if (mid == classes.size() or mid == 0) {
-      return nullptr;
-    } else if (classes[mid].get_id() == id) {
-      return &classes.at(mid);
-    } else if (classes[mid].get_id() > id) {
-      mid = mid + mid / 2;
+  while (low <= high) {
+    size_t mid = low + (high - low) / 2; 
+    if (classes[mid].get_id() == id) return &classes.at(mid);
+    if (classes[mid].get_id() < id) {
+      low = mid + 1;
     } else {
-      mid = mid / 2;
+      high = mid - 1;
     }
   }
+  return nullptr;
 }
