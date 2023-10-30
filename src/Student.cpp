@@ -23,6 +23,7 @@ OperationResult Student::add_to_class(ClassSchedule *c) {
     for (Lesson *lesson : *lessons) {
       for (Lesson *new_lesson : *new_lessons) {
         if (lesson->get_day() == new_lesson->get_day()) {
+          // if new_lesson starts in the middle of lesson:
           if (lesson->get_start_hour() < new_lesson->get_start_hour() &&
               new_lesson->get_start_hour() <
                   (lesson->get_start_hour() + lesson->get_duration())) {
@@ -35,10 +36,10 @@ OperationResult Student::add_to_class(ClassSchedule *c) {
             }
             return OperationResult::Error;
           }
-          if (lesson->get_start_hour() <
-                  (new_lesson->get_start_hour() + new_lesson->get_duration()) &&
-              (new_lesson->get_start_hour() + new_lesson->get_duration()) <
-                  (lesson->get_start_hour() + lesson->get_duration())) {
+          // if lesson starts in the middle of new_lesson:
+          if (new_lesson->get_start_hour() < lesson->get_start_hour() &&
+              lesson->get_start_hour() <
+              (new_lesson->get_start_hour() + new_lesson->get_duration())) {
             if (lesson->get_type() == Type::T ||
                 new_lesson->get_type() == Type::T) {
               return OperationResult::Conlicts;
