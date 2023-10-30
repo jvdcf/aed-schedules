@@ -48,3 +48,11 @@ uint32_t ClassSchedule::get_id() const {
 std::vector<Lesson*>* ClassSchedule::get_class_schedule() {
   return &this->classes;
 }
+
+uint16_t ClassSchedule::get_uc() const {
+  return uc_code;
+}
+
+uint16_t ClassSchedule::get_class() const {
+  return class_code;
+}

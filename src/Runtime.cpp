@@ -7,6 +7,8 @@
 
 
 Runtime::Runtime(CSVStudentsClasses &sc, CSVClassPerUC &cpu, CSVClasses &c) {
+  cap = cpu.get_cap();
+
   // 1. Populate lessons
   auto lessons = c.get_lessons();
   c.sort_by("id");

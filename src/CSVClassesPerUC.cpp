@@ -91,3 +91,5 @@ void CSVClassPerUC::sort_by(std::string category) {
 }
 
 std::vector<ClassPerUC> *CSVClassPerUC::get_classes() {return &this->entries;}
+
+uint8_t CSVClassPerUC::get_cap() const {return cap;}

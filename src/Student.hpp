@@ -19,7 +19,8 @@ public:
   uint32_t get_code() const;
   bool operator<(const Student& other) const;
   std::vector<ClassSchedule*>* get_schedule();
-  OperationResult add_to_class(ClassSchedule* c);
+  void add_to_class(ClassSchedule* c);
+  OperationResult verify_add(ClassSchedule* c);
   void remove_from_class(ClassSchedule* c);
   OperationResult switch_class_with(Student other, ClassSchedule* thisone, ClassSchedule* theother);
 };

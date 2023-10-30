@@ -18,6 +18,7 @@ private:
   std::set<Student> students;
   std::vector<ClassSchedule> classes;
   //std::vector<Lesson>* lessons;
+  uint8_t cap;
 
 public:
   Runtime(CSVStudentsClasses &sc, CSVClassPerUC &cpu, CSVClasses &c);

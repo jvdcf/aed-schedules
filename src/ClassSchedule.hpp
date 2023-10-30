@@ -23,6 +23,8 @@ public:
   void remove_student();
   uint64_t get_student_count() const;
   uint32_t get_id() const;
+  uint16_t get_uc() const;
+  uint16_t get_class() const;
   std::vector<Lesson*>* get_class_schedule();
 };
 

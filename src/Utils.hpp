@@ -18,7 +18,7 @@ void parse_csv_line(std::string s, std::vector<std::string> &res);
 
 enum class OperationResult {
   Success,
-  Conlicts,
+  Conflicts,
   Error,
 };
 
