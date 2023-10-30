@@ -9,6 +9,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstdio>
+#include <cstdlib>
 #include <exception>
 #include <iostream>
 #include <ostream>
@@ -119,6 +120,12 @@ void Runtime::run() {
 }
 
 void Runtime::process_args(std::vector<std::string> args) {
+  if (args[0] == "quit") {
+    std::cout << "Quitting..." << std::endl;
+    //TODO: Call saving functions
+    std::exit(1);
+    
+  }
   if (args[0] == "remove") {
     if (args.size() != 3) {
       std::cerr << "ERROR: USAGE: remove takes two arguments: remove " << "<student_code> <uc_code>" << std::endl;
@@ -148,13 +155,24 @@ void Runtime::process_args(std::vector<std::string> args) {
   if (args[0] == "switch") {
     if (args.size() != 4) {
       std::cerr << "ERROR: USAGE: switch takes three arguments: switch " <<
-                      "<student_code> <student_code> <uc_code>\n" << std::endl;
+                      "<student_code> <student_code> <uc_code>" << std::endl;
       return;
     } else {
       Process t(TypeOfRequest::Switch);
       t.add_operand(args[1]);
       t.add_operand(args[2]);
       t.add_operand(args[3]);
+      procs.push(t);
+      return;
+    }
+  }
+  if (args[0] == "print") {
+    if (args.size() != 2) {
+      std::cerr << "ERROR: USAGE: print takes 1 argument: print <uc_code>" << std::endl;
+      return;
+    } else {
+      Process t(TypeOfRequest::Print);
+      t.add_operand(args[1]);
       procs.push(t);
       return;
     }
@@ -169,18 +187,21 @@ void Runtime::handle_process(Process p) {
   if (p.get_type() == TypeOfRequest::Remove) {
     uint32_t student_code;
     try {
-      student_code = stoi(ops[0]);
+      student_code = std::stoi(ops[0]);
     } catch (std::exception e) {
-      std::cerr << "ERROR: The string " << ops[0].c_str() << " is not a student_code." << std::endl;
+      std::cerr << "ERROR: The string " << ops[0] << " is not a student_code." << std::endl;
       return;
     }
     uint16_t uc_code = parse_uc_gen(ops[1]);
     if (auto itr = students.find(Student(student_code, "")); itr != students.end()) {
       Student s = *itr;
       std::vector<ClassSchedule*> sched = s.get_schedule();
-      for (auto a : sched) {
-        if (a->get_uc() == uc_code) {
+      for (ClassSchedule* a : sched) {
+        if (a->get_uc_code() == uc_code) {
+          //std::cout << "Lookup: " << uc_code << "\nFound: " << a->get_uc_code() << std::endl;
           s.remove_from_class(a); 
+          students.erase(s);
+          students.insert(s);
           history.push(p);
           return;
         }
@@ -191,4 +212,25 @@ void Runtime::handle_process(Process p) {
     return;
   }
   // End Remove
+  
+  if (p.get_type() == TypeOfRequest::Print) {
+    uint32_t student_code;
+    try {
+      student_code = std::stoi(ops[0]);
+    } catch (std::exception e) {
+      std::cerr << "ERROR: The string " << ops[0] << " is not a student_code." << std::endl;
+      return;
+    }
+    if (auto itr = students.find(Student(student_code, "")); itr != students.end()) {
+      Student s = *itr;
+      std::cout << "Name: " << s.get_name() << "\nCode: " << s.get_code() << std::endl;
+      std::vector<ClassSchedule*> sched = s.get_schedule();
+      for (auto i : sched) {
+        i->display();
+      } 
+    } else {
+      std::cerr << "ERROR: There is no such student with code: " << student_code << std::endl;
+    }
+    return;
+  }
 }

@@ -8,8 +8,8 @@
 
 
 ClassSchedule::ClassSchedule(uint16_t uc_code, uint16_t class_code) {
-  this->uc_code = uc_code;
-  this->class_code = class_code;
+  this->uc_code_ = uc_code;
+  this->class_code_ = class_code;
   this->classes = std::vector<Lesson*>();
   this->n_students = 0;
 }
@@ -41,18 +41,22 @@ uint64_t ClassSchedule::get_student_count() const {
   return this->n_students;
 }
 
-uint32_t ClassSchedule::get_id() const {
-  return ((uint32_t)this->uc_code << 16) + this->class_code;
-}
+
 
 std::vector<Lesson*>* ClassSchedule::get_class_schedule() {
   return &this->classes;
 }
 
-uint16_t ClassSchedule::get_uc() const {
-  return uc_code;
+
+void ClassSchedule::display() const {
+  std::string uc_,class_;
+  this->uc_to_str(uc_);
+  this->class_to_str(class_);
+  std::cout << "Uc: " << uc_ << "\nClass: " << class_ << "\n";
+  for (auto i : this->classes) {
+    std::cout << "    ";
+    i->display();
+  }
+  std::cout << std::endl;
 }
 
-uint16_t ClassSchedule::get_class() const {
-  return class_code;
-}

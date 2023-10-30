@@ -6,6 +6,7 @@ enum class TypeOfRequest {
   Add,
   Remove,
   Switch,
+  Print,
   Batch,
 };
 

@@ -4,6 +4,7 @@
 #include "Student.hpp"
 #include "Utils.hpp"
 #include <cstdint>
+#include <iterator>
 #include <string>
 #include <vector>
 #include <iostream>
@@ -39,7 +40,7 @@ OperationResult Student::verify_add(ClassSchedule *c) {
 
   // One class per UC
   for (auto clas : this->get_schedule()) {
-    if (clas->get_uc() == c->get_uc())
+    if (clas->get_uc_code() == c->get_uc_code())
       return OperationResult::Error;
   }
 
@@ -114,13 +115,13 @@ void Student::add_to_class(ClassSchedule *c) {
  */
 void Student::remove_from_class(ClassSchedule *c) {
   c->remove_student();
-  for (std::vector<ClassSchedule *>::iterator itr = this->classes.begin();
-       itr != this->classes.end(); ++itr) {
-    if (c == *itr) {
-      this->classes.erase(itr);
-      return;
+  int i = 0;
+  for (i = 0; i < classes.size(); ++i) {
+    if (classes[i] == c) {
+      break;
     }
   }
+  classes.erase(classes.begin() + i);
 }
 
 /**
@@ -175,8 +176,8 @@ ClassSchedule* Student::find_class(uint16_t uc_code) {
 
   while (low <= high) {
     size_t mid = low + (high - low) / 2;
-    if (classes[mid]->get_uc() == uc_code) return classes.at(mid);
-    if (classes[mid]->get_uc() < uc_code) {
+    if (classes[mid]->get_uc_code() == uc_code) return classes.at(mid);
+    if (classes[mid]->get_uc_code() < uc_code) {
       low = mid + 1;
     } else {
       high = mid - 1;
@@ -186,7 +187,7 @@ ClassSchedule* Student::find_class(uint16_t uc_code) {
 }
 
 
-
+const std::string& Student::get_name() const {return name;}
 
 
 
