@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <string>
 #include <vector>
+#include <iostream>
 
 Student::Student(uint32_t code, std::string name) {
   this->code = code;
@@ -39,7 +40,7 @@ OperationResult Student::verify_add(ClassSchedule *c) {
     if (clas->get_uc() == c->get_uc()) return OperationResult::Error;
   }
 
-  // No time conflits
+  // No time conflicts
   std::vector<Lesson *> *new_lessons = c->get_class_schedule();
   for (ClassSchedule *a : this->classes) {
     std::vector<Lesson *> *lessons = a->get_class_schedule();
@@ -78,6 +79,14 @@ OperationResult Student::verify_add(ClassSchedule *c) {
 }
 
 /**
+ * @brief Verifies if switching classes is legal or not.
+ * @details No time conflits are allowed for both students.
+ */
+OperationResult Student::verify_switch(Student other, uint16_t uc_code) {
+  // TODO
+}
+
+/**
  * @brief Add this Student to a particular class.
  * @param c
  */
@@ -86,6 +95,10 @@ void Student::add_to_class(ClassSchedule *c) {
   this->classes.push_back(c);
 }
 
+/**
+ * @brief Remove this Student from a given class.
+ * @param c
+ */
 void Student::remove_from_class(ClassSchedule *c) {
   c->remove_student();
   for (std::vector<ClassSchedule *>::iterator itr = this->classes.begin();
@@ -97,10 +110,22 @@ void Student::remove_from_class(ClassSchedule *c) {
   }
 }
 
-OperationResult Student::switch_class_with(Student other,
-                                           ClassSchedule *thisone,
-                                           ClassSchedule *theoother) {
-  return OperationResult::Success; // TODO
+/**
+ * Switch the classes of Student and other Student with a given uc_code
+ * @param Student
+ */
+void Student::switch_class_with(Student other, uint16_t uc_code) {
+  ClassSchedule* this_class = this->find_class(uc_code);
+  ClassSchedule* other_class = other.find_class(uc_code);
+
+  if (this_class == nullptr or other_class == nullptr) {
+    std::cerr << "ERROR: uc_code " << uc_code << " not found inside student'\n";
+  }
+
+  this->remove_from_class(this_class);
+  this->add_to_class(other_class);
+  other.remove_from_class(other_class);
+  other.add_to_class(this_class);
 }
 
 bool Student::operator<(const Student &other) const {
@@ -109,6 +134,22 @@ bool Student::operator<(const Student &other) const {
 
 uint32_t Student::get_code() const {
   return code;
+}
+
+ClassSchedule* Student::find_class(uint16_t uc_code) {
+  size_t high = classes.size();
+  size_t low = 0;
+
+  while (low <= high) {
+    size_t mid = low + (high - low) / 2;
+    if (classes[mid]->get_uc() == uc_code) return classes.at(mid);
+    if (classes[mid]->get_uc() < uc_code) {
+      low = mid + 1;
+    } else {
+      high = mid - 1;
+    }
+  }
+  return nullptr;
 }
 
 
