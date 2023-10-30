@@ -21,10 +21,11 @@ private:
 public:
     CSVClasses(const std::string& csv);
     ~CSVClasses();
+    std::vector<Lesson>* get_lessons();
     void display();
     void sort_by(std::string category);
     std::vector<Lesson>::iterator search_by_uc(uint16_t uc_code);
-    std::vector<Lesson>::iterator search_by_class(uint16_t class_code);
+    std::vector<Lesson>::iterator search_by_class(uint16_t uc_code, uint16_t class_code);
 };
 
 

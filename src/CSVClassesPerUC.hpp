@@ -20,6 +20,7 @@ public:
     ~CSVClassPerUC();
     void display();
     void sort_by(std::string category);
+    std::vector<ClassPerUC>* get_classes();
 };
 
 

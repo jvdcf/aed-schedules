@@ -15,13 +15,15 @@
 
 int main(int argc, char** argv) {
   CSVClassPerUC cpu("schedule/classes_per_uc.csv");
-  cpu.display();
+  //cpu.display();
 
   CSVStudentsClasses sc("schedule/students_classes.csv");
-  sc.display();
+  //sc.display();
 
   CSVClasses ac("schedule/classes.csv");
-  ac.display();
+  //ac.display();
+
+  Runtime rt(sc, cpu, ac);
 
   return 0;
 }

@@ -133,3 +133,5 @@ void ClassPerUC::display() const {
     class_to_str(cc);
     std::cout << uc << "," << cc << "\n";
 }
+
+uint32_t ClassPerUC::get_id() const {return ((uint32_t)uc_code_ << 16) + class_code_;}

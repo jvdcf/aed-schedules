@@ -16,6 +16,8 @@ private:
   std::vector<ClassSchedule*> classes;
 public:
   Student(uint32_t code, std::string name);
+  uint32_t get_code() const;
+  bool operator<(const Student& other) const;
   std::vector<ClassSchedule*>* get_schedule();
   OperationResult add_to_class(ClassSchedule* c);
   void remove_from_class(ClassSchedule* c);

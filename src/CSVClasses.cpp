@@ -108,7 +108,12 @@ void CSVClasses::sort_by(std::string category) {
   } else if (category == type_cath_name) {
     std::stable_sort(this->entries.begin(), this->entries.end(),
                      [](const Lesson &first, const Lesson &second) {
-                         return first.get_type() < second.get_type();
+                       return first.get_type() < second.get_type();
+                     });
+  } else if (category == "id") {
+    std::stable_sort(this->entries.begin(), this->entries.end(),
+                     [](const Lesson &first, const Lesson &second) {
+                       return first.get_id() < second.get_id();
                      });
   } else {
       std::cerr << "Error: invalid category" << '\n';
@@ -146,14 +151,14 @@ std::vector<Lesson>::iterator CSVClasses::search_by_uc(
   return ret;
 }
 
-std::vector<Lesson>::iterator CSVClasses::search_by_class(uint16_t class_code) {
+std::vector<Lesson>::iterator CSVClasses::search_by_class(uint16_t uc_code, uint16_t class_code) {
   sort_by(class_cath_name);
   std::vector<Lesson>::iterator ret = entries.end();
   size_t mid = entries.size() / 2;
   while (true) { // Binary search
     if (mid == entries.size()) {
       return ret;
-    } else if (entries[mid].get_class_code() == class_code) {
+    } else if (entries[mid].get_uc_code() == uc_code && entries[mid].get_class_code() == class_code) {
       ret = entries.begin() + mid;
       break;
     } else if (entries[mid].get_class_code() > class_code) {
@@ -172,3 +177,5 @@ std::vector<Lesson>::iterator CSVClasses::search_by_class(uint16_t class_code) {
   }
   return ret;
 }
+
+std::vector<Lesson> *CSVClasses::get_lessons() {return &this->entries;}

@@ -18,8 +18,8 @@ void ClassSchedule::add_student() {n_students += 1;}
 void ClassSchedule::remove_student() {n_students -= 1;}
 
 bool ClassSchedule::add_entry(Lesson* c) {
-  if (c->get_uc_code() != this->uc_code || c->get_class_code() != this->uc_code) {
-    //fprintf(stdout, "Error: Operation Invalid: Can't add a lesson to a schedule of a different class!" , ...);
+  if (c->get_id() != this->get_id()) {
+    fprintf(stdout, "Error: Operation Invalid: Can't add a lesson to a schedule of a different class!");
     return false;
   }
   this->classes.push_back(c);

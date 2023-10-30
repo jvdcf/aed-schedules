@@ -71,3 +71,11 @@ OperationResult Student::switch_class_with(Student other,
                                            ClassSchedule *theoother) {
   return OperationResult::Success; // TODO
 }
+
+bool Student::operator<(const Student &other) const {
+  return this->code < other.code;
+}
+
+uint32_t Student::get_code() const {
+  return code;
+}

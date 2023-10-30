@@ -54,6 +54,7 @@ public:
     ClassPerUC();
     uint16_t get_uc_code() const;
     uint16_t get_class_code() const;
+    uint32_t get_id() const;
     uint16_t parse_uc(std::string uc_code);
     uint16_t parse_class(std::string class_code);
     void class_to_str(std::string &out) const;

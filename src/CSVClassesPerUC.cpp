@@ -75,12 +75,19 @@ void CSVClassPerUC::sort_by(std::string category) {
                              return first_uc < second_uc;
                          });
     } else if (category == class_cath_name) {
-        std::stable_sort(this->entries.begin(), this->entries.end(),
-                         [](const ClassPerUC &first, const ClassPerUC &second) {
-                             return first.get_class_code() < second.get_class_code();
-                         });
+      std::stable_sort(this->entries.begin(), this->entries.end(),
+                       [](const ClassPerUC &first, const ClassPerUC &second) {
+                         return first.get_class_code() < second.get_class_code();
+                       });
+    } else if (category == "id") {
+      std::stable_sort(this->entries.begin(), this->entries.end(),
+                       [](const ClassPerUC &first, const ClassPerUC &second) {
+                         return first.get_id() < second.get_id();
+                       });
     } else {
         std::cerr << "Error: invalid category" << '\n';
         std::exit(1);
     }
 }
+
+std::vector<ClassPerUC> *CSVClassPerUC::get_classes() {return &this->entries;}

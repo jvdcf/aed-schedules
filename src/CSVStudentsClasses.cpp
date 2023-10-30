@@ -64,15 +64,15 @@ CSVStudentsClasses::~CSVStudentsClasses() {
 
 // Methods
 void CSVStudentsClasses::sort_by(const std::string& category) {
-    if (category == this->student_code_cath_name) {
+    if (category == "StudentCode") {
         std::stable_sort(this->entries.begin(), this->entries.end(),
                   [](const StudentsClasses& a, const StudentsClasses& b) {return a.get_student_code() < b.get_student_code();});
 
-    } else if (category == this->student_name_cath_name) {
+    } else if (category == "StudentName") {
         std::stable_sort(this->entries.begin(), this->entries.end(),
                   [](const StudentsClasses& a, const StudentsClasses& b) {return a.get_student_name() < b.get_student_name();});
 
-    } else if (category == this->uc_cath_name) {
+    } else if (category == "UcCode") {
         std::stable_sort(this->entries.begin(), this->entries.end(),
                          [](const ClassPerUC &first, const ClassPerUC &second) {
                              std::string first_uc, second_uc;
@@ -80,7 +80,7 @@ void CSVStudentsClasses::sort_by(const std::string& category) {
                              second.uc_to_str(second_uc);
                              return first_uc < second_uc;
                          });
-    } else if (category == this->class_cath_name) {
+    } else if (category == "ClassCode") {
         std::stable_sort(this->entries.begin(), this->entries.end(),
                          [](const ClassPerUC &first, const ClassPerUC &second) {
                              return first.get_class_code() < second.get_class_code();
@@ -178,3 +178,5 @@ void CSVStudentsClasses::display() const {
         e.display();
     }
 }
+
+std::vector<StudentsClasses> *CSVStudentsClasses::get_students() {return &this->entries;}
