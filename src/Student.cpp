@@ -14,7 +14,7 @@ Student::Student(uint32_t code, std::string name) {
   this->classes = std::vector<ClassSchedule *>();
 }
 
-std::vector<ClassSchedule*>& Student::get_schedule() { return this->classes; }
+std::vector<ClassSchedule *> &Student::get_schedule() { return this->classes; }
 
 /**
  * @brief Verifies if adding this class is legal or not.
@@ -30,17 +30,21 @@ std::vector<ClassSchedule*>& Student::get_schedule() { return this->classes; }
  */
 OperationResult Student::verify_add(ClassSchedule *c) {
   // Number of UCs
-  if (this->classes.size() >= 7) return OperationResult::Error;
+  if (this->classes.size() >= 7)
+    return OperationResult::Error;
 
   // Class vacancy
-  if (c->get_student_count() >= 30) return OperationResult::Error;
+  if (c->get_student_count() >= 30)
+    return OperationResult::Error;
 
   // One class per UC
-  for (auto clas: this->get_schedule()) {
-    if (clas->get_uc() == c->get_uc()) return OperationResult::Error;
+  for (auto clas : this->get_schedule()) {
+    if (clas->get_uc() == c->get_uc())
+      return OperationResult::Error;
   }
 
-  // No time conflicts
+  // No time conflits
+  OperationResult highest = OperationResult::Success;
   std::vector<Lesson *> *new_lessons = c->get_class_schedule();
   for (ClassSchedule *a : this->classes) {
     std::vector<Lesson *> *lessons = a->get_class_schedule();
@@ -50,32 +54,40 @@ OperationResult Student::verify_add(ClassSchedule *c) {
           // if new_lesson starts in the middle of lesson:
           if (lesson->get_start_hour() < new_lesson->get_start_hour() &&
               new_lesson->get_start_hour() <
-              (lesson->get_start_hour() + lesson->get_duration())) {
+                  (lesson->get_start_hour() + lesson->get_duration())) {
             if (lesson->get_type() == Type::T ||
                 new_lesson->get_type() == Type::T) {
-              return OperationResult::Conflicts; // We return conflicts so that
+              highest = highest > OperationResult::Conflicts
+                            ? highest
+                            : OperationResult::Conflicts;
+              // We return conflicts so that
               // the handler function can ask
               // the user whether or not they
               // want to proceed.
             }
-            return OperationResult::Error;
+            highest = highest > OperationResult::Error
+                            ? highest
+                            : OperationResult::Error;
           }
           // if lesson starts in the middle of new_lesson:
           if (new_lesson->get_start_hour() < lesson->get_start_hour() &&
               lesson->get_start_hour() <
-              (new_lesson->get_start_hour() + new_lesson->get_duration())) {
+                  (new_lesson->get_start_hour() + new_lesson->get_duration())) {
             if (lesson->get_type() == Type::T ||
                 new_lesson->get_type() == Type::T) {
-              return OperationResult::Conflicts;
+              highest = highest > OperationResult::Conflicts
+                            ? highest
+                            : OperationResult::Conflicts;
             }
-            return OperationResult::Error;
+            highest = highest > OperationResult::Error
+                            ? highest
+                            : OperationResult::Error;
           }
         }
       }
     }
   }
-
-  return OperationResult::Success;
+  return highest;
 }
 
 /**
@@ -84,6 +96,7 @@ OperationResult Student::verify_add(ClassSchedule *c) {
  */
 OperationResult Student::verify_switch(Student other, uint16_t uc_code) {
   // TODO
+  return OperationResult::Success;
 }
 
 /**
@@ -132,8 +145,22 @@ bool Student::operator<(const Student &other) const {
   return this->code < other.code;
 }
 
-uint32_t Student::get_code() const {
-  return code;
+bool Student::operator<(const uint32_t &other) const {
+  return this->code < other;
+}
+
+uint32_t Student::get_code() const { return code; }
+
+
+
+bool Student::verify_remove(ClassSchedule* c) {
+  for (std::vector<ClassSchedule *>::iterator itr = this->classes.begin();
+       itr != this->classes.end(); ++itr) {
+    if (c == *itr) {
+      return true;
+    }
+  }
+  return false;
 }
 
 ClassSchedule* Student::find_class(uint16_t uc_code) {
@@ -151,5 +178,26 @@ ClassSchedule* Student::find_class(uint16_t uc_code) {
   }
   return nullptr;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

@@ -21,10 +21,12 @@ public:
   Student(uint32_t code, std::string name);
   uint32_t get_code() const;
   bool operator<(const Student& other) const;
+  bool operator<(const uint32_t& other) const;
   std::vector<ClassSchedule*>& get_schedule();
   void add_to_class(ClassSchedule* c);
   OperationResult verify_add(ClassSchedule* c);
   OperationResult verify_switch(Student other, uint16_t uc_code);
+  bool verify_remove(ClassSchedule* c);
   void remove_from_class(ClassSchedule* c);
   void switch_class_with(Student other, uint16_t uc_code);
 

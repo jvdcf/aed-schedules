@@ -42,28 +42,7 @@ uint16_t ClassPerUC::get_class_code() const {
 }
 
 uint16_t ClassPerUC::parse_uc(std::string uc_code) {
-  uint64_t hash = 5381;
-  std::string num_part;
-  for (char c : uc_code) {
-    if (!isnum(c)) {
-      // DEBUG : printf("%c",c);
-      hash = (hash << 5) + hash + c;
-    }
-    if (isnum(c)) {
-      num_part.push_back(c);
-    }
-  }
-  try {
-    uint8_t num = 0;
-    if (num_part != "") {
-      num = std::stoi(num_part);
-    }
-    // DEBUG : printf(" -> code : %d\n", (uint8_t)hash);
-    return (uint16_t)((hash % 256) << 8) + (uint16_t)(num);
-  } catch (std::invalid_argument &e) {
-    std::cerr << e.what() << " uc: failed to parse" << '\n';
-    std::exit(1);
-  }
+  return parse_uc_gen(uc_code);
 }
 
 uint16_t ClassPerUC::parse_class(std::string class_code) {
