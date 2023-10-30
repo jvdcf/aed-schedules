@@ -13,7 +13,8 @@ Student::Student(uint32_t code, std::string name) {
   this->classes = std::vector<ClassSchedule *>();
 }
 
-std::vector<ClassSchedule *> *Student::get_schedule() { return &this->classes; }
+std::vector<ClassSchedule*>& Student::get_schedule() { return this->classes; }
+
 /**
  * @brief Verifies if adding this class is legal or not.
  * @details The following rules need to be followed:
@@ -34,7 +35,7 @@ OperationResult Student::verify_add(ClassSchedule *c) {
   if (c->get_student_count() >= 30) return OperationResult::Error;
 
   // One class per UC
-  for (auto clas: *this->get_schedule()) {
+  for (auto clas: this->get_schedule()) {
     if (clas->get_uc() == c->get_uc()) return OperationResult::Error;
   }
 
