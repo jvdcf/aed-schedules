@@ -40,8 +40,10 @@ Runtime::Runtime(CSVStudentsClasses &sc, CSVClassPerUC &cpu, CSVClasses &c) {
       }
       break;
     }
+    cs.sort();
     classes.push_back(cs);
   }
+
 
   // 3. Populate students
   sc.sort_by(std::string("StudentCode"));
@@ -82,6 +84,41 @@ ClassSchedule *Runtime::find_class(uint32_t id) {
   }
   return nullptr;
 }
+
+/**
+ * @brief Find all the classes with the same uc_code.
+ * @param uc_code
+ * @return Vector with pointers to the found ClassSchedules, or empty vector if not found.
+ */
+std::vector<ClassSchedule *> Runtime::find_uc(uint16_t uc_code) {
+  std::vector<ClassSchedule *> ret;
+  size_t high = classes.size();
+  size_t low = 0;
+
+  while (low <= high) {
+    size_t mid = low + (high - low) / 2;
+    if (classes[mid].get_uc_code() < uc_code) {
+      low = mid + 1;
+    } else if (classes[mid].get_uc_code() > uc_code){
+      high = mid - 1;
+    } else { // == id
+      while (classes[mid].get_uc_code() == uc_code) {
+        mid--;
+      }
+      mid++;
+      while (classes[mid].get_uc_code() == uc_code) {
+        ret.push_back(&classes[mid]);
+        mid++;
+      }
+      return ret;
+    }
+  }
+
+  // If not found, return empty vector
+  return ret;
+}
+
+// ----------------------------------------------------------------------------------------------------
 
 void Runtime::run() {
   std::string in;
@@ -168,26 +205,60 @@ void Runtime::process_args(std::vector<std::string> args) {
     }
   }
   if (args[0] == "print") {
-    if (args.size() != 2) {
-      std::cerr << "ERROR: USAGE: print takes 1 argument: print <student_code>"
+    if (args.size() < 2) {
+      std::cerr << "ERROR: USAGE: print student takes 1 argument: print student <student_code>\n"
+                << "         USAGE: print uc takes 1 argument:      print uc <uc_code>\n"
+                << "         USAGE: print class takes 2 argument:   print class <uc_code> <class_code>\n";
+      return;
+    } else if (args[1] == "student") {
+      if (args.size() != 3) {
+        std::cerr << "ERROR: USAGE: print student takes 1 argument: print student <student_code>\n";
+        return;
+      } else {
+        Process t(TypeOfRequest::Print_Student);
+        t.add_operand(args[2]);
+        procs.push(t);
+        return;
+      }
+    } else if (args[1] == "uc") {
+      if (args.size() != 3) {
+        std::cerr << "ERROR: USAGE: print uc takes 1 argument: print uc <uc_code>\n";
+        return;
+      } else {
+        Process t(TypeOfRequest::Print_UC);
+        t.add_operand(args[2]);
+        procs.push(t);
+        return;
+      }
+    } else if (args[1] == "class") {
+      if (args.size() != 4) {
+        std::cerr << "ERROR: USAGE: print class takes 2 argument: print class <uc_code> <class_code>\n";
+        return;
+      } else {
+        Process t(TypeOfRequest::Print_Class);
+        t.add_operand(args[2]);
+        t.add_operand(args[3]);
+        procs.push(t);
+        return;
+      }
+    } else {
+      std::cerr << "ERROR: No such command " << args[0] << ' ' << args[1]
+                << ". Try typing 'help' to know the available commands."
                 << std::endl;
       return;
-    } else {
-      Process t(TypeOfRequest::Print);
-      t.add_operand(args[1]);
-      procs.push(t);
-      return;
     }
+
   }
 
   if (args[0] == "help") {
     std::cout << "The available commands are:\n" <<
-      "    print:  takes 1 argument:  print  <student_code>\n" <<
-      "    add:    takes 3 arguments: add    <student_code> <uc_code> <class_code>\n" <<
-      "    remove: takes 2 arguments: remove <student_code> <uc_code>\n" <<
-      "    switch: takes 3 arguments: switch <student_code> <student_code> <uc_code>\n" <<
-      "    quit:   quit the program.\n" <<
-      "    help:   prints this help.\n" <<
+      "    print student:  takes 1 argument:  print student  <student_code>\n" <<
+      "    print uc:       takes 1 argument:  print uc       <uc_code>\n" <<
+      "    print class:    takes 2 argument:  print class    <uc_code> <class_code>\n" <<
+      "    remove:         takes 2 arguments: remove         <student_code> <uc_code>\n" <<
+      "    switch:         takes 3 arguments: switch         <student_code> <student_code> <uc_code>\n" <<
+      "    quit:           quit the program.\n" <<
+      "    help:           prints this help.\n" <<
       std::endl;
       return;
   }
@@ -199,6 +270,7 @@ void Runtime::process_args(std::vector<std::string> args) {
 
 void Runtime::handle_process(Process p) {
   std::vector<std::string> ops = p.get_ops();
+
   // handle remove
   if (p.get_type() == TypeOfRequest::Remove) {
     uint32_t student_code;
@@ -231,13 +303,13 @@ void Runtime::handle_process(Process p) {
     }
     return;
   }
-  // End Remove
 
-  if (p.get_type() == TypeOfRequest::Print) {
+  // handle print student
+  if (p.get_type() == TypeOfRequest::Print_Student) {
     uint32_t student_code;
     try {
       student_code = std::stoi(ops[0]);
-    } catch (std::exception e) {
+    } catch (std::exception& e) {
       std::cerr << "ERROR: The string " << ops[0] << " is not a student_code."
                 << std::endl;
       return;
@@ -245,16 +317,109 @@ void Runtime::handle_process(Process p) {
     if (auto itr = students.find(Student(student_code, ""));
         itr != students.end()) {
       Student s = *itr;
-      std::cout << "Name: " << s.get_name() << "\nCode: " << s.get_code()
-                << std::endl;
-      std::vector<ClassSchedule *> sched = s.get_schedule();
-      for (auto i : sched) {
-        i->display();
+
+      // Name and Code:
+      std::cout << "Name: " << s.get_name() << "\nCode: " << s.get_code() << "\n\n";
+
+      // Classes:
+      std::cout << "Classes enrolled: \n";
+      for (ClassSchedule *class_ : s.get_schedule()) {
+        std::string class_code;
+        class_->class_to_str(class_code);
+        std::string uc_code;
+        class_->uc_to_str(uc_code);
+        std::cout << uc_code << ": " << class_code << std::endl;
       }
+      std::cout << std::endl;
+
+      // Schedule:
+      // Group all Lessons into one Schedule
+      std::vector<ClassSchedule *> sched = s.get_schedule();
+      std::vector<Lesson*> grouped;
+      for (ClassSchedule *class_ : sched) {
+        for (Lesson *lesson : *class_->get_class_schedule()) {
+          grouped.push_back(lesson);
+        }
+      }
+      std::sort(grouped.begin(), grouped.end(), [](Lesson *a, Lesson *b) {
+        if (a->get_day() == b->get_day()) {
+          if (a->get_start_hour() == b->get_start_hour()) {
+            if (a->get_duration() == b->get_duration()) {
+              return a->get_type() < b->get_type();
+            }
+            else return a->get_duration() < b->get_duration();
+          }
+          else return a->get_start_hour() < b->get_start_hour();
+        }
+        else return a->get_day() < b->get_day();
+      });
+
+      print_schedule(grouped);
+
     } else {
       std::cerr << "ERROR: There is no such student with code: " << student_code
                 << std::endl;
     }
     return;
+  }
+
+  // handle print uc
+  if (p.get_type() == TypeOfRequest::Print_UC) {
+    uint16_t uc_code = parse_uc_gen(ops[0]);
+    std::vector<ClassSchedule *> classes_found = find_uc(uc_code);
+
+    if (classes_found.empty()) {
+      std::cerr << "ERROR: There is no such uc_code.\n";
+      return;
+    }
+
+    std::cout << "Classes with uc_code " << ops[0] << ":\n";
+    for (auto i : classes_found) {
+      std::string class_code;
+      i->class_to_str(class_code);
+      std::cout << class_code << std::endl;
+    }
+    return;
+  }
+
+  // handle print class
+  if (p.get_type() == TypeOfRequest::Print_Class) {
+    uint16_t uc_code = parse_uc_gen(ops[0]);
+    uint16_t class_code = parse_class_gen(ops[1]);
+    uint32_t id = ((uint32_t)uc_code << 16) + class_code;
+    ClassSchedule* cs = find_class(id);
+
+    if (cs == nullptr) {
+      std::cerr << "ERROR: There is no such class.\n";
+      return;
+    }
+
+    std::cout << "Class " << ops[1] << ":\n"
+              << "Number of students: " << cs->get_student_count() << '\n';
+
+    print_schedule(*cs->get_class_schedule());
+    return;
+  }
+}
+
+void Runtime::print_schedule(const std::vector<Lesson *>& schedule) const {
+  std::cout << "Schedule:\n" << "(Type | Day | Start Time | Duration | UC | Class)\n";
+  for (Lesson *lesson: schedule) {
+    int start_hour = static_cast<int>(lesson->get_start_hour());
+    int start_minutes = (lesson->get_start_hour() - start_hour) * 60;
+    std::string type;
+    lesson->type_to_str(type);
+    std::string day;
+    lesson->day_to_str(day);
+    std::string uc;
+    lesson->uc_to_str(uc);
+    std::string class_;
+    lesson->class_to_str(class_);
+
+    std::cout << type << " | " << day << " | " << start_hour;
+    if (start_minutes != 0) std::cout << ':' << start_minutes;
+    else std::cout << 'h';
+    std::cout << " | " << lesson->get_duration() << "h\n"
+              << " - " << uc << " | " << class_ << '\n';
   }
 }
