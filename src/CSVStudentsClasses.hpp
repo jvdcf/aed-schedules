@@ -7,20 +7,23 @@
 #include <string>
 #include <vector>
 
-
+/**
+ * @brief Representation of the file students_classes.csv
+ */
 class CSVStudentsClasses {
 private:
     std::string student_code_cath_name;
     std::string student_name_cath_name;
     std::string uc_cath_name;
     std::string class_cath_name;
+    /// Vector with every line of the file
     std::vector<StudentsClasses> entries;
 
 public:
     // Constructor
     CSVStudentsClasses(const std::string& csv);
 
-    //Destructor
+    // Destructor
     virtual ~CSVStudentsClasses();
 
     // Methods
