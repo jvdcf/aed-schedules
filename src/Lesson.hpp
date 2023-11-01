@@ -1,15 +1,14 @@
+/**
+ * @file Lesson.hpp
+ */
+#ifndef LESSON_HPP
+#define LESSON_HPP
 #include <cctype>
 #include <cstdint>
 #include <iostream>
 #include <string>
-#include "classesPerUC.hpp"
+#include "ClassesPerUC.hpp"
 
-#ifndef CLASS_HPP
-#define CLASS_HPP
-
-/**
- * @file classes.hpp
- */
 
 /**
  * Since it is quicker to compare numbers instead of strings and there are only 7 days in a week, we decided to store
@@ -37,7 +36,7 @@ enum class Type {
   PL,
 };
 
-class Class : public ClassPerUC {
+class Lesson : public ClassPerUC {
 private:
   WeekDay day;
   float start_hour;
@@ -45,7 +44,7 @@ private:
   Type type;
 
 public:
-  Class(std::string line); // Constructor
+  Lesson(std::string line); // Constructor
 
   // Getters:
   WeekDay get_day() const;
@@ -68,7 +67,7 @@ public:
 
   // Other Methods:
   void display() const override;
-  //void display();
 };
 
-#endif // CLASS_HPP
+
+#endif // LESSON_HPP

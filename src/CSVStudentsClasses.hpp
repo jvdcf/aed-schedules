@@ -1,12 +1,14 @@
-#include "studentsClasses.hpp"
+/**
+ * @file CSVStudentsClasses.hpp
+ */
+#ifndef CSVSTUDENTCLASSES_H
+#define CSVSTUDENTCLASSES_H
+#include "StudentsClasses.hpp"
 #include <string>
 #include <vector>
 
-/**
- * @file appStudentsClasses.hpp
- */
 
-class AppStudentsClasses {
+class CSVStudentsClasses {
 private:
     std::string student_code_cath_name;
     std::string student_name_cath_name;
@@ -16,17 +18,21 @@ private:
 
 public:
     // Constructor
-    AppStudentsClasses(const std::string& csv);
+    CSVStudentsClasses(const std::string& csv);
 
     //Destructor
-    virtual ~AppStudentsClasses();
+    virtual ~CSVStudentsClasses();
 
     // Methods
     void sort_by(const std::string& category);
     std::vector<StudentsClasses>::iterator search_by_student(uint32_t student_code);
     std::vector<StudentsClasses>::iterator search_by_uc(uint16_t uc_code);
     std::vector<StudentsClasses>::iterator search_by_class(uint16_t class_code);
+    std::vector<StudentsClasses>* get_students();
 
     // Debug
     void display() const;
 };
+
+
+#endif // CSVSTUDENTCLASSES_H

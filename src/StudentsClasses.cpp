@@ -1,4 +1,7 @@
-#include "studentsClasses.hpp"
+/**
+ * @file StudentsClasses.cpp
+ */
+#include "StudentsClasses.hpp"
 #include "Utils.hpp"
 #include <string>
 #include <cstdint>
@@ -7,11 +10,7 @@
 #include <iomanip>
 #include <sstream>
 
-/**
- * @file studentsClasses.cpp
- */
 
-// Constructor
 /**
  * The constructor reads the line and assigns each string value to its attribute.
  * @param line

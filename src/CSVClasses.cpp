@@ -1,20 +1,20 @@
-#include "appClasses.hpp"
+/**
+ * @file CSVClasses.cpp
+ */
+#include "CSVClasses.hpp"
 #include "Utils.hpp"
-#include "classes.hpp"
+#include "Lesson.hpp"
 #include <algorithm>
 #include <iostream>
 #include <fstream>
 #include <iomanip>
 
-/**
- * @file appClasses.cpp
- */
 
 /**
- * This constructor receives a string containing all the lines of a csv file and creates the AppClass from it.
+ * @brief This constructor receives a string containing all the lines of a csv file and creates the AppClass from it.
  * @param csv
  */
-AppClass::AppClass(const std::string& csv) {
+CSVClasses::CSVClasses(const std::string& csv) {
   // CSV file into memory
   std::ifstream file = std::ifstream(csv);
   std::string contents;
@@ -25,7 +25,7 @@ AppClass::AppClass(const std::string& csv) {
   // Parse string
   std::stringstream s(contents);
   std::string line;
-  this->entries = std::vector<Class>();
+  this->entries = std::vector<Lesson>();
   getline(s, line, '\n');
   std::vector<std::string> bufs;
   parse_csv_line(line, bufs);
@@ -37,19 +37,19 @@ AppClass::AppClass(const std::string& csv) {
   this->type_cath_name = bufs[5];
   line.clear();
   while (std::getline(s, line, '\n')) {
-    this->entries.push_back(Class(line));
+    this->entries.push_back(Lesson(line));
   }
 }
 
 /**
- * Erases the contents of classes.csv and saves there the updated values.
+ * @brief Erases the contents of classes.csv and saves there the updated values.
  */
-AppClass::~AppClass() {
+CSVClasses::~CSVClasses() {
     std::ofstream ofs;
     ofs.open("../schedule/classes.csv", std::ofstream::out | std::ofstream::trunc);
     ofs << class_cath_name << ',' << uc_cath_name << ',' << weekday_cath_name << ',' << start_hour_cath_name
         << ',' << duration_cath_name << ',' << type_cath_name << '\n';
-    for (Class entry: entries) {
+    for (Lesson entry: entries) {
         std::string value;
         entry.class_to_str(value);
         ofs << value << ',';
@@ -65,7 +65,10 @@ AppClass::~AppClass() {
     ofs.close();
 }
 
-void AppClass::display() {
+/**
+ * @brief Displays the contents of the class.
+ */
+void CSVClasses::display() {
   std::cout << this->uc_cath_name << ',' << this->class_cath_name << ','
             << this->weekday_cath_name << ',' << this->start_hour_cath_name
             << ',' << this->duration_cath_name << ',' << this->type_cath_name
@@ -75,10 +78,16 @@ void AppClass::display() {
   }
 }
 
-void AppClass::sort_by(std::string category) {
+/**
+ * @brief Sorts the entries by the category passed as parameter.
+ * @details Available categories: id, ClassCode, UcCode, Weekday, StartHour, Duration, Type.
+ * Theoretical Complexity: O(n log n), n being the number of lines in the csv file.
+ * @param category
+ */
+void CSVClasses::sort_by(std::string category) {
   if (category == uc_cath_name) {
     std::stable_sort(this->entries.begin(), this->entries.end(),
-                     [](const Class &first, const Class &second) {
+                     [](const Lesson &first, const Lesson &second) {
                          std::string first_uc, second_uc;
                          first.uc_to_str(first_uc);
                          second.uc_to_str(second_uc);
@@ -86,28 +95,33 @@ void AppClass::sort_by(std::string category) {
                      });
   } else if (category == class_cath_name) {
     std::stable_sort(this->entries.begin(), this->entries.end(),
-                     [](const Class &first, const Class &second) {
+                     [](const Lesson &first, const Lesson &second) {
                          return first.get_class_code() < second.get_class_code();
                      });
   } else if (category == weekday_cath_name) {
     std::stable_sort(this->entries.begin(), this->entries.end(),
-                     [](const Class &first, const Class &second) {
+                     [](const Lesson &first, const Lesson &second) {
                          return first.get_day() < second.get_day();
                      });
   } else if (category == start_hour_cath_name) {
     std::stable_sort(this->entries.begin(), this->entries.end(),
-                     [](const Class &first, const Class &second) {
+                     [](const Lesson &first, const Lesson &second) {
                          return first.get_start_hour() < second.get_start_hour();
                      });
   } else if (category == duration_cath_name) {
     std::stable_sort(this->entries.begin(), this->entries.end(),
-                     [](const Class &first, const Class &second) {
+                     [](const Lesson &first, const Lesson &second) {
                          return first.get_duration() < second.get_duration();
                      });
   } else if (category == type_cath_name) {
     std::stable_sort(this->entries.begin(), this->entries.end(),
-                     [](const Class &first, const Class &second) {
-                         return first.get_type() < second.get_type();
+                     [](const Lesson &first, const Lesson &second) {
+                       return first.get_type() < second.get_type();
+                     });
+  } else if (category == "id") {
+    std::stable_sort(this->entries.begin(), this->entries.end(),
+                     [](const Lesson &first, const Lesson &second) {
+                       return first.get_id() < second.get_id();
                      });
   } else {
       std::cerr << "Error: invalid category" << '\n';
@@ -115,12 +129,18 @@ void AppClass::sort_by(std::string category) {
   }
 }
 
-std::vector<Class>::iterator AppClass::search_by_uc(
+/**
+ * @deprecated
+ * @brief Search the lines for the first class with the given uc_code.
+ * @param uc_code
+ * @return Iterator to the first class with the given uc_code. If not found, returns a past-the-end pointer.
+ */
+std::vector<Lesson>::iterator CSVClasses::search_by_uc(
     uint16_t
         uc_code) { // Sorts the entries by UC and returns the iterator of the
                    // first found. If not found, returns a past-the-end pointer
   sort_by(uc_cath_name);
-  std::vector<Class>::iterator ret = entries.end();
+  std::vector<Lesson>::iterator ret = entries.end();
   size_t mid = entries.size() / 2;
   while (true) { // Binary search
     if (mid == entries.size()) {
@@ -145,14 +165,21 @@ std::vector<Class>::iterator AppClass::search_by_uc(
   return ret;
 }
 
-std::vector<Class>::iterator AppClass::search_by_class(uint16_t class_code) {
+/**
+ * @deprecated
+ * @brief Search the lines for the first class with the given class_code.
+ * @param uc_code
+ * @param class_code
+ * @return Iterator to the first class with the given class_code. If not found, returns a past-the-end pointer.
+ */
+std::vector<Lesson>::iterator CSVClasses::search_by_class(uint16_t uc_code, uint16_t class_code) {
   sort_by(class_cath_name);
-  std::vector<Class>::iterator ret = entries.end();
+  std::vector<Lesson>::iterator ret = entries.end();
   size_t mid = entries.size() / 2;
   while (true) { // Binary search
     if (mid == entries.size()) {
       return ret;
-    } else if (entries[mid].get_class_code() == class_code) {
+    } else if (entries[mid].get_uc_code() == uc_code && entries[mid].get_class_code() == class_code) {
       ret = entries.begin() + mid;
       break;
     } else if (entries[mid].get_class_code() > class_code) {
@@ -171,3 +198,9 @@ std::vector<Class>::iterator AppClass::search_by_class(uint16_t class_code) {
   }
   return ret;
 }
+
+/**
+ * @brief Getter for the vector of Lessons
+ * @return Pointer to lessons.
+ */
+std::vector<Lesson> *CSVClasses::get_lessons() {return &this->entries;}

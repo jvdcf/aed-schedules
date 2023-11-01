@@ -1,10 +1,9 @@
-#include "Utils.hpp"
-
 /**
  * @file Utils.cpp
  * This file defines some functions that are gonna be useful in other classes
  */
-
+#include "Utils.hpp"
+#include <iostream>
 
 /**
  * This function converts a string to a 8 bit hash.
@@ -19,6 +18,31 @@ uint8_t hash_str(std::string s) {
     hash = (hash << 5) + hash + c;
   }
   return (uint8_t)(hash % 256);
+}
+
+uint16_t parse_uc_gen(std::string uc_code) {
+  uint64_t hash = 5381;
+  std::string num_part;
+  for (char c : uc_code) {
+    if (!isnum(c)) {
+      // DEBUG : printf("%c",c);
+      hash = (hash << 5) + hash + c;
+    }
+    if (isnum(c)) {
+      num_part.push_back(c);
+    }
+  }
+  try {
+    uint8_t num = 0;
+    if (num_part != "") {
+      num = std::stoi(num_part);
+    }
+    // DEBUG : printf(" -> code : %d\n", (uint8_t)hash);
+    return (uint16_t)((hash % 256) << 8) + (uint16_t)(num);
+  } catch (std::invalid_argument &e) {
+    std::cerr << e.what() << " uc: failed to parse" << '\n';
+    std::exit(1);
+  }
 }
 
 /**
@@ -43,4 +67,3 @@ void parse_csv_line(std::string s, std::vector<std::string> &res) {
   while (getline(line, buf, ','))
     res.push_back(buf);
 }
-
