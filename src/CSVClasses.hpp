@@ -7,7 +7,9 @@
 #include <string>
 #include <vector>
 
-
+/**
+ * @brief Class representation of the file classes.csv
+ */
 class CSVClasses {
 private:
     std::string class_cath_name;
@@ -16,6 +18,7 @@ private:
     std::string start_hour_cath_name;
     std::string duration_cath_name;
     std::string type_cath_name;
+    /// Vector with every line of the file
     std::vector<Lesson> entries;
 
 public:

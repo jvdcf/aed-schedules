@@ -11,10 +11,9 @@
 
 
 /**
- * This constructor receives a string containing all the lines of a csv file and creates the AppClass from it.
+ * @brief This constructor receives a string containing all the lines of a csv file and creates the AppClass from it.
  * @param csv
  */
-
 CSVClasses::CSVClasses(const std::string& csv) {
   // CSV file into memory
   std::ifstream file = std::ifstream(csv);
@@ -43,7 +42,7 @@ CSVClasses::CSVClasses(const std::string& csv) {
 }
 
 /**
- * Erases the contents of classes.csv and saves there the updated values.
+ * @brief Erases the contents of classes.csv and saves there the updated values.
  */
 CSVClasses::~CSVClasses() {
     std::ofstream ofs;
@@ -66,6 +65,9 @@ CSVClasses::~CSVClasses() {
     ofs.close();
 }
 
+/**
+ * @brief Displays the contents of the class.
+ */
 void CSVClasses::display() {
   std::cout << this->uc_cath_name << ',' << this->class_cath_name << ','
             << this->weekday_cath_name << ',' << this->start_hour_cath_name
@@ -76,6 +78,12 @@ void CSVClasses::display() {
   }
 }
 
+/**
+ * @brief Sorts the entries by the category passed as parameter.
+ * @details Available categories: id, ClassCode, UcCode, Weekday, StartHour, Duration, Type.
+ * Theoretical Complexity: O(n log n), n being the number of lines in the csv file.
+ * @param category
+ */
 void CSVClasses::sort_by(std::string category) {
   if (category == uc_cath_name) {
     std::stable_sort(this->entries.begin(), this->entries.end(),
@@ -121,6 +129,12 @@ void CSVClasses::sort_by(std::string category) {
   }
 }
 
+/**
+ * @deprecated
+ * @brief Search the lines for the first class with the given uc_code.
+ * @param uc_code
+ * @return Iterator to the first class with the given uc_code. If not found, returns a past-the-end pointer.
+ */
 std::vector<Lesson>::iterator CSVClasses::search_by_uc(
     uint16_t
         uc_code) { // Sorts the entries by UC and returns the iterator of the
@@ -151,6 +165,13 @@ std::vector<Lesson>::iterator CSVClasses::search_by_uc(
   return ret;
 }
 
+/**
+ * @deprecated
+ * @brief Search the lines for the first class with the given class_code.
+ * @param uc_code
+ * @param class_code
+ * @return Iterator to the first class with the given class_code. If not found, returns a past-the-end pointer.
+ */
 std::vector<Lesson>::iterator CSVClasses::search_by_class(uint16_t uc_code, uint16_t class_code) {
   sort_by(class_cath_name);
   std::vector<Lesson>::iterator ret = entries.end();
@@ -178,4 +199,8 @@ std::vector<Lesson>::iterator CSVClasses::search_by_class(uint16_t uc_code, uint
   return ret;
 }
 
+/**
+ * @brief Getter for the vector of Lessons
+ * @return Pointer to lessons.
+ */
 std::vector<Lesson> *CSVClasses::get_lessons() {return &this->entries;}

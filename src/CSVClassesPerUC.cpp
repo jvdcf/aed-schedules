@@ -10,12 +10,12 @@
 
 
 /**
- * This constructor receives a string containing all the lines of a csv file and creates the AppClassPerUC from it.
- * The cap parameter is the capacity of each class.
+ * @brief This constructor receives a string containing all the lines of a csv file and creates the AppClassPerUC from it.
+ * @details The cap parameter is the capacity of each class (30 by default).
+ * Theoretical complexity: O(n), where n is the number of lines in the csv file.
  * @param csv
  * @param cap
  */
-
 CSVClassPerUC::CSVClassPerUC(const std::string& csv, uint8_t cap) {
     this->cap = cap;
 
@@ -42,7 +42,7 @@ CSVClassPerUC::CSVClassPerUC(const std::string& csv, uint8_t cap) {
 }
 
 /**
- * Erases the contents of classes_per_uc.csv and saves there the updated values.
+ * @brief Erases the contents of classes_per_uc.csv and saves there the updated values.
  */
 CSVClassPerUC::~CSVClassPerUC() {
     std::ofstream ofs;
@@ -58,6 +58,9 @@ CSVClassPerUC::~CSVClassPerUC() {
     ofs.close();
 }
 
+/**
+ * @brief This method prints the csv file.
+ */
 void CSVClassPerUC::display() {
     std::cout << this->uc_cath_name << ',' << this->class_cath_name << '\n';
     for (auto e : this->entries) {
@@ -65,6 +68,12 @@ void CSVClassPerUC::display() {
     }
 }
 
+/**
+ * @brief Sort the entries vector by the category parameter.
+ * @details Available categories: UcCode, ClassCode, id.
+ * Theoretical complexity: O(n log n), where n is the number of entries in the vector.
+ * @param category
+ */
 void CSVClassPerUC::sort_by(std::string category) {
     if (category == uc_cath_name) {
         std::stable_sort(this->entries.begin(), this->entries.end(),
@@ -90,6 +99,14 @@ void CSVClassPerUC::sort_by(std::string category) {
     }
 }
 
+/**
+ * @brief Getter for the vector of ClassPerUC.
+ * @return Pointer to entries.
+ */
 std::vector<ClassPerUC> *CSVClassPerUC::get_classes() {return &this->entries;}
 
+/**
+ * @brief Getter for the capacity of every class.
+ * @return cap
+ */
 uint8_t CSVClassPerUC::get_cap() const {return cap;}

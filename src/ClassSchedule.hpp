@@ -8,10 +8,14 @@
 #include "ClassesPerUC.hpp"
 #include "Lesson.hpp"
 
-
+/**
+ * @brief Representation of a class and their respective lessons.
+ */
 class ClassSchedule : public ClassPerUC {
 private:
+  /// Derivative attribute that indicates the number of students enrolled in this class.
   uint64_t n_students = 0;
+  /// Pointers to all of the lessons associated to this class.
   std::vector<Lesson*> classes;
   
 public:
