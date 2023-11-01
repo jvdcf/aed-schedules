@@ -10,6 +10,7 @@ enum class TypeOfRequest {
   Print_Student_Count,
   Print_UC,
   Print_Class,
+  Print_Student_List,
   Batch,
 };
 
