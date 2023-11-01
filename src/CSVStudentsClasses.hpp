@@ -20,15 +20,17 @@ public:
     // Constructor
     CSVStudentsClasses(const std::string& csv);
 
-    //Destructor
+    // Destructor
     virtual ~CSVStudentsClasses();
+
+    // Getter
+    std::vector<StudentsClasses>* get_students();
 
     // Methods
     void sort_by(const std::string& category);
     std::vector<StudentsClasses>::iterator search_by_student(uint32_t student_code);
     std::vector<StudentsClasses>::iterator search_by_uc(uint16_t uc_code);
     std::vector<StudentsClasses>::iterator search_by_class(uint16_t class_code);
-    std::vector<StudentsClasses>* get_students();
 
     // Debug
     void display() const;

@@ -46,11 +46,11 @@ OperationResult Student::verify_add(ClassSchedule *c) {
 
   // No time conflits
   OperationResult highest = OperationResult::Success;
-  std::vector<Lesson *> *new_lessons = c->get_class_schedule();
+  std::vector<Lesson *> new_lessons = c->get_class_schedule();
   for (ClassSchedule *a : this->classes) {
-    std::vector<Lesson *> *lessons = a->get_class_schedule();
-    for (Lesson *lesson : *lessons) {
-      for (Lesson *new_lesson : *new_lessons) {
+    std::vector<Lesson *> lessons = a->get_class_schedule();
+    for (Lesson *lesson : lessons) {
+      for (Lesson *new_lesson : new_lessons) {
         if (lesson->get_day() == new_lesson->get_day()) {
           // if new_lesson starts in the middle of lesson:
           if (lesson->get_start_hour() < new_lesson->get_start_hour() &&
@@ -158,8 +158,6 @@ bool Student::operator<(const Student &other) const {
 
 uint32_t Student::get_code() const { return code; }
 
-
-
 bool Student::verify_remove(ClassSchedule* c) {
   for (std::vector<ClassSchedule *>::iterator itr = this->classes.begin();
        itr != this->classes.end(); ++itr) {
@@ -186,25 +184,4 @@ ClassSchedule* Student::find_class(uint16_t uc_code) {
   return nullptr;
 }
 
-
 const std::string& Student::get_name() const {return name;}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

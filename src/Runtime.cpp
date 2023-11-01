@@ -357,7 +357,7 @@ void Runtime::handle_process(Process p) {
       std::vector<ClassSchedule *> sched = s.get_schedule();
       std::vector<Lesson*> grouped;
       for (ClassSchedule *class_ : sched) {
-        for (Lesson *lesson : *class_->get_class_schedule()) {
+        for (Lesson *lesson : class_->get_class_schedule()) {
           grouped.push_back(lesson);
         }
       }
@@ -417,7 +417,7 @@ void Runtime::handle_process(Process p) {
     std::cout << "Class " << ops[1] << ":\n"
               << "Number of students: " << cs->get_student_count() << '\n';
 
-    print_schedule(*cs->get_class_schedule());
+    print_schedule(cs->get_class_schedule());
     return;
   }
 

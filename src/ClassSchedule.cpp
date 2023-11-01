@@ -71,8 +71,8 @@ uint64_t ClassSchedule::get_student_count() const {
  * @brief Getter for class_schedule.
  * @return class_schedule
  */
-std::vector<Lesson*>* ClassSchedule::get_class_schedule() {
-  return &this->classes;
+const std::vector<Lesson*> & ClassSchedule::get_class_schedule() {
+  return this->classes;
 }
 
 void ClassSchedule::sort() {
