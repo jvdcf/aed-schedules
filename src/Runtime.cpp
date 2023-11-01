@@ -4,6 +4,7 @@
 #include "Runtime.hpp"
 #include "ClassSchedule.hpp"
 #include "Student.hpp"
+#include "StudentsClasses.hpp"
 #include "Utils.hpp"
 #include <algorithm>
 #include <cstddef>
@@ -19,7 +20,7 @@
 #include <vector>
 
 Runtime::Runtime(CSVStudentsClasses &sc, CSVClassPerUC &cpu, CSVClasses &c) {
-    students_classes_ = & sc;
+  students_classes_ = &sc;
   cap = cpu.get_cap();
   is_batching = false;
   procs = std::queue<Process>();
@@ -62,25 +63,25 @@ Runtime::Runtime(CSVStudentsClasses &sc, CSVClassPerUC &cpu, CSVClasses &c) {
 }
 
 /**
- * Since new classes are not created, the only file to be updated is the student_classes.csv.
- * Thus, the only CSV class that needs to be updated is the CSVStudentClasses.
- * To update this class, we create a new vector that will substitute the entries attribute in CSVStudentClasses.
+ * Since new classes are not created, the only file to be updated is the
+ * student_classes.csv. Thus, the only CSV class that needs to be updated is the
+ * CSVStudentClasses. To update this class, we create a new vector that will
+ * substitute the entries attribute in CSVStudentClasses.
  * @brief Updates the data in the CSV classes.
  */
 Runtime::~Runtime() {
-    std::vector<StudentsClasses> entries;
-    for(Student student : this->students) {
-        for (ClassSchedule * classSchedule : student.get_schedule()) {
-            std::ostringstream oss;
-            oss << student.get_code() << ','
-                << student.get_name() << ','
-                << classSchedule->get_uc_code() << ','
-                << classSchedule->get_class_code() << ',';
-            std::string line = oss.str();
-            entries.push_back(StudentsClasses(line));
-        }
+  std::vector<StudentsClasses> entries;
+  for (Student student : this->students) {
+    for (ClassSchedule *classSchedule : student.get_schedule()) {
+      std::ostringstream oss;
+      oss << student.get_code() << ',' << student.get_name() << ','
+          << classSchedule->get_uc_code() << ','
+          << classSchedule->get_class_code() << ',';
+      std::string line = oss.str();
+      entries.push_back(StudentsClasses(line));
     }
-    students_classes_->set_students(entries);
+  }
+  students_classes_->set_students(entries);
 }
 
 /**
@@ -204,21 +205,24 @@ void Runtime::process_args(std::vector<std::string> args) {
   }
 
   if (args[0] == "help") {
-    std::cout << "The available commands are:\n\n" <<
-      "    print:  takes 1 argument:  print  <student_code>\n" <<
-      "        Prints the student name, the student code and the student schedule.\n\n" <<
-      "    add:    takes 3 arguments: add    <student_code> <uc_code> <class_code>\n" <<
-      "        Adds a student to a class if possible.\n\n" <<
-      "    remove: takes 2 arguments: remove <student_code> <uc_code>\n" <<
-      "        Removes a student from a class if possible.\n\n" <<
-      "    switch: takes 3 arguments: switch <student_code> <student_code> <uc_code>\n" <<
-      "        Switches the class of two students.\n\n" <<
-      "    quit:   takes 0 arguments: quit\n" <<
-      "        Quits the program.\n\n" <<
-      "    help:   takes 0 arguments: help\n" <<
-      "        Prints this help." <<
-      std::endl;
-      return;
+    std::cout
+        << "The available commands are:\n\n"
+        << "    print:  takes 1 argument:  print  <student_code>\n"
+        << "        Prints the student name, the student code and the student "
+           "schedule.\n\n"
+        << "    add:    takes 3 arguments: add    <student_code> <uc_code> "
+           "<class_code>\n"
+        << "        Adds a student to a class if possible.\n\n"
+        << "    remove: takes 2 arguments: remove <student_code> <uc_code>\n"
+        << "        Removes a student from a class if possible.\n\n"
+        << "    switch: takes 3 arguments: switch <student_code> "
+           "<student_code> <uc_code>\n"
+        << "        Switches the class of two students.\n\n"
+        << "    quit:   takes 0 arguments: quit\n"
+        << "        Quits the program.\n\n"
+        << "    help:   takes 0 arguments: help\n"
+        << "        Prints this help." << std::endl;
+    return;
   }
 
   std::cerr << "ERROR: No such command " << args[0]
@@ -286,4 +290,15 @@ void Runtime::handle_process(Process p) {
     }
     return;
   }
+}
+void Runtime::save_all() {
+  std::vector<StudentsClasses> ret;
+  for (Student s : students) {
+    for (ClassSchedule *sched : s.get_schedule()) {
+      ret.push_back(StudentsClasses(sched->get_uc_code(),
+                                    sched->get_class_code(), s.get_name(),
+                                    s.get_code()));
+    }
+  }
+  this->students_classes_->set_students(ret);
 }

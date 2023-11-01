@@ -43,6 +43,7 @@ public:
   void process_args(std::vector<std::string> args);
   void handle_process(Process p);
   void execute_queue();
+  void save_all();
 };
 
 

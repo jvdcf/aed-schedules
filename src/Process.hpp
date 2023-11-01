@@ -8,6 +8,7 @@ enum class TypeOfRequest {
   Switch,
   Print,
   Batch,
+  Save,
 };
 
 

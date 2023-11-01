@@ -25,6 +25,13 @@ StudentsClasses::StudentsClasses(std::string& line) {
     class_code_ = parse_class(linebuf[3]);
 }
 
+StudentsClasses::StudentsClasses(uint16_t uc_code, uint16_t class_code, const std::string& name, uint32_t student_code) {
+  uc_code_ = uc_code;
+  class_code_ = class_code;
+  student_name_ = name;
+  student_code_ = student_code;
+}
+
 
 // Getters
 uint32_t StudentsClasses::get_student_code() const {return student_code_;}
