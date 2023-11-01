@@ -23,6 +23,7 @@ private:
   std::vector<ClassSchedule> classes;
   std::queue<Process> procs;
   std::stack<Process> history;
+  CSVStudentsClasses * students_classes_;
 
   //std::vector<Lesson>* lessons;
   uint8_t cap;
@@ -30,6 +31,8 @@ private:
 
 public:
   Runtime(CSVStudentsClasses &sc, CSVClassPerUC &cpu, CSVClasses &c);
+
+  ~Runtime();
 
   // Sorting
 

@@ -180,3 +180,7 @@ void CSVStudentsClasses::display() const {
 }
 
 std::vector<StudentsClasses> *CSVStudentsClasses::get_students() {return &this->entries;}
+
+void CSVStudentsClasses::set_students(const std::vector<StudentsClasses> &entries) {
+    this->entries = entries;
+}

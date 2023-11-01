@@ -46,11 +46,11 @@ OperationResult Student::verify_add(ClassSchedule *c) {
 
   // No time conflits
   OperationResult highest = OperationResult::Success;
-  std::vector<Lesson *> *new_lessons = c->get_class_schedule();
+  std::vector<Lesson *> new_lessons = c->get_class_schedule();
   for (ClassSchedule *a : this->classes) {
-    std::vector<Lesson *> *lessons = a->get_class_schedule();
-    for (Lesson *lesson : *lessons) {
-      for (Lesson *new_lesson : *new_lessons) {
+    std::vector<Lesson *> lessons = a->get_class_schedule();
+    for (Lesson *lesson : lessons) {
+      for (Lesson *new_lesson : new_lessons) {
         if (lesson->get_day() == new_lesson->get_day()) {
           // if new_lesson starts in the middle of lesson:
           if (lesson->get_start_hour() < new_lesson->get_start_hour() &&

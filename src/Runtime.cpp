@@ -19,6 +19,7 @@
 #include <vector>
 
 Runtime::Runtime(CSVStudentsClasses &sc, CSVClassPerUC &cpu, CSVClasses &c) {
+    students_classes_ = & sc;
   cap = cpu.get_cap();
   is_batching = false;
   procs = std::queue<Process>();
@@ -58,6 +59,28 @@ Runtime::Runtime(CSVStudentsClasses &sc, CSVClassPerUC &cpu, CSVClasses &c) {
       s.add_to_class(find_class(i.get_id()));
     }
   }
+}
+
+/**
+ * Since new classes are not created, the only file to be updated is the student_classes.csv.
+ * Thus, the only CSV class that needs to be updated is the CSVStudentClasses.
+ * To update this class, we create a new vector that will substitute the entries attribute in CSVStudentClasses.
+ * @brief Updates the data in the CSV classes.
+ */
+Runtime::~Runtime() {
+    std::vector<StudentsClasses> entries;
+    for(Student student : this->students) {
+        for (ClassSchedule * classSchedule : student.get_schedule()) {
+            std::ostringstream oss;
+            oss << student.get_code() << ','
+                << student.get_name() << ','
+                << classSchedule->get_class_schedule()[0]->get_uc_code() << ','
+                << classSchedule->get_class_schedule()[0]->get_class_code() << ',';
+            std::string line = oss.str();
+            entries.push_back(StudentsClasses(line));
+        }
+    }
+    students_classes_->set_students(entries);
 }
 
 /**
