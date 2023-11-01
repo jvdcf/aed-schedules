@@ -413,7 +413,7 @@ void Runtime::handle_process(Process p) {
 }
 
 void Runtime::print_schedule(const std::vector<Lesson *>& schedule) const {
-  //std::cout << "Schedule:\n" << "(Type | Day | Start Time | Duration | UC | Class)\n";
+  std::cout << "Schedule:\n" << "(Type | Start Time | Duration | UC | Class)\n";
   int start_hour;
   int start_minutes;
   WeekDay day = WeekDay::NONE;
