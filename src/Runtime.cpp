@@ -89,9 +89,10 @@ void Runtime::run() {
   std::string buf;
   bool exit = false;
   std::vector<std::string> line;
+  std::cout << "Welcome to SchedulEd. Type 'help' to learn more." << std::endl;
   while (!exit) {
     if (is_batching) {
-        std::cout << "Batching> ";
+      std::cout << "Batching> ";
     } else {
       std::cout << "> ";
     }
@@ -122,13 +123,13 @@ void Runtime::run() {
 void Runtime::process_args(std::vector<std::string> args) {
   if (args[0] == "quit") {
     std::cout << "Quitting..." << std::endl;
-    //TODO: Call saving functions
+    // TODO: Call saving functions
     std::exit(1);
-    
   }
   if (args[0] == "remove") {
     if (args.size() != 3) {
-      std::cerr << "ERROR: USAGE: remove takes two arguments: remove " << "<student_code> <uc_code>" << std::endl;
+      std::cerr << "ERROR: USAGE: remove takes two arguments: remove "
+                << "<student_code> <uc_code>" << std::endl;
       return;
     } else {
       Process t(TypeOfRequest::Remove);
@@ -140,8 +141,8 @@ void Runtime::process_args(std::vector<std::string> args) {
   }
   if (args[0] == "add") {
     if (args.size() != 4) {
-      std::cerr << "ERROR: USAGE: add takes three arguments: add " <<
-                      "<student_code> <uc_code> <class_code>" << std::endl;
+      std::cerr << "ERROR: USAGE: add takes three arguments: add "
+                << "<student_code> <uc_code> <class_code>" << std::endl;
       return;
     } else {
       Process t(TypeOfRequest::Add);
@@ -154,8 +155,8 @@ void Runtime::process_args(std::vector<std::string> args) {
   }
   if (args[0] == "switch") {
     if (args.size() != 4) {
-      std::cerr << "ERROR: USAGE: switch takes three arguments: switch " <<
-                      "<student_code> <student_code> <uc_code>" << std::endl;
+      std::cerr << "ERROR: USAGE: switch takes three arguments: switch "
+                << "<student_code> <student_code> <uc_code>" << std::endl;
       return;
     } else {
       Process t(TypeOfRequest::Switch);
@@ -168,7 +169,8 @@ void Runtime::process_args(std::vector<std::string> args) {
   }
   if (args[0] == "print") {
     if (args.size() != 2) {
-      std::cerr << "ERROR: USAGE: print takes 1 argument: print <uc_code>" << std::endl;
+      std::cerr << "ERROR: USAGE: print takes 1 argument: print <student_code>"
+                << std::endl;
       return;
     } else {
       Process t(TypeOfRequest::Print);
@@ -177,9 +179,23 @@ void Runtime::process_args(std::vector<std::string> args) {
       return;
     }
   }
+
+  if (args[0] == "help") {
+    std::cout << "The available commands are:\n" <<
+      "    print:  takes 1 argument:  print  <student_code>\n" <<
+      "    add:    takes 3 arguments: add    <student_code> <uc_code> <class_code>\n" <<
+      "    remove: takes 2 arguments: remove <student_code> <uc_code>\n" <<
+      "    switch: takes 3 arguments: switch <student_code> <student_code> <uc_code>\n" <<
+      "    quit:   quit the program.\n" <<
+      "    help:   prints this help.\n" <<
+      std::endl;
+      return;
+  }
+
+  std::cerr << "ERROR: No such command " << args[0]
+            << ". Try typing 'help' to know the available commands."
+            << std::endl;
 }
-
-
 
 void Runtime::handle_process(Process p) {
   std::vector<std::string> ops = p.get_ops();
@@ -189,17 +205,20 @@ void Runtime::handle_process(Process p) {
     try {
       student_code = std::stoi(ops[0]);
     } catch (std::exception e) {
-      std::cerr << "ERROR: The string " << ops[0] << " is not a student_code." << std::endl;
+      std::cerr << "ERROR: The string " << ops[0] << " is not a student_code."
+                << std::endl;
       return;
     }
     uint16_t uc_code = parse_uc_gen(ops[1]);
-    if (auto itr = students.find(Student(student_code, "")); itr != students.end()) {
+    if (auto itr = students.find(Student(student_code, ""));
+        itr != students.end()) {
       Student s = *itr;
-      std::vector<ClassSchedule*> sched = s.get_schedule();
-      for (ClassSchedule* a : sched) {
+      std::vector<ClassSchedule *> sched = s.get_schedule();
+      for (ClassSchedule *a : sched) {
         if (a->get_uc_code() == uc_code) {
-          //std::cout << "Lookup: " << uc_code << "\nFound: " << a->get_uc_code() << std::endl;
-          s.remove_from_class(a); 
+          // std::cout << "Lookup: " << uc_code << "\nFound: " <<
+          // a->get_uc_code() << std::endl;
+          s.remove_from_class(a);
           students.erase(s);
           students.insert(s);
           history.push(p);
@@ -207,29 +226,34 @@ void Runtime::handle_process(Process p) {
         }
       }
     } else {
-      std::cerr << "ERROR: There is no such student with code: " << student_code << std::endl;
+      std::cerr << "ERROR: There is no such student with code: " << student_code
+                << std::endl;
     }
     return;
   }
   // End Remove
-  
+
   if (p.get_type() == TypeOfRequest::Print) {
     uint32_t student_code;
     try {
       student_code = std::stoi(ops[0]);
     } catch (std::exception e) {
-      std::cerr << "ERROR: The string " << ops[0] << " is not a student_code." << std::endl;
+      std::cerr << "ERROR: The string " << ops[0] << " is not a student_code."
+                << std::endl;
       return;
     }
-    if (auto itr = students.find(Student(student_code, "")); itr != students.end()) {
+    if (auto itr = students.find(Student(student_code, ""));
+        itr != students.end()) {
       Student s = *itr;
-      std::cout << "Name: " << s.get_name() << "\nCode: " << s.get_code() << std::endl;
-      std::vector<ClassSchedule*> sched = s.get_schedule();
+      std::cout << "Name: " << s.get_name() << "\nCode: " << s.get_code()
+                << std::endl;
+      std::vector<ClassSchedule *> sched = s.get_schedule();
       for (auto i : sched) {
         i->display();
-      } 
+      }
     } else {
-      std::cerr << "ERROR: There is no such student with code: " << student_code << std::endl;
+      std::cerr << "ERROR: There is no such student with code: " << student_code
+                << std::endl;
     }
     return;
   }
