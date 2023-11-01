@@ -3,6 +3,7 @@
  */
 #include "Runtime.hpp"
 #include "ClassSchedule.hpp"
+#include "Lesson.hpp"
 #include "Student.hpp"
 #include "Utils.hpp"
 #include <algorithm>
@@ -11,6 +12,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <exception>
+#include <iomanip>
 #include <iostream>
 #include <ostream>
 #include <queue>
@@ -206,7 +208,7 @@ void Runtime::process_args(std::vector<std::string> args) {
   }
   if (args[0] == "print") {
     if (args.size() < 2) {
-      std::cerr << "ERROR: USAGE: print student takes 1 argument: print student <student_code>\n"
+      std::cerr << "ERROR:   USAGE: print student takes 1 argument: print student <student_code>\n"
                 << "         USAGE: print uc takes 1 argument:      print uc <uc_code>\n"
                 << "         USAGE: print class takes 2 argument:   print class <uc_code> <class_code>\n";
       return;
@@ -411,23 +413,29 @@ void Runtime::handle_process(Process p) {
 }
 
 void Runtime::print_schedule(const std::vector<Lesson *>& schedule) const {
-  std::cout << "Schedule:\n" << "(Type | Day | Start Time | Duration | UC | Class)\n";
+  //std::cout << "Schedule:\n" << "(Type | Day | Start Time | Duration | UC | Class)\n";
+  int start_hour;
+  int start_minutes;
+  WeekDay day = WeekDay::NONE;
+  std::string day_str;
   for (Lesson *lesson: schedule) {
-    int start_hour = static_cast<int>(lesson->get_start_hour());
-    int start_minutes = (lesson->get_start_hour() - start_hour) * 60;
+    if (lesson->get_day() != day) {
+      day = lesson->get_day();
+      lesson->day_to_str(day_str);
+      std::cout << std::setw(19) << day_str << std::setw(0) << std::endl;
+    }
+    start_hour = static_cast<int>(lesson->get_start_hour());
+    start_minutes = (lesson->get_start_hour() - start_hour) * 60;
     std::string type;
     lesson->type_to_str(type);
-    std::string day;
-    lesson->day_to_str(day);
     std::string uc;
     lesson->uc_to_str(uc);
     std::string class_;
     lesson->class_to_str(class_);
 
-    std::cout << type << " | " << day << " | " << start_hour;
-    if (start_minutes != 0) std::cout << ':' << start_minutes;
-    else std::cout << 'h';
-    std::cout << " | " << lesson->get_duration() << "h\n"
-              << " - " << uc << " | " << class_ << '\n';
+    std::cout << std::setw(2) << type << std::setw(0) << " | " << std::setw(2) << start_hour << std::setw(0);
+    std::cout << ':' << std::setw(2) << std::setfill('0') << start_minutes << std::setfill(' ');
+    std::cout << " | " << std::setw(3) << lesson->get_duration() << "h"
+              << " | " << std::setw(7) << uc << std::setw(0) << " | " << std::setw(7) << class_ << std::setw(0) << '\n';
   }
 }
