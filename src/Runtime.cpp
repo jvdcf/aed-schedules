@@ -62,6 +62,7 @@ Runtime::Runtime(CSVStudentsClasses &sc, CSVClassPerUC &cpu, CSVClasses &c) {
       s.add_to_class(find_class(i.get_id()));
     }
   }
+  students.insert(s);
 }
 
 /**
@@ -84,6 +85,7 @@ ClassSchedule *Runtime::find_class(uint32_t id) {
       high = mid - 1;
     }
   }
+  std::cerr << "WARNING: Tried to find a class for a student, but it does not exist in our database.\n";
   return nullptr;
 }
 
@@ -249,7 +251,13 @@ void Runtime::process_args(std::vector<std::string> args) {
                 << std::endl;
       return;
     }
+    
+  }
 
+  if (args[0] == "student_count") {
+    Process t(TypeOfRequest::Print_Student_Count);
+    procs.push(t);
+    return;
   }
 
   if (args[0] == "help") {
@@ -266,6 +274,8 @@ void Runtime::process_args(std::vector<std::string> args) {
       "        Removes a student from a class if possible.\n\n" <<
       "    switch:         takes 3 arguments: switch         <student_code> <student_code> <uc_code>\n" <<
       "        Switches the class of two students.\n\n" <<
+      "    student_count:  takes 0 arguments: student_count\n" <<
+      "        Displays the number of students enrolled.\n\n" <<
       "    quit:           takes 0 arguments: quit\n" <<
       "        Quits the program.\n\n" <<
       "    help:           takes 0 arguments: help\n" <<
@@ -410,6 +420,11 @@ void Runtime::handle_process(Process p) {
     print_schedule(*cs->get_class_schedule());
     return;
   }
+
+  if (p.get_type() == TypeOfRequest::Print_Student_Count) {
+    std::cout << "There are " << this->students.size() << " students enrolled." << std::endl;
+    return;
+  } 
 }
 
 void Runtime::print_schedule(const std::vector<Lesson *>& schedule) const {

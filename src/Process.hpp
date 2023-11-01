@@ -7,6 +7,7 @@ enum class TypeOfRequest {
   Remove,
   Switch,
   Print_Student,
+  Print_Student_Count,
   Print_UC,
   Print_Class,
   Batch,
