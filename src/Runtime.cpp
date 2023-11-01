@@ -253,13 +253,21 @@ void Runtime::process_args(std::vector<std::string> args) {
   if (args[0] == "help") {
     std::cout << "The available commands are:\n" <<
       "    print student:  takes 1 argument:  print student  <student_code>\n" <<
+      "        Prints the student name, enrolled classes and schedule.\n\n" <<
       "    print uc:       takes 1 argument:  print uc       <uc_code>\n" <<
+      "        Prints all the classes associated with this UC.\n\n" <<
       "    print class:    takes 2 argument:  print class    <uc_code> <class_code>\n" <<
+      "        Prints the number of students enrolled and the schedule.\n\n" <<
+      "    add:            takes 3 arguments: add            <student_code> <uc_code> <class_code>\n" <<
+      "        Adds a student to a class if possible.\n\n" <<
       "    remove:         takes 2 arguments: remove         <student_code> <uc_code>\n" <<
+      "        Removes a student from a class if possible.\n\n" <<
       "    switch:         takes 3 arguments: switch         <student_code> <student_code> <uc_code>\n" <<
-      "    quit:           quit the program.\n" <<
-      "    help:           prints this help.\n" <<
-      std::endl;
+      "        Switches the class of two students.\n\n" <<
+      "    quit:           takes 0 arguments: quit\n" <<
+      "        Quits the program.\n\n" <<
+      "    help:           takes 0 arguments: help\n" <<
+      "        Prints this help.\n\n";
       return;
   }
 
