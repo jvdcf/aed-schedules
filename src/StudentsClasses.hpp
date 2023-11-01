@@ -7,11 +7,15 @@
 #include <cstdint>
 #include "ClassesPerUC.hpp"
 
-
+/**
+ * This stores the information of a line of the file students_classes.csv
+ * @brief Stores a class that a student has in a UC.
+ */
 class StudentsClasses : public ClassPerUC {
 private:
     uint32_t student_code_;
     std::string student_name_;
+
 public:
     // Constructor
     StudentsClasses(std::string& line);
