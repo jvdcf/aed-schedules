@@ -74,8 +74,8 @@ Runtime::~Runtime() {
             std::ostringstream oss;
             oss << student.get_code() << ','
                 << student.get_name() << ','
-                << classSchedule->get_class_schedule()[0]->get_uc_code() << ','
-                << classSchedule->get_class_schedule()[0]->get_class_code() << ',';
+                << classSchedule->get_uc_code() << ','
+                << classSchedule->get_class_code() << ',';
             std::string line = oss.str();
             entries.push_back(StudentsClasses(line));
         }
