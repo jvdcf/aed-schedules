@@ -35,15 +35,15 @@ int main(int argc, char** argv) {
 
   for (int i = 1; i < argc; i+=2) {
     if (std::string(argv[i]) == std::string("-cpu")) {
-      done_cpu = std::string(argv[i+1]) != "-c" && std::string(argv[1]) != "-sc";
+      done_cpu = std::string(argv[i+1]) != "-c" && std::string(argv[i+1]) != "-sc";
       cpu = CSVClassPerUC(argv[i+1]);
     }
     if (std::string(argv[i]) == std::string("-c")) {
-      done_c = std::string(argv[i+1]) != "-cpu" && std::string(argv[1]) != "-sc";
+      done_c = std::string(argv[i+1]) != "-cpu" && std::string(argv[i+1]) != "-sc";
       c = CSVClasses(argv[i+1]);
     }
     if (std::string(argv[i]) == std::string("-sc")) {
-      done_sc = std::string(argv[i+1]) != "-cpu" && std::string(argv[1]) != "-c";
+      done_sc = std::string(argv[i+1]) != "-cpu" && std::string(argv[i+1]) != "-c";
       sc = CSVStudentsClasses(argv[i+1]);
     }
   }
@@ -51,6 +51,14 @@ int main(int argc, char** argv) {
   if (done_c && done_sc && done_cpu) {
     Runtime rt(sc, cpu, c);
     rt.run();
+  } else {
+      std::cerr << "USAGE: The program takes three files, with their specific flags prepending them. Example:\n\n"
+                << "    schdulEd -cpu classes_per_uc.csv -c classes.csv -sc students_classes.csv\n\n"
+                << "Where '-cpu' is the flag that specifies a CSV file which contains the list of classes per each UC\n"
+                << "Where '-c' is the flag that specifies a CSV file which contains the list of classes an their schedules\n"
+                << "Where '-sc' is the flag that specifies a CSV file which contains the list of students and their association with each class\n"
+                << std::endl;
+      std::exit(1);
   }
   
   return 0;

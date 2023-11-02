@@ -14,7 +14,9 @@
 #include <cstdlib>
 #include <exception>
 #include <iomanip>
+#include <ios>
 #include <iostream>
+#include <limits>
 #include <ostream>
 #include <queue>
 #include <sstream>
@@ -165,9 +167,17 @@ void Runtime::run() {
 
 void Runtime::process_args(std::vector<std::string> args) {
   if (args[0] == "quit") {
+    char answer;
+    std::cout << "Do you wish to save any changes you have made? [y/N]" << std::endl;
+    std::cin >> std::noskipws >> answer;
+    if (answer == 'y') {
+      std::cout << "Saving..." << std::endl;
+      this->save_all();
+      this->students_classes_->write_to_file();
+    }
     std::cout << "Quitting..." << std::endl;
     // TODO: Call saving functions
-    std::exit(1);
+    std::exit(0);
   }
   if (args[0] == "remove") {
     if (args.size() != 3) {
@@ -379,6 +389,109 @@ void Runtime::handle_process(Process p) {
     return;
   }
 
+ // handle add--------------------------------------------------------------------------------------------------------
+ if (p.get_type() == TypeOfRequest::Add) {
+    uint32_t student_code;
+    try {
+      student_code = std::stoi(ops[0]);
+    } catch (std::exception e) {
+      std::cerr << "ERROR: The string " << ops[0] << " is not a student_code."
+                << std::endl;
+      return;
+    }
+    uint32_t id = (((uint32_t)parse_uc_gen(ops[1])) << 16) + parse_class_gen(ops[2]);
+    ClassSchedule* target = find_class(id);
+    if (target == nullptr) {
+      std::cerr << "ERROR: Did not find class with id: " << id << std::endl;
+      return;
+    }
+    if (auto itr = students.find(Student(student_code, "")); itr != students.end()) {
+      Student s = *itr;
+      OperationResult res = s.verify_add(target);
+      if (res == OperationResult::Success) {
+        students.erase(s);
+        s.add_to_class(target);
+        students.insert(s);
+        history.push(p);
+        return;
+      }
+      if (res == OperationResult::Conflicts) {
+        std::string answer;
+        std::cout << "WARNING: Conflict found, some classes overlap non critically. Do you wish to proceed adding? [y/N] ";
+        std::cin >> std::noskipws >> answer;
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        if (answer == "y") {
+          students.erase(s);
+          s.add_to_class(target);
+          students.insert(s);
+          history.push(p);
+        } 
+        return;
+      }
+      if (res == OperationResult::Error) {
+        std::cerr << "ERROR: Critical conflicts found: the schedule is not valid. Skipping." << std::endl;
+        return;
+      }
+    }
+  }
+
+  if (p.get_type() == TypeOfRequest::Switch) {
+    uint32_t student_code1;
+    uint32_t student_code2;
+    try {
+      student_code1 = std::stoi(ops[0]);
+    } catch (std::exception e) {
+      std::cerr << "ERROR: The string " << ops[0] << " is not a student_code."
+                << std::endl;
+      return;
+    }
+    try {
+      student_code2 = std::stoi(ops[1]);
+    } catch (std::exception e) {
+      std::cerr << "ERROR: The string " << ops[1] << " is not a student_code."
+                << std::endl;
+      return;
+    }
+    uint16_t uc_code = parse_uc_gen(ops[2]);
+    if (auto itr = students.find(Student(student_code1, "")); itr != students.end()) {
+      if (auto itr2 = students.find(Student(student_code2, "")); itr != students.end()) { 
+        Student s1 = *itr;
+        Student s2 = *itr2;
+        OperationResult res = s1.verify_switch(s2, uc_code);
+        if (res == OperationResult::Success) {
+          students.erase(s1);
+          students.erase(s2);
+          s1.switch_class_with(s2, uc_code);
+          history.push(p);
+          students.insert(s1);
+          students.insert(s2);
+          return;
+        }
+        if (res == OperationResult::Conflicts) {
+          std::string answer;
+          std::cout << "WARNING: Conflict found, some classes overlap non critically. Do you wish to proceed switching? [y/N] ";
+          std::cin >> std::noskipws >> answer;
+          std::cin.clear();
+          std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+          if (answer == "y") {
+            students.erase(s1);
+            students.erase(s2);
+            s1.switch_class_with(s2, uc_code);
+            students.insert(s1);
+            students.insert(s2);
+            history.push(p);
+          } 
+          return;
+        }
+        if (res == OperationResult::Error) {
+          std::cerr << "ERROR: Critical conflicts found: at least one schedule is not valid. Skipping." << std::endl;
+          return;
+        }
+      }
+    }
+  }
+
   // handle print student-----------------------------------------------------------------------------------------------
   if (p.get_type() == TypeOfRequest::Print_Student) {
     uint32_t student_code;
@@ -453,7 +566,7 @@ void Runtime::handle_process(Process p) {
     for (auto i : classes_found) {
       std::string class_code;
       i->class_to_str(class_code);
-      std::cout << class_code << std::endl;
+      std::cout << class_code << ": " << i->get_student_count() << " students." << std::endl;
     }
     return;
   }

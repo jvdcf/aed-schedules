@@ -8,13 +8,6 @@
 #include "Utils.hpp"
 #include <string>
 
-// class SmolKey {
-//   uint32_t uc_code_;
-//   public:
-//   SmolKey(uint32_t a);
-//   uint32_t get_key() const;
-
-// };
 
 /**
  * @brief A student and their respective classes.
@@ -29,6 +22,7 @@ private:
   std::vector<ClassSchedule*> classes;
 
   ClassSchedule* find_class(uint16_t uc_code);
+  OperationResult is_overlapping(const std::vector<ClassSchedule*>& c_shed);
 
 public:
   Student(uint32_t code, std::string name);
@@ -39,11 +33,11 @@ public:
   std::vector<ClassSchedule*>& get_schedule();
   void add_to_class(ClassSchedule* c);
   OperationResult verify_add(ClassSchedule* c);
-  OperationResult verify_switch(Student other, uint16_t uc_code);
+  OperationResult verify_switch(Student& other, uint16_t uc_code);
   bool verify_remove(ClassSchedule* c);
   void remove_from_class(ClassSchedule* c);
-  void switch_class_with(Student other, uint16_t uc_code);
-  
+  void switch_class_with(Student& other, uint16_t uc_code);
+  void sort();
 
 
 };

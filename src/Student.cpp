@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <algorithm>
 
 /**
  * @brief The constructor assigns the code and name to the respective attributes.
@@ -27,86 +28,109 @@ Student::Student(uint32_t code, std::string name) {
 std::vector<ClassSchedule *> &Student::get_schedule() { return this->classes; }
 
 /**
+ * @brief Verifies if there are any time conflicts between the lessons of a given vector of classes.
+ * @details Theoretical complexity: O(n²), n being the number of lessons inside the vector.
+ * @param c_sched
+ * @param ignore_conflicts
+ * @return
+ */
+OperationResult Student::is_overlapping(const std::vector<ClassSchedule *>& c_sched) {
+  OperationResult result = OperationResult::Success;
+  for (int i = 0; i < c_sched.size(); i++) {
+    for (int j = i + 1; j < c_sched.size(); j++) {
+      for (Lesson* l1: c_sched.at(i)->get_class_schedule()) {
+        for (Lesson* l2: c_sched.at(j)->get_class_schedule()) {
+          if (l1->get_day() != l2->get_day()) continue;
+          if (l1->get_start_hour() + l1->get_duration() <= l2->get_start_hour()) continue;
+          if (l2->get_start_hour() + l2->get_duration() <= l1->get_start_hour()) continue;
+
+          if (l1->get_type() == Type::T || l2->get_type() == Type::T) {
+            result = OperationResult::Conflicts;
+            continue;
+          }
+          return OperationResult::Error;
+        }
+      }
+    }
+  }
+  return result;
+}
+
+/**
+ * @brief Verifies if this Student is enrolled in a given class, so that it can be removed later.
+ * @details Theoretical complexity: O(log(n)), n being the number of classes.
+ * @param c
+ * @return bool
+ */
+bool Student::verify_remove(ClassSchedule* c) {
+  return std::binary_search(this->classes.begin(), this->classes.end(), c);
+}
+
+/**
  * @brief Verifies if adding this class is legal or not.
  * @details The following rules need to be followed:
  * Number of UCs must be 7 or lower;
  * The class must have a vacancy;
  * No time conflicts;
  * Only one class per UC;
- * All classes must be balanced (Difference lower than 4).
- *
+ * All classes must be balanced (Difference lower than or equal to 4).
+ * Theoretical complexity: O(n²), n being the number of lessons inside the vector.
  * @param c
  * @return Error, Conflicts or Success
  */
 OperationResult Student::verify_add(ClassSchedule *c) {
-  // Number of UCs
+  // Number of UCs | O(1)
   if (this->classes.size() >= 7)
     return OperationResult::Error;
 
-  // Class vacancy
+  // Class vacancy | O(1)
   if (c->get_student_count() >= 30)
     return OperationResult::Error;
 
-  // One class per UC
+  // One class per UC | O(n)
   for (auto clas : this->get_schedule()) {
     if (clas->get_uc_code() == c->get_uc_code())
       return OperationResult::Error;
   }
 
-  // No time conflits
-  OperationResult highest = OperationResult::Success;
-  std::vector<Lesson *> new_lessons = c->get_class_schedule();
-  for (ClassSchedule *a : this->classes) {
-    std::vector<Lesson *> lessons = a->get_class_schedule();
-    for (Lesson *lesson : lessons) {
-      for (Lesson *new_lesson : new_lessons) {
-        if (lesson->get_day() == new_lesson->get_day()) {
-          // if new_lesson starts in the middle of lesson:
-          if (lesson->get_start_hour() < new_lesson->get_start_hour() &&
-              new_lesson->get_start_hour() <
-                  (lesson->get_start_hour() + lesson->get_duration())) {
-            if (lesson->get_type() == Type::T ||
-                new_lesson->get_type() == Type::T) {
-              highest = highest > OperationResult::Conflicts
-                            ? highest
-                            : OperationResult::Conflicts;
-              // We return conflicts so that
-              // the handler function can ask
-              // the user whether or not they
-              // want to proceed.
-            }
-            highest = highest > OperationResult::Error
-                            ? highest
-                            : OperationResult::Error;
-          }
-          // if lesson starts in the middle of new_lesson:
-          if (new_lesson->get_start_hour() < lesson->get_start_hour() &&
-              lesson->get_start_hour() <
-                  (new_lesson->get_start_hour() + new_lesson->get_duration())) {
-            if (lesson->get_type() == Type::T ||
-                new_lesson->get_type() == Type::T) {
-              highest = highest > OperationResult::Conflicts
-                            ? highest
-                            : OperationResult::Conflicts;
-            }
-            highest = highest > OperationResult::Error
-                            ? highest
-                            : OperationResult::Error;
-          }
-        }
-      }
-    }
+  // Balanced classes | O(n)
+  std::vector<uint64_t> occupancy;
+  for (ClassSchedule* class_ : this->get_schedule()) {
+    occupancy.push_back(class_->get_student_count());
   }
-  return highest;
+  occupancy.push_back(c->get_student_count());
+  auto [min, max] = std::minmax_element(occupancy.begin(), occupancy.end());
+  if (*max - *min > 4) return OperationResult::Error;
+
+  // No time conflicts | O(n²)
+  std::vector<ClassSchedule *> c_sched = this->get_schedule();
+  c_sched.push_back(c);
+  OperationResult result = is_overlapping(c_sched);
+  return result;
 }
 
 /**
  * @brief Verifies if switching classes is legal or not.
- * @details No time conflits are allowed for both students.
+ * @details No time conflicts are allowed for both students.
  */
-OperationResult Student::verify_switch(Student other, uint16_t uc_code) {
-  // TODO
-  return OperationResult::Success;
+OperationResult Student::verify_switch(Student& other, uint16_t uc_code) {
+  ClassSchedule* this_class = find_class(uc_code);
+  ClassSchedule* other_class = other.find_class(uc_code);
+
+  std::vector<ClassSchedule *> sched = this->get_schedule();
+  std::erase(sched, this_class);
+  sched.push_back(other_class);
+  OperationResult result = is_overlapping(sched);
+  //if (result != OperationResult::Success) return result;
+
+  sched.clear();
+
+  sched = other.get_schedule();
+  std::erase(sched, other_class);
+  sched.push_back(this_class);
+  OperationResult tmp = other.is_overlapping(sched);
+  result = result > tmp ? result : tmp; 
+  return result;
 }
 
 /**
@@ -116,6 +140,7 @@ OperationResult Student::verify_switch(Student other, uint16_t uc_code) {
 void Student::add_to_class(ClassSchedule *c) {
   c->add_student();
   this->classes.push_back(c);
+  this->sort();
 }
 
 /**
@@ -138,7 +163,7 @@ void Student::remove_from_class(ClassSchedule *c) {
  * @param other
  * @param uc_code
  */
-void Student::switch_class_with(Student other, uint16_t uc_code) {
+void Student::switch_class_with(Student& other, uint16_t uc_code) {
   ClassSchedule* this_class = this->find_class(uc_code);
   ClassSchedule* other_class = other.find_class(uc_code);
 
@@ -161,39 +186,11 @@ bool Student::operator<(const Student &other) const {
   return this->code < other.code;
 }
 
-// SmolKey::SmolKey(uint32_t a): uc_code_(a) {}
-// uint32_t SmolKey::get_key() const {return uc_code_;}
-
-// bool operator<(const Student& s,const SmolKey &other) {
-//   return s.get_code() < other.get_key();
-// }
-// bool operator<(const SmolKey& s,const Student &other) {
-//   return other.get_code() < s.get_key();
-// }
-
-
-
 /**
  * @brief Getter for code.
  * @return code
  */
 uint32_t Student::get_code() const { return code; }
-
-
-/**
- * @brief Verifies if this Student is enrolled in a given class, so that it can be removed later.
- * @param c
- * @return bool
- */
-bool Student::verify_remove(ClassSchedule* c) {
-  for (std::vector<ClassSchedule *>::iterator itr = this->classes.begin();
-       itr != this->classes.end(); ++itr) {
-    if (c == *itr) {
-      return true;
-    }
-  }
-  return false;
-}
 
 /**
  * @brief Find a class with a given uc_code.
@@ -222,3 +219,9 @@ ClassSchedule* Student::find_class(uint16_t uc_code) {
  * @return name
  */
 const std::string& Student::get_name() const {return name;}
+
+void Student::sort() {
+  std::sort(this->classes.begin(), this->classes.end(), [](const ClassSchedule *a, const ClassSchedule *b) {
+    return a->get_id() < b->get_id();
+  });
+}
