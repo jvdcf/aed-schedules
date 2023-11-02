@@ -113,7 +113,7 @@ OperationResult Student::verify_add(ClassSchedule *c) {
  * @brief Verifies if switching classes is legal or not.
  * @details No time conflicts are allowed for both students.
  */
-OperationResult Student::verify_switch(Student other, uint16_t uc_code) {
+OperationResult Student::verify_switch(Student& other, uint16_t uc_code) {
   ClassSchedule* this_class = find_class(uc_code);
   ClassSchedule* other_class = other.find_class(uc_code);
 
@@ -162,7 +162,7 @@ void Student::remove_from_class(ClassSchedule *c) {
  * @param other
  * @param uc_code
  */
-void Student::switch_class_with(Student other, uint16_t uc_code) {
+void Student::switch_class_with(Student& other, uint16_t uc_code) {
   ClassSchedule* this_class = this->find_class(uc_code);
   ClassSchedule* other_class = other.find_class(uc_code);
 
