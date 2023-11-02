@@ -15,6 +15,8 @@ uint8_t hash_str(std::string s);
 
 uint16_t parse_uc_gen(std::string s);
 
+uint16_t parse_class_gen(std::string s);
+
 bool isnum(uint32_t c);
 
 void parse_csv_line(std::string s, std::vector<std::string> &res);

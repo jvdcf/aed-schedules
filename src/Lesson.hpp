@@ -23,6 +23,7 @@ enum class WeekDay {
   THURSDAY,
   FRIDAY,
   SATURDAY,
+  NONE,
 };
 
 /**

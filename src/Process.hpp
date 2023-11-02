@@ -6,7 +6,11 @@ enum class TypeOfRequest {
   Add,
   Remove,
   Switch,
-  Print,
+  Print_Student,
+  Print_Student_Count,
+  Print_UC,
+  Print_Class,
+  Print_Student_List,
   Batch,
 };
 
@@ -15,6 +19,7 @@ class Process {
   private:
   TypeOfRequest type;
   std::vector<std::string> operands;
+
   public:
   Process(TypeOfRequest t);
   void add_operand(std::string s);
