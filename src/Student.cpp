@@ -34,12 +34,12 @@ std::vector<ClassSchedule *> &Student::get_schedule() { return this->classes; }
  * @param ignore_conflicts
  * @return
  */
-OperationResult Student::is_overlapping(std::vector<ClassSchedule *>& c_sched) {
+OperationResult Student::is_overlapping(const std::vector<ClassSchedule *>& c_sched) {
   OperationResult result = OperationResult::Success;
   for (int i = 0; i < c_sched.size(); i++) {
     for (int j = i + 1; j < c_sched.size(); j++) {
-      for (auto l1: classes[i]->get_class_schedule()) {
-        for (auto l2: classes[j]->get_class_schedule()) {
+      for (Lesson* l1: c_sched.at(i)->get_class_schedule()) {
+        for (Lesson* l2: c_sched.at(j)->get_class_schedule()) {
           if (l1->get_day() != l2->get_day()) continue;
           if (l1->get_start_hour() + l1->get_duration() <= l2->get_start_hour()) continue;
           if (l2->get_start_hour() + l2->get_duration() <= l1->get_start_hour()) continue;
@@ -78,7 +78,7 @@ bool Student::verify_remove(ClassSchedule* c) {
  * @param c
  * @return Error, Conflicts or Success
  */
-OperationResult Student::verify_add(ClassSchedule *c, bool ignore_conflicts) {
+OperationResult Student::verify_add(ClassSchedule *c) {
   // Number of UCs | O(1)
   if (this->classes.size() >= 7)
     return OperationResult::Error;
