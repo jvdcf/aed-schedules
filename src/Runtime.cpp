@@ -27,7 +27,7 @@ Runtime::Runtime(CSVStudentsClasses &sc, CSVClassPerUC &cpu, CSVClasses &c) {
 
   // 1. Populate lessons
   auto lessons = c.get_lessons();
-  c.sort_by("id");
+  c.sort();
 
   // 2. Populate classSchedules
   cpu.sort_by("id");
@@ -42,7 +42,6 @@ Runtime::Runtime(CSVStudentsClasses &sc, CSVClassPerUC &cpu, CSVClasses &c) {
       }
       break;
     }
-    cs.sort();
     classes.push_back(cs);
   }
 
