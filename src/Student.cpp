@@ -27,6 +27,13 @@ Student::Student(uint32_t code, std::string name) {
  */
 std::vector<ClassSchedule *> &Student::get_schedule() { return this->classes; }
 
+/**
+ * @brief Verifies if there are any time conflicts between the lessons of a given vector of classes.
+ * @details Theoretical complexity: O(n²), n being the number of lessons inside the vector.
+ * @param c_sched
+ * @param ignore_conflicts
+ * @return
+ */
 OperationResult Student::is_overlapping(std::vector<ClassSchedule *>& c_sched, bool ignore_conflicts) {
   for (int i = 0; i < c_sched.size(); i++) {
     for (int j = i + 1; j < c_sched.size(); j++) {
@@ -50,6 +57,7 @@ OperationResult Student::is_overlapping(std::vector<ClassSchedule *>& c_sched, b
 
 /**
  * @brief Verifies if this Student is enrolled in a given class, so that it can be removed later.
+ * @details Theoretical complexity: O(log(n)), n being the number of classes.
  * @param c
  * @return bool
  */
@@ -64,71 +72,42 @@ bool Student::verify_remove(ClassSchedule* c) {
  * The class must have a vacancy;
  * No time conflicts;
  * Only one class per UC;
- * All classes must be balanced (Difference lower than 4).
- *
+ * All classes must be balanced (Difference lower than or equal to 4).
+ * Theoretical complexity: O(n²), n being the number of lessons inside the vector.
  * @param c
  * @return Error, Conflicts or Success
  */
-OperationResult Student::verify_add(ClassSchedule *c) {
-  // Number of UCs
+OperationResult Student::verify_add(ClassSchedule *c, bool ignore_conflicts) {
+  // Number of UCs | O(1)
   if (this->classes.size() >= 7)
     return OperationResult::Error;
 
-  // Class vacancy
+  // Class vacancy | O(1)
   if (c->get_student_count() >= 30)
     return OperationResult::Error;
 
-  // One class per UC
+  // One class per UC | O(n)
   for (auto clas : this->get_schedule()) {
     if (clas->get_uc_code() == c->get_uc_code())
       return OperationResult::Error;
   }
 
-  // No time conflits
-  OperationResult highest = OperationResult::Success;
-  std::vector<Lesson *> new_lessons = c->get_class_schedule();
-  for (ClassSchedule *a : this->classes) {
-    std::vector<Lesson *> lessons = a->get_class_schedule();
-    for (Lesson *lesson : lessons) {
-      for (Lesson *new_lesson : new_lessons) {
-        if (lesson->get_day() == new_lesson->get_day()) {
-          // if new_lesson starts in the middle of lesson:
-          if (lesson->get_start_hour() < new_lesson->get_start_hour() &&
-              new_lesson->get_start_hour() <
-                  (lesson->get_start_hour() + lesson->get_duration())) {
-            if (lesson->get_type() == Type::T ||
-                new_lesson->get_type() == Type::T) {
-              highest = highest > OperationResult::Conflicts
-                            ? highest
-                            : OperationResult::Conflicts;
-              // We return conflicts so that
-              // the handler function can ask
-              // the user whether or not they
-              // want to proceed.
-            }
-            highest = highest > OperationResult::Error
-                            ? highest
-                            : OperationResult::Error;
-          }
-          // if lesson starts in the middle of new_lesson:
-          if (new_lesson->get_start_hour() < lesson->get_start_hour() &&
-              lesson->get_start_hour() <
-                  (new_lesson->get_start_hour() + new_lesson->get_duration())) {
-            if (lesson->get_type() == Type::T ||
-                new_lesson->get_type() == Type::T) {
-              highest = highest > OperationResult::Conflicts
-                            ? highest
-                            : OperationResult::Conflicts;
-            }
-            highest = highest > OperationResult::Error
-                            ? highest
-                            : OperationResult::Error;
-          }
-        }
-      }
-    }
+  // Balanced classes | O(n)
+  std::vector<uint64_t> occupancy;
+  for (ClassSchedule* class_ : this->get_schedule()) {
+    occupancy.push_back(class_->get_student_count());
   }
-  return highest;
+  occupancy.push_back(c->get_student_count());
+  auto [min, max] = std::minmax_element(occupancy.begin(), occupancy.end());
+  if (*max - *min > 4) return OperationResult::Error;
+
+  // No time conflicts | O(n²)
+  std::vector<ClassSchedule *> c_sched = this->get_schedule();
+  c_sched.push_back(c);
+  OperationResult result = is_overlapping(c_sched, ignore_conflicts);
+  if (result != OperationResult::Success) return result;
+
+  return OperationResult::Success;
 }
 
 /**
@@ -136,8 +115,22 @@ OperationResult Student::verify_add(ClassSchedule *c) {
  * @details No time conflicts are allowed for both students.
  */
 OperationResult Student::verify_switch(Student other, uint16_t uc_code) {
+  ClassSchedule* this_class = find_class(uc_code);
+  ClassSchedule* other_class = other.find_class(uc_code);
 
-  return OperationResult::Success;
+  std::vector<ClassSchedule *> sched = this->get_schedule();
+  std::erase(sched, this_class);
+  sched.push_back(other_class);
+  OperationResult result = is_overlapping(sched);
+  if (result != OperationResult::Success) return result;
+
+  sched.clear();
+
+  sched = other.get_schedule();
+  std::erase(sched, other_class);
+  sched.push_back(this_class);
+  result = other.is_overlapping(sched);
+  return result;
 }
 
 /**

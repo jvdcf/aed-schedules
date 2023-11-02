@@ -22,7 +22,7 @@ private:
   std::vector<ClassSchedule*> classes;
 
   ClassSchedule* find_class(uint16_t uc_code);
-  OperationResult is_overlapping(std::vector<ClassSchedule*>& c_shed, bool ignore_conflicts);
+  OperationResult is_overlapping(std::vector<ClassSchedule*>& c_shed, bool ignore_conflicts = false);
 
 public:
   Student(uint32_t code, std::string name);
@@ -32,7 +32,7 @@ public:
   bool operator<(const Student& other) const;
   std::vector<ClassSchedule*>& get_schedule();
   void add_to_class(ClassSchedule* c);
-  OperationResult verify_add(ClassSchedule* c);
+  OperationResult verify_add(ClassSchedule* c, bool ignore_conflicts = false);
   OperationResult verify_switch(Student other, uint16_t uc_code);
   bool verify_remove(ClassSchedule* c);
   void remove_from_class(ClassSchedule* c);
