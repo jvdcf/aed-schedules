@@ -306,7 +306,7 @@ void Runtime::process_args(std::vector<std::string> args) {
   }
 
     if (args[0] == "undo") {
-        if (args.size() != 0) {
+        if (args.size() != 1) {
             std::cerr << "ERROR: USAGE: undo" << std::endl;
         } else {
             Process t(TypeOfRequest::Undo);
@@ -640,29 +640,34 @@ void Runtime::handle_process(Process p) {
   }
 
   // handle undo--------------------------------------------------------------------------------------------------------
-    if (p.get_type() == TypeOfRequest::Undo) {
-        Process to_revert = history.top();
-        history.pop();
-        if (to_revert.get_type() == TypeOfRequest::Remove) {
-            Process t = Process(TypeOfRequest::Add);
-            t.add_operand(to_revert.get_ops()[0]);
-            t.add_operand(to_revert.get_ops()[1]);
-            t.add_operand(to_revert.get_ops()[2]);
-            procs.push(t);
-        }
-        if (to_revert.get_type() == TypeOfRequest::Add) {
+  if (p.get_type() == TypeOfRequest::Undo) {
+    if (history.empty()) {
+      std::cerr << "ERROR: There is nothing to undo." << std::endl;
+      return;
+    }
+
+    Process to_revert = history.top();
+    history.pop();
+    if (to_revert.get_type() == TypeOfRequest::Remove) {
+      Process t = Process(TypeOfRequest::Add);
+      t.add_operand(to_revert.get_ops()[0]);
+      t.add_operand(to_revert.get_ops()[1]);
+      t.add_operand(to_revert.get_ops()[2]);
+      procs.push(t);
+    }
+    if (to_revert.get_type() == TypeOfRequest::Add) {
             Process t = Process(TypeOfRequest::Remove);
             t.add_operand(to_revert.get_ops()[0]);
             t.add_operand(to_revert.get_ops()[1]);
             procs.push(t);
-        }
-        if (to_revert.get_type() == TypeOfRequest::Switch) {
-            procs.push(to_revert);
-        }
-        Process pop = Process(TypeOfRequest::PopHistory);
-        procs.push(pop);
-        return;
     }
+    if (to_revert.get_type() == TypeOfRequest::Switch) {
+      procs.push(to_revert);
+    }
+    Process pop = Process(TypeOfRequest::PopHistory);
+    procs.push(pop);
+    return;
+  }
 
   // handle pop
     if (p.get_type() == TypeOfRequest::PopHistory) {
