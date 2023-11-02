@@ -270,7 +270,14 @@ void Runtime::handle_process(Process p) {
   }
 }
 
-
+/**
+ * Since new classes are not created, the only file to be updated is the
+ * student_classes.csv. Thus, the only CSV class that needs to be updated is the
+ * CSVStudentClasses. To update this class, we create a new vector that will
+ * substitute the entries attribute in CSVStudentClasses.
+ * Theoretical complexity: O(n), n being the number of entries in the vector of the CSVStudentClasses.
+ * @brief Updates the data in the CSV classes.
+ */
 void Runtime::save_all() {
   std::vector<StudentsClasses> ret;
   for (Student s : students) {
