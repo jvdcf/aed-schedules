@@ -8,7 +8,8 @@ using namespace std;
 
 
 /**
- * The constructor reads the line and assigns each string value to its attribute.
+ * @brief The constructor reads the line and assigns each string value to its attribute.
+ * Theoretical Complexity: O(n), n being the number of characters in a csv line.
  * @param line
  * @tparam std::string
  */
@@ -25,16 +26,38 @@ Lesson::Lesson(std::string line) {
 
 //______________________________________________________________________________________________________________________
 // Getters:
+/**
+ * @brief Getter for day.
+ * @return day
+ */
 WeekDay Lesson::get_day() const { return day; }
 
+/**
+ * @brief Getter for start_hour.
+ * @return start_hour
+ */
 double Lesson::get_start_hour() const { return start_hour; }
 
+/**
+ * @brief Getter for duration.
+ * @return duration
+ */
 double Lesson::get_duration() const { return duration; }
 
+/**
+ * @brief Getter for type
+ * @return type
+ */
 Type Lesson::get_type() const { return type; }
 
 //______________________________________________________________________________________________________________________
 // Parsers:
+/**
+ * @brief Parse day from a std::string to an WeekDay (enum).
+ * @details Useful to save memory and to make comparisons faster.
+ * @param day
+ * @return day as WeekDay
+ */
 WeekDay Lesson::parse_day(std::string day) {
   if (day == "Monday") {
     return WeekDay::MONDAY;
@@ -53,6 +76,12 @@ WeekDay Lesson::parse_day(std::string day) {
   }
 }
 
+/**
+ * @brief Parse type from a std::string to an Type (enum).
+ * @details Useful to save memory and to make comparisons faster.
+ * @param type
+ * @return type as Type
+ */
 Type Lesson::parse_type(std::string type) {
   if (type == "T") {
     return Type::T;
@@ -64,9 +93,8 @@ Type Lesson::parse_type(std::string type) {
 }
 
 /**
- * This method converts the attribute day into a string and assigns the parameter out with its string value.
+ * @brief This method converts the attribute day into a string and assigns the parameter out with its string value.
  * @param out
- * @tparam std::string
  */
 void Lesson::day_to_str(std::string &out) const {
   if (day == WeekDay::MONDAY) {
@@ -87,9 +115,8 @@ void Lesson::day_to_str(std::string &out) const {
 }
 
 /**
- * This method converts the attribute type into a string and assigns the parameter out with its string value.
+ * @brief This method converts the attribute type into a string and assigns the parameter out with its string value.
  * @param out
- * @tparam std::string
  */
 void Lesson::type_to_str(std::string &out) const {
   if (type == Type::T) {
@@ -104,7 +131,7 @@ void Lesson::type_to_str(std::string &out) const {
 //______________________________________________________________________________________________________________________
 // Other Methods:
 /**
- * This method prints the csv line of the current state of the object.
+ * @brief This method prints the csv line of the current state of the object.
  */
 void Lesson::display() const {
   string uc;

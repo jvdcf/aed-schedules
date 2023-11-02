@@ -8,8 +8,8 @@
 /**
  * This function converts a string to a 8 bit hash.
  * This algorithm (djb2 hash) is better explained here: https://theartincode.stanis.me/008-djb2/
+ * Theoretical Complexity: O(n), n being the number of characters in the string.
  * @param s
- * @tparam std::string
  * @return the string converted to hash
  */
 uint8_t hash_str(std::string s) {
@@ -20,6 +20,15 @@ uint8_t hash_str(std::string s) {
   return (uint8_t)(hash % 256);
 }
 
+/**
+ * This function converts a uc code (in string) to a 16 bit hash.
+ * The non numerical part will be stored in the first 8 bits and the algorith (djb2 hash) to
+ * transform a string in a hash code is better explained here: https://theartincode.stanis.me/008-djb2/
+ * The numerical part will be stored in the last 8 bits.
+ * Theoretical Complexity: O(n), n being the number of characters in the string.
+ * @param uc_code
+ * @return the hash code for the given uc_code.
+ */
 uint16_t parse_uc_gen(std::string uc_code) {
   uint64_t hash = 5381;
   std::string num_part;
@@ -74,8 +83,8 @@ uint16_t parse_class_gen(std::string class_code) {
 
 /**
  * This function checks if a given character in a number.
+ * Theoretical Complexity: O(1).
  * @param c
- * @tparam uint32_t
  * @return bool
  */
 bool isnum(uint32_t c) { return (c >= '0' && c <= '9'); }
@@ -83,10 +92,9 @@ bool isnum(uint32_t c) { return (c >= '0' && c <= '9'); }
 /**
  * This function reads a line of the csv file given in the parameter std::string s and appends to the vector passed
  * by reference res the comma separated values of the line
+ * Theoretical Complexity: O(n), n being the number of values in the line.
  * @param s
- * @tparam std::string
  * @param res
- * @tparam std::vector<std::string>
  */
 void parse_csv_line(std::string s, std::vector<std::string> &res) {
   std::stringstream line(s);

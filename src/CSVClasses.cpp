@@ -11,6 +11,7 @@
 
 /**
  * @brief This constructor receives a string containing all the lines of a csv file and creates the AppClass from it.
+ * Theoretical Complexity: O(n), n being the number of characters in a csv line.
  * @param csv
  */
 CSVClasses::CSVClasses(const std::string& csv) {

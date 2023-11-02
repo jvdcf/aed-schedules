@@ -37,11 +37,18 @@ enum class Type {
   PL,
 };
 
+/**
+ * @brief A lesson from a given class and a representation of one line inside the file classes.csv
+ */
 class Lesson : public ClassPerUC {
 private:
+  /// The day of the week the class takes place.
   WeekDay day;
+  /// The hour the class starts.
   float start_hour;
+  /// How long the class lasts.
   float duration;
+  /// The type of class: T, TP or PL.
   Type type;
 
 public:

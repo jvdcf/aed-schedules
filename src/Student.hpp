@@ -16,11 +16,16 @@
 
 // };
 
-
+/**
+ * @brief A student and their respective classes.
+ */
 class Student {
 private:
+  /// The student's code.
   uint32_t code;
+  /// The student's name.
   std::string name;
+  /// Pointers to all of the classes associated to this student.
   std::vector<ClassSchedule*> classes;
 
   ClassSchedule* find_class(uint16_t uc_code);
