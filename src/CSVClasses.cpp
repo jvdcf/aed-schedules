@@ -4,6 +4,7 @@
 #include "CSVClasses.hpp"
 #include "Lesson.hpp"
 #include <algorithm>
+#include <cstdlib>
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -27,7 +28,14 @@ CSVClasses::CSVClasses(const std::string& csv) {
   std::stringstream s(contents);
   std::string line;
   this->entries = std::vector<Lesson>();
-  getline(s, line, '\n');
+  if (!getline(s, line, '\n')) {
+    std::cerr << "ERROR: CRITICAL: INVALID FILE CSVCLASSES" << std::endl;
+    std::exit(1);
+  }
+  if (line != "ClassCode,UcCode,Weekday,StartHour,Duration,Type") {
+    std::cerr << "ERROR: CRITICAL: INVALID FILE CSVCLASSES" << std::endl;
+    std::exit(1);
+  }
   line.clear();
   while (std::getline(s, line, '\n')) {
     this->entries.push_back(Lesson(line));

@@ -29,7 +29,14 @@ CSVStudentsClasses::CSVStudentsClasses(const std::string &csv) {
   std::stringstream s(contents);
   std::string line;
   this->entries = std::vector<StudentsClasses>();
-  getline(s, line, '\n');
+  if (!getline(s, line, '\n')) {
+    std::cerr << "ERROR: CRITICAL: INVALID FILE CSVSTUDENTCLASSES" << std::endl;
+    std::exit(1);
+  }
+  if (line != "StudentCode,StudentName,UcCode,ClassCode") {
+    std::cerr << "ERROR: CRITICAL: INVALID FILE CSVSTUDENTCLASSES" << std::endl;
+    std::exit(1);
+  }
   line.clear();
   while (std::getline(s, line, '\n')) {
     this->entries.push_back(StudentsClasses(line));
