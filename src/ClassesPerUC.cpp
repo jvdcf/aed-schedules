@@ -79,23 +79,7 @@ uint16_t ClassPerUC::parse_uc(std::string uc_code) {
  * @return class_code as uint16_t
  */
 uint16_t ClassPerUC::parse_class(std::string class_code) {
-  uint8_t year = class_code[0] - '0';
-  std::string classnum;
-  for (int i = 1; i < class_code.size(); ++i) {
-    if (isnum(class_code[i])) {
-      classnum.push_back(class_code[i]);
-    }
-  }
-  try {
-    uint8_t num = 0;
-    if (classnum != "") {
-      num = std::stoi(classnum);
-    }
-    return ((uint16_t)year << 8) + num;
-  } catch (std::invalid_argument &e) {
-    std::cerr << e.what() << " class: failed to parse" << '\n';
-    std::exit(1);
-  }
+  return parse_class_gen(class_code); 
 }
 
 /**

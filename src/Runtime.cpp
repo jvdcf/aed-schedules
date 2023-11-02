@@ -379,6 +379,50 @@ void Runtime::handle_process(Process p) {
     return;
   }
 
+  if (p.get_type() == TypeOfRequest::Add) {
+    uint32_t student_code;
+    try {
+      student_code = std::stoi(ops[0]);
+    } catch (std::exception e) {
+      std::cerr << "ERROR: The string " << ops[0] << " is not a student_code."
+                << std::endl;
+      return;
+    }
+    uint32_t id = ((uint32_t)parse_uc_gen(ops[1]) << 16) + parse_class_gen(ops[2]);
+    ClassSchedule* target;
+    for (auto sched : this->classes) {
+      if (sched.get_id() == id) {
+        target = &sched;
+      }
+    }
+    if (auto itr = students.find(Student(student_code, "")); itr != students.end()) {
+      Student s = *itr;
+      switch (s.verify_add(target)) {
+        case OperationResult::Success:
+          students.erase(s);
+          s.add_to_class(target);
+          students.insert(s);
+          history.push(p);
+        break;
+        case OperationResult::Error:
+          std::cerr << "ERROR: Critical conflicts found: the schedule is not valid. Skipping." << std::endl;
+        break;
+        case OperationResult::Conflicts:
+          std::string answer;
+          std::cout << "WARNING: Conflict found, some classes overlap non critically. Do you wish to proceed adding? [y/N] ";
+          std::cin >> std::noskipws >> answer;
+          if (answer == "y") {
+            students.erase(s);
+            s.add_to_class(target);
+            students.insert(s);
+            history.push(p);
+          } 
+        break;
+      }
+    }
+
+  }
+
   // handle print student
   if (p.get_type() == TypeOfRequest::Print_Student) {
     uint32_t student_code;
