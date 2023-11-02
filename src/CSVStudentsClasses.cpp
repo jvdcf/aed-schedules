@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
+#include <ostream>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -30,11 +31,12 @@ CSVStudentsClasses::CSVStudentsClasses(const std::string &csv) {
   std::string line;
   this->entries = std::vector<StudentsClasses>();
   if (!getline(s, line, '\n')) {
-    std::cerr << "ERROR: CRITICAL: INVALID FILE CSVSTUDENTCLASSES" << std::endl;
+    std::cerr << "ERROR: CRITICAL: INVALID FILE CSVSTUDENTCLASSES(0)" << std::endl;
     std::exit(1);
   }
   if (line != "StudentCode,StudentName,UcCode,ClassCode") {
-    std::cerr << "ERROR: CRITICAL: INVALID FILE CSVSTUDENTCLASSES" << std::endl;
+    std::cout << line <<" != " << std::string("StudentCode,StudentName,UcCode,ClassCode") << std::endl;
+    std::cerr << "ERROR: CRITICAL: INVALID FILE CSVSTUDENTCLASSES(1)" << std::endl;
     std::exit(1);
   }
   line.clear();
