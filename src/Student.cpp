@@ -26,7 +26,7 @@ Student::Student(uint32_t code, std::string name) {
  */
 std::vector<ClassSchedule *> &Student::get_schedule() { return this->classes; }
 
-OperationResult Student::is_overlaping(std::vector<ClassSchedule *> c_sched) {
+OperationResult Student::is_overlapping(std::vector<ClassSchedule *>& c_sched) {
   for (int i = 0; i < c_sched.size(); i++) {
     for (int j = i + 1; j < c_sched.size(); j++) {
 
