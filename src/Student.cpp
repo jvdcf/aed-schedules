@@ -38,7 +38,6 @@ OperationResult Student::is_overlapping(std::vector<ClassSchedule *>& c_sched) {
   OperationResult result = OperationResult::Success;
   for (int i = 0; i < c_sched.size(); i++) {
     for (int j = i + 1; j < c_sched.size(); j++) {
-
       for (auto l1: classes[i]->get_class_schedule()) {
         for (auto l2: classes[j]->get_class_schedule()) {
           if (l1->get_day() != l2->get_day()) continue;
@@ -47,6 +46,7 @@ OperationResult Student::is_overlapping(std::vector<ClassSchedule *>& c_sched) {
 
           if (l1->get_type() == Type::T || l2->get_type() == Type::T) {
             result = OperationResult::Conflicts;
+            continue;
           }
           return OperationResult::Error;
         }
@@ -106,9 +106,7 @@ OperationResult Student::verify_add(ClassSchedule *c, bool ignore_conflicts) {
   std::vector<ClassSchedule *> c_sched = this->get_schedule();
   c_sched.push_back(c);
   OperationResult result = is_overlapping(c_sched);
-  if (result != OperationResult::Success) return result;
-
-  return OperationResult::Success;
+  return result;
 }
 
 /**

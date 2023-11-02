@@ -388,39 +388,46 @@ void Runtime::handle_process(Process p) {
                 << std::endl;
       return;
     }
-    uint32_t id = ((uint32_t)parse_uc_gen(ops[1]) << 16) + parse_class_gen(ops[2]);
-    ClassSchedule* target;
-    for (auto sched : this->classes) {
+    uint32_t id = (((uint32_t)parse_uc_gen(ops[1])) << 16) + parse_class_gen(ops[2]);
+    ClassSchedule* target = nullptr;
+    for (ClassSchedule sched : this->classes) {
+      //std::cout << id << "==" << sched.get_id() << std::endl;
       if (sched.get_id() == id) {
         target = &sched;
+        break;
       }
+    }
+    if (target == nullptr) {
+      std::cerr << "ERROR: Did not find class with id: " << id << std::endl;
+      return;
     }
     if (auto itr = students.find(Student(student_code, "")); itr != students.end()) {
       Student s = *itr;
-      switch (s.verify_add(target)) {
-        case OperationResult::Success:
+      OperationResult res = s.verify_add(target);
+      if (res == OperationResult::Success) {
+        students.erase(s);
+        s.add_to_class(target);
+        students.insert(s);
+        history.push(p);
+        return;
+      }
+      if (res == OperationResult::Conflicts) {
+        std::string answer;
+        std::cout << "WARNING: Conflict found, some classes overlap non critically. Do you wish to proceed adding? [y/N] ";
+        std::cin >> std::noskipws >> answer;
+        if (answer == "y") {
           students.erase(s);
           s.add_to_class(target);
           students.insert(s);
           history.push(p);
-        break;
-        case OperationResult::Error:
-          std::cerr << "ERROR: Critical conflicts found: the schedule is not valid. Skipping." << std::endl;
-        break;
-        case OperationResult::Conflicts:
-          std::string answer;
-          std::cout << "WARNING: Conflict found, some classes overlap non critically. Do you wish to proceed adding? [y/N] ";
-          std::cin >> std::noskipws >> answer;
-          if (answer == "y") {
-            students.erase(s);
-            s.add_to_class(target);
-            students.insert(s);
-            history.push(p);
-          } 
-        break;
+        } 
+        return;
+      }
+      if (res == OperationResult::Error) {
+        std::cerr << "ERROR: Critical conflicts found: the schedule is not valid. Skipping." << std::endl;
+        return;
       }
     }
-
   }
 
   // handle print student
