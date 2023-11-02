@@ -1,4 +1,4 @@
-/*
+/**
  * @file main.cpp
  * @brief Point of entry of the program.
  */

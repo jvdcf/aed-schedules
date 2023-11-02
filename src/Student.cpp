@@ -9,12 +9,21 @@
 #include <vector>
 #include <iostream>
 
+/**
+ * @brief The constructor assigns the code and name to the respective attributes.
+ * @param code
+ * @param name
+ */
 Student::Student(uint32_t code, std::string name) {
   this->code = code;
   this->name = name;
   this->classes = std::vector<ClassSchedule *>();
 }
 
+/**
+ * @brief Getter for the student's schedule.
+ * @return Pointer to classes
+ */
 std::vector<ClassSchedule *> &Student::get_schedule() { return this->classes; }
 
 /**
@@ -126,7 +135,8 @@ void Student::remove_from_class(ClassSchedule *c) {
 
 /**
  * Switch the classes of Student and other Student with a given uc_code
- * @param Student
+ * @param other
+ * @param uc_code
  */
 void Student::switch_class_with(Student other, uint16_t uc_code) {
   ClassSchedule* this_class = this->find_class(uc_code);
@@ -142,6 +152,11 @@ void Student::switch_class_with(Student other, uint16_t uc_code) {
   other.add_to_class(this_class);
 }
 
+/**
+ * @brief Overload of the < operator.
+ * @param other
+ * @return bool
+ */
 bool Student::operator<(const Student &other) const {
   return this->code < other.code;
 }
@@ -156,8 +171,20 @@ bool Student::operator<(const Student &other) const {
 //   return other.get_code() < s.get_key();
 // }
 
+
+
+/**
+ * @brief Getter for code.
+ * @return code
+ */
 uint32_t Student::get_code() const { return code; }
 
+
+/**
+ * @brief Verifies if this Student is enrolled in a given class, so that it can be removed later.
+ * @param c
+ * @return bool
+ */
 bool Student::verify_remove(ClassSchedule* c) {
   for (std::vector<ClassSchedule *>::iterator itr = this->classes.begin();
        itr != this->classes.end(); ++itr) {
@@ -168,6 +195,12 @@ bool Student::verify_remove(ClassSchedule* c) {
   return false;
 }
 
+/**
+ * @brief Find a class with a given uc_code.
+ * @details Theoretical complexity: O(log(n)), n being the number of classes.
+ * @param uc_code
+ * @return
+ */
 ClassSchedule* Student::find_class(uint16_t uc_code) {
   size_t high = classes.size();
   size_t low = 0;
@@ -184,4 +217,8 @@ ClassSchedule* Student::find_class(uint16_t uc_code) {
   return nullptr;
 }
 
+/**
+ * @brief Getter for name.
+ * @return name
+ */
 const std::string& Student::get_name() const {return name;}

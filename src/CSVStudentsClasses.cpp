@@ -13,7 +13,8 @@
 
 
 /**
- * This constructor receives a string containing all the lines of a csv file and creates the AppSudentClass from it.
+ * @brief This constructor receives a string containing all the lines of a csv file and creates the AppSudentClass from it.
+ * @details Theoretical Complexity: O(n), n being the number of characters in a csv line.
  * @param csv
  */
 CSVStudentsClasses::CSVStudentsClasses(const std::string& csv) {
@@ -51,6 +52,9 @@ void CSVStudentsClasses::sort() {
 }
 
 // Debug
+/**
+ * @brief Displays the contents of the class.
+ */
 void CSVStudentsClasses::display() const {
     std::cout << "StudentCode" << ','
               << "StudentName" << ','
@@ -61,4 +65,8 @@ void CSVStudentsClasses::display() const {
     }
 }
 
+/**
+ * @brief Getter for the vector of StudentsClasses.
+ * @return Pointer to entries
+ */
 std::vector<StudentsClasses> *CSVStudentsClasses::get_students() {return &this->entries;}

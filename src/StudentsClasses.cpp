@@ -13,8 +13,8 @@
 
 /**
  * The constructor reads the line and assigns each string value to its attribute.
+ * Theoretical Complexity: O(n), n being the number of values in the line.
  * @param line
- * @tparam std::string
  */
 StudentsClasses::StudentsClasses(std::string& line) {
     std::vector<std::string> linebuf;
@@ -25,13 +25,28 @@ StudentsClasses::StudentsClasses(std::string& line) {
     class_code_ = parse_class(linebuf[3]);
 }
 
-
 // Getters
+/**
+ * @brief Accesses the student code.
+ * Theoretical Complexity: O(1).
+ * @return the student code
+ */
 uint32_t StudentsClasses::get_student_code() const {return student_code_;}
-const std::string &StudentsClasses::get_student_name() const {return student_name_;}
 
+/**
+ * @brief Accesses the student name
+ * Theoretical Complexity: O(1).
+ * @return a const reference to the student name.
+ */
+const std::string & StudentsClasses::get_student_name() const {return student_name_;}
 
 // Parsers
+/**
+ * @brief Converts the student code from string to a 32 bits unsigned integer.
+ * Theoretical Complexity: O(1).
+ * @param student_code
+ * @return a 32 bits unsigned integer corresponding to the student code.
+ */
 uint32_t StudentsClasses::parse_student_code(const std::string& student_code) const {
     std::istringstream iss(student_code);
     uint32_t student_code_int;
@@ -39,12 +54,11 @@ uint32_t StudentsClasses::parse_student_code(const std::string& student_code) co
     return student_code_int;
 }
 
-
 // String format
 /**
  * This method converts the attribute student_code_ into a string and assigns the parameter out with its string value.
+ * Theoretical Complexity: O(1).
  * @param student_code
- * @tparam std::string
  */
 void StudentsClasses::student_code_to_str(std::string& student_code) const {
     student_code = std::to_string(student_code_);
@@ -53,6 +67,7 @@ void StudentsClasses::student_code_to_str(std::string& student_code) const {
 // Debug
 /**
  * This method prints the csv line of the current state of the object.
+ * Theoretical Complexity: O(1).
  */
 void StudentsClasses::display() const {
     std::string student_code;

@@ -7,9 +7,12 @@
 #include <string>
 #include <vector>
 
-
+/**
+ * @brief Representation of the file students_classes.csv
+ */
 class CSVStudentsClasses {
 private:
+    /// Vector with every line of the file
     std::vector<StudentsClasses> entries;
 
 public:

@@ -100,8 +100,8 @@ uint16_t ClassPerUC::parse_class(std::string class_code) {
 
 /**
  * @brief This method converts the attribute uc_code_ into a string and assigns the parameter out with its string value.
+ * Theoretical Complexity: O(1).
  * @param out
- * @tparam std::string
  */
 void ClassPerUC::uc_to_str(std::string &out) const {
     std::stringstream s;
@@ -119,8 +119,8 @@ void ClassPerUC::uc_to_str(std::string &out) const {
 
 /**
  * @brief This method converts the attribute class_code_ into a string and assigns the parameter out with its string value.
+ * Theoretical Complexity: O(1).
  * @param out
- * @tparam std::string
  */
 void ClassPerUC::class_to_str(std::string &out) const {
   std::stringstream s;
@@ -136,6 +136,7 @@ void ClassPerUC::class_to_str(std::string &out) const {
 
 /**
  * @brief This method prints the csv line of the current state of the object.
+ * Theoretical Complexity: O(1).
  */
 void ClassPerUC::display() const {
     // std::cout << "UcCode,ClassCode\n";
