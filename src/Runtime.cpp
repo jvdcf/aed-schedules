@@ -166,10 +166,10 @@ void Runtime::run() {
 
 void Runtime::process_args(std::vector<std::string> args) {
   if (args[0] == "quit") {
-    std::string answer;
+    char answer;
     std::cout << "Do you wish to save any changes you have made? [y/N]" << std::endl;
     std::cin >> std::noskipws >> answer;
-    if (answer == "y") {
+    if (answer == 'y') {
       std::cout << "Saving..." << std::endl;
       this->save_all();
       this->students_classes_->write_to_file();
