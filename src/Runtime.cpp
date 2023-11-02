@@ -305,36 +305,42 @@ void Runtime::process_args(std::vector<std::string> args) {
     return;
   }
 
+    if (args[0] == "undo") {
+        if (args.size() != 0) {
+            std::cerr << "ERROR: USAGE: undo" << std::endl;
+        } else {
+            Process t(TypeOfRequest::Undo);
+            procs.push(t);
+        }
+        return;
+    }
+
   if (args[0] == "help") {
     std::cout
         << "The available commands are:\n"
-        << "    print student:  takes 1 argument:  print student  "
-           "<student_code>\n"
+        << "    print student:  takes 1 argument:       print student  <student_code>\n"
         << "        Prints the student name, enrolled classes and schedule.\n\n"
-        << "    print uc:       takes 1 argument:  print uc       <uc_code>\n"
+        << "    print uc:       takes 1 argument:       print uc       <uc_code>\n"
         << "        Prints all the classes associated with this UC.\n\n"
-        << "    print class:    takes 2 argument:  print class    <uc_code> "
-           "<class_code>\n"
-        << "        Prints the number of students enrolled and the "
-           "schedule.\n\n"
-        << "    add:            takes 3 arguments: add            "
-           "<student_code> <uc_code> <class_code>\n"
+        << "    print class:    takes 2 argument:       print class    <uc_code> <class_code>\n"
+        << "        Prints the number of students enrolled and the schedule.\n\n"
+        << "    add:            takes 3 arguments:      add            <student_code> <uc_code> <class_code>\n"
         << "        Adds a student to a class if possible.\n\n"
-        << "    remove:         takes 2 arguments: remove         "
-           "<student_code> <uc_code>\n"
+        << "    remove:         takes 2 arguments:      remove         <student_code> <uc_code>\n"
         << "        Removes a student from a class if possible.\n\n"
-        << "    switch:         takes 3 arguments: switch         "
-           "<student_code> <student_code> <uc_code>\n"
+        << "    switch:         takes 3 arguments:      switch         <student_code> <student_code> <uc_code>\n"
         << "        Switches the class of two students.\n\n"
-        << "    student_count:  takes 0 arguments: student_count\n"
+        << "    student_count:  takes 0 arguments:      student_count\n"
         << "        Displays the number of students enrolled.\n\n"
-        << "    student_list:  takes 0 or 2 arguments: student_count [<first_position> <number_of_students>]\n"
+        << "    student_list:   takes 0 or 2 arguments: student_count  [<first_position> <number_of_students>]\n"
         << "        Displays the students enrolled with the option (denoted in []) of specifying a beginning and number of students to display.\n\n"
-        << "    quit:           takes 0 arguments: quit\n"
+        << "    undo:           takes 0 arguments:      undo\n"
+        << "        Reverts the last change.\n\n"
+        << "    quit:           takes 0 arguments:      quit\n"
         << "        Quits the program.\n\n"
-        << "    save:           takes 0 or 1 arguments: save [<filename>]\n"
+        << "    save:           takes 0 or 1 arguments: save           [<filename>]\n"
         << "        Saves the changes to the csv which contains the students and their relations to the classes, and optionally takes a filename.\n\n"
-        << "    help:           takes 0 arguments: help\n"
+        << "    help:           takes 0 arguments:      help\n"
         << "        Prints this help.\n\n";
     return;
   }
@@ -347,7 +353,7 @@ void Runtime::process_args(std::vector<std::string> args) {
 void Runtime::handle_process(Process p) {
   std::vector<std::string> ops = p.get_ops();
 
-  // handle remove
+  // handle remove------------------------------------------------------------------------------------------------------
   if (p.get_type() == TypeOfRequest::Remove) {
     uint32_t student_code;
     try {
@@ -366,9 +372,12 @@ void Runtime::handle_process(Process p) {
         if (a->get_uc_code() == uc_code) {
           // std::cout << "Lookup: " << uc_code << "\nFound: " <<
           // a->get_uc_code() << std::endl;
+          std::string class_code;
+          a->class_to_str(class_code);
           s.remove_from_class(a);
           students.erase(s);
           students.insert(s);
+          p.add_operand(class_code);
           history.push(p);
           return;
         }
@@ -380,7 +389,8 @@ void Runtime::handle_process(Process p) {
     return;
   }
 
-  if (p.get_type() == TypeOfRequest::Add) {
+ // handle add--------------------------------------------------------------------------------------------------------
+ if (p.get_type() == TypeOfRequest::Add) {
     uint32_t student_code;
     try {
       student_code = std::stoi(ops[0]);
@@ -482,7 +492,7 @@ void Runtime::handle_process(Process p) {
     }
   }
 
-  // handle print student
+  // handle print student-----------------------------------------------------------------------------------------------
   if (p.get_type() == TypeOfRequest::Print_Student) {
     uint32_t student_code;
     try {
@@ -542,7 +552,7 @@ void Runtime::handle_process(Process p) {
     return;
   }
 
-  // handle print uc
+  // handle print uc----------------------------------------------------------------------------------------------------
   if (p.get_type() == TypeOfRequest::Print_UC) {
     uint16_t uc_code = parse_uc_gen(ops[0]);
     std::vector<ClassSchedule *> classes_found = find_uc(uc_code);
@@ -561,7 +571,7 @@ void Runtime::handle_process(Process p) {
     return;
   }
 
-  // handle print class
+  // handle print class-------------------------------------------------------------------------------------------------
   if (p.get_type() == TypeOfRequest::Print_Class) {
     uint16_t uc_code = parse_uc_gen(ops[0]);
     uint16_t class_code = parse_class_gen(ops[1]);
@@ -580,12 +590,14 @@ void Runtime::handle_process(Process p) {
     return;
   }
 
+  // handle student_count-----------------------------------------------------------------------------------------------
   if (p.get_type() == TypeOfRequest::Print_Student_Count) {
     std::cout << "There are " << this->students.size() << " students enrolled."
               << std::endl;
     return;
   }
 
+  // handle student_list------------------------------------------------------------------------------------------------
   if (p.get_type() == TypeOfRequest::Print_Student_List) {
     std::vector<std::string> args = p.get_ops();
     uint64_t start = 0;
@@ -617,13 +629,45 @@ void Runtime::handle_process(Process p) {
     return;
   }
 
+  // handle save--------------------------------------------------------------------------------------------------------
   if(p.get_type() == TypeOfRequest::Save) {
     if (p.get_ops().size() != 0) {
       this->students_classes_->set_filename(p.get_ops()[0]);
     }
     this->save_all();
     this->students_classes_->write_to_file();
+    return;
   }
+
+  // handle undo--------------------------------------------------------------------------------------------------------
+    if (p.get_type() == TypeOfRequest::Undo) {
+        Process to_revert = history.top();
+        history.pop();
+        if (to_revert.get_type() == TypeOfRequest::Remove) {
+            Process t = Process(TypeOfRequest::Add);
+            t.add_operand(to_revert.get_ops()[0]);
+            t.add_operand(to_revert.get_ops()[1]);
+            t.add_operand(to_revert.get_ops()[2]);
+            procs.push(t);
+        }
+        if (to_revert.get_type() == TypeOfRequest::Add) {
+            Process t = Process(TypeOfRequest::Remove);
+            t.add_operand(to_revert.get_ops()[0]);
+            t.add_operand(to_revert.get_ops()[1]);
+            procs.push(t);
+        }
+        if (to_revert.get_type() == TypeOfRequest::Switch) {
+            procs.push(to_revert);
+        }
+        Process pop = Process(TypeOfRequest::PopHistory);
+        procs.push(pop);
+        return;
+    }
+
+  // handle pop
+    if (p.get_type() == TypeOfRequest::PopHistory) {
+        history.pop();
+    }
 }
 
 void Runtime::print_schedule(const std::vector<Lesson *> &schedule) const {

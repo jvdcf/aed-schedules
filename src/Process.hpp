@@ -15,6 +15,8 @@ enum class TypeOfRequest {
   Print_Student_List,
   Batch,
   Save,
+  Undo,
+  PopHistory,
 };
 
 /**
