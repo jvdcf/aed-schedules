@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <cstdio>
 #include <vector>
+#include <algorithm>
 
 /**
  * @brief Constructor of the class.
@@ -70,8 +71,23 @@ uint64_t ClassSchedule::get_student_count() const {
  * @brief Getter for class_schedule.
  * @return class_schedule
  */
-std::vector<Lesson*>* ClassSchedule::get_class_schedule() {
-  return &this->classes;
+const std::vector<Lesson*> & ClassSchedule::get_class_schedule() {
+  return this->classes;
+}
+
+void ClassSchedule::sort() {
+  std::sort(this->classes.begin(), this->classes.end(), [](Lesson *a, Lesson *b) {
+    if (a->get_day() == b->get_day()) {
+      if (a->get_start_hour() == b->get_start_hour()) {
+        if (a->get_duration() == b->get_duration()) {
+          return a->get_type() < b->get_type();
+        }
+        else return a->get_duration() < b->get_duration();
+      }
+      else return a->get_start_hour() < b->get_start_hour();
+    }
+    else return a->get_day() < b->get_day();
+  });
 }
 
 /**

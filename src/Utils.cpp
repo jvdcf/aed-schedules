@@ -55,6 +55,33 @@ uint16_t parse_uc_gen(std::string uc_code) {
 }
 
 /**
+ * @brief Parse class_code from a std::string to an uint16_t.
+ * @details Useful to save memory and to make comparisons faster.
+ * Theoretical Complexity: O(n), n being the number of characters of the std::string.
+ * @param class_code
+ * @return class_code as uint16_t
+ */
+uint16_t parse_class_gen(std::string class_code) {
+  uint8_t year = class_code[0] - '0';
+  std::string classnum;
+  for (int i = 1; i < class_code.size(); ++i) {
+    if (isnum(class_code[i])) {
+      classnum.push_back(class_code[i]);
+    }
+  }
+  try {
+    uint8_t num = 0;
+    if (!classnum.empty()) {
+      num = std::stoi(classnum);
+    }
+    return ((uint16_t)year << 8) + num;
+  } catch (std::invalid_argument &e) {
+    std::cerr << e.what() << " class: failed to parse" << '\n';
+    std::exit(1);
+  }
+}
+
+/**
  * This function checks if a given character in a number.
  * Theoretical Complexity: O(1).
  * @param c
