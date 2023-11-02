@@ -165,9 +165,18 @@ void Runtime::run() {
 
 void Runtime::process_args(std::vector<std::string> args) {
   if (args[0] == "quit") {
-    std::cout << "Quitting..." << std::endl;
-    // TODO: Call saving functions
-    std::exit(1);
+      std::cout << "Do you wish to save? (Y/n) ";
+      char c;
+      std::cin >> c;
+      std::cout << std::endl;
+      if (c == 'n') {
+          std::cout << "Quitting..." << std::endl;
+          std::exit(1);
+      } else {
+          save_all();
+          std::cout << "Quitting..." << std::endl;
+          std::exit(1);
+      }
   }
   if (args[0] == "remove") {
     if (args.size() != 3) {
