@@ -3,6 +3,8 @@
  */
 #include "StudentsClasses.hpp"
 #include "Utils.hpp"
+#include <cstdlib>
+#include <exception>
 #include <string>
 #include <cstdint>
 #include <vector>
@@ -40,10 +42,14 @@ const std::string &StudentsClasses::get_student_name() const {return student_nam
 
 // Parsers
 uint32_t StudentsClasses::parse_student_code(const std::string& student_code) const {
-    std::istringstream iss(student_code);
-    uint32_t student_code_int;
-    iss >> student_code_int;
-    return student_code_int;
+  uint32_t student_code_int;  
+  try {
+    student_code_int = std::stoi(student_code);
+  } catch (std::exception e) {
+    std::cerr << "ERROR: CRITICAL: CSV StudentsClasses has invalid information saved; Exiting." << std::endl;
+    std::exit(1);
+  }
+  return student_code_int;
 }
 
 
