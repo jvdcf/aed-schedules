@@ -444,7 +444,7 @@ void Runtime::handle_process(Process p) {
     for (auto i : classes_found) {
       std::string class_code;
       i->class_to_str(class_code);
-      std::cout << class_code << std::endl;
+      std::cout << class_code << ": " << i->get_student_count() << " students." << std::endl;
     }
     return;
   }
