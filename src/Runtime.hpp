@@ -23,6 +23,7 @@ private:
   std::vector<ClassSchedule> classes;
   std::queue<Process> procs;
   std::stack<Process> history;
+  CSVStudentsClasses * students_classes_;
 
   //std::vector<Lesson>* lessons;
   uint8_t cap;
@@ -44,6 +45,7 @@ public:
   void process_args(std::vector<std::string> args);
   void handle_process(Process p);
   void execute_queue();
+  void save_all();
 };
 
 

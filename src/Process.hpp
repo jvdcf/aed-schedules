@@ -14,6 +14,7 @@ enum class TypeOfRequest {
   Print_Class,
   Print_Student_List,
   Batch,
+  Save,
 };
 
 /**

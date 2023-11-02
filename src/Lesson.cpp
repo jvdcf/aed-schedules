@@ -4,6 +4,7 @@
 #include "Lesson.hpp"
 #include "Utils.hpp"
 #include <iomanip>
+#include <sstream>
 using namespace std;
 
 
@@ -133,7 +134,8 @@ void Lesson::type_to_str(std::string &out) const {
 /**
  * @brief This method prints the csv line of the current state of the object.
  */
-void Lesson::display() const {
+std::string Lesson::display() const {
+  std::stringstream s;
   string uc;
   string cc;
   string dia;
@@ -142,6 +144,7 @@ void Lesson::display() const {
   class_to_str(cc);
   day_to_str(dia);
   type_to_str(tipo);
-  std::cout << uc << "," << cc << "," << dia << "," << start_hour << ","
+  s << uc << "," << cc << "," << dia << "," << start_hour << ","
             << duration << "," << tipo << "\n";
+  return s.str();
 }

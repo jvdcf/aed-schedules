@@ -37,6 +37,10 @@ CSVClassPerUC::CSVClassPerUC(const std::string& csv, uint8_t cap) {
     }
 }
 
+CSVClassPerUC::CSVClassPerUC() {
+  this->cap = 30;
+}
+
 /**
  * @brief This method prints the csv file.
  */

@@ -19,7 +19,7 @@ private:
 public:
     // Constructor
     StudentsClasses(std::string& line);
-
+    StudentsClasses(uint16_t uc_code, uint16_t class_code, const std::string& name, uint32_t student_code); 
     // Getters
     uint32_t get_student_code() const;
     const std::string &get_student_name() const;
@@ -32,7 +32,7 @@ public:
     // void student_name_to_str(std::string& student_name) const; (= get_student_name())
 
     // Debug
-    void display() const override;
+  std::string display() const override;
 };
 
 

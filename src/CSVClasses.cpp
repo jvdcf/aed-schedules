@@ -7,6 +7,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <sstream>
 
 
 /**
@@ -33,15 +34,21 @@ CSVClasses::CSVClasses(const std::string& csv) {
   }
 }
 
+CSVClasses::CSVClasses() {
+  this->entries = {};
+}
+
 /**
  * @brief Displays the contents of the class.
  */
-void CSVClasses::display() {
-  std::cout << "ClassCode" << ',' << "UcCode" << ',' << "WeekDay" << ',' << "StartHour"
+std::string CSVClasses::display() {
+  std::stringstream s; 
+  s << "ClassCode" << ',' << "UcCode" << ',' << "WeekDay" << ',' << "StartHour"
             << ',' << "Duration" << ',' << "Type" << '\n';
   for (auto e : this->entries) {
-    e.display();
+    s << e.display();
   }
+  return s.str();
 }
 
 /**

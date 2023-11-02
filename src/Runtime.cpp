@@ -5,6 +5,7 @@
 #include "ClassSchedule.hpp"
 #include "Lesson.hpp"
 #include "Student.hpp"
+#include "StudentsClasses.hpp"
 #include "Utils.hpp"
 #include <algorithm>
 #include <cstddef>
@@ -21,6 +22,7 @@
 #include <vector>
 
 Runtime::Runtime(CSVStudentsClasses &sc, CSVClassPerUC &cpu, CSVClasses &c) {
+  students_classes_ = &sc;
   cap = cpu.get_cap();
   is_batching = false;
   procs = std::queue<Process>();
@@ -284,6 +286,15 @@ void Runtime::process_args(std::vector<std::string> args) {
     }
   }
 
+  if (args[0] == "save") {
+    Process t(TypeOfRequest::Save);
+    if (args.size() == 2) {
+      t.add_operand(args[1]);
+    }
+    procs.push(t);
+    return;
+  }
+
   if (args[0] == "help") {
     std::cout
         << "The available commands are:\n"
@@ -311,6 +322,8 @@ void Runtime::process_args(std::vector<std::string> args) {
         << "        Displays the students enrolled with the option (denoted in []) of specifying a beginning and number of students to display.\n\n"
         << "    quit:           takes 0 arguments: quit\n"
         << "        Quits the program.\n\n"
+        << "    save:           takes 0 or 1 arguments: save [<filename>]\n"
+        << "        Saves the changes to the csv which contains the students and their relations to the classes, and optionally takes a filename.\n\n"
         << "    help:           takes 0 arguments: help\n"
         << "        Prints this help.\n\n";
     return;
@@ -491,6 +504,14 @@ void Runtime::handle_process(Process p) {
     }
     return;
   }
+
+  if(p.get_type() == TypeOfRequest::Save) {
+    if (p.get_ops().size() != 0) {
+      this->students_classes_->set_filename(p.get_ops()[0]);
+    }
+    this->save_all();
+    this->students_classes_->write_to_file();
+  }
 }
 
 void Runtime::print_schedule(const std::vector<Lesson *> &schedule) const {
@@ -523,4 +544,24 @@ void Runtime::print_schedule(const std::vector<Lesson *> &schedule) const {
               << " | " << std::setw(7) << uc << std::setw(0) << " | "
               << std::setw(7) << class_ << std::setw(0) << '\n';
   }
+}
+
+/**
+ * Since new classes are not created, the only file to be updated is the
+ * student_classes.csv. Thus, the only CSV class that needs to be updated is the
+ * CSVStudentClasses. To update this class, we create a new vector that will
+ * substitute the entries attribute in CSVStudentClasses.
+ * Theoretical complexity: O(n), n being the number of entries in the vector of the CSVStudentClasses.
+ * @brief Updates the data in the CSV classes.
+ */
+void Runtime::save_all() {
+  std::vector<StudentsClasses> ret;
+  for (Student s : students) {
+    for (ClassSchedule *sched : s.get_schedule()) {
+      ret.push_back(StudentsClasses(sched->get_uc_code(),
+                                    sched->get_class_code(), s.get_name(),
+                                    s.get_code()));
+    }
+  }
+  this->students_classes_->set_students(ret);
 }
