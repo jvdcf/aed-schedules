@@ -37,7 +37,7 @@ public:
   bool verify_remove(ClassSchedule* c);
   void remove_from_class(ClassSchedule* c);
   void switch_class_with(Student& other, uint16_t uc_code);
-  
+  void sort();
 
 
 };

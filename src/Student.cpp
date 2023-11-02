@@ -218,3 +218,9 @@ ClassSchedule* Student::find_class(uint16_t uc_code) {
  * @return name
  */
 const std::string& Student::get_name() const {return name;}
+
+void Student::sort() {
+  std::sort(this->classes.begin(), this->classes.end(), [](const ClassSchedule *a, const ClassSchedule *b) {
+    return a->get_id() < b->get_id();
+  });
+}
