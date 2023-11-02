@@ -4,6 +4,7 @@
 #include "ClassSchedule.hpp"
 #include <cstdint>
 #include <cstdio>
+#include <sstream>
 #include <vector>
 #include <algorithm>
 
@@ -93,15 +94,16 @@ void ClassSchedule::sort() {
 /**
  * @brief Prints to the screen the contents of this class.
  */
-void ClassSchedule::display() const {
+std::string ClassSchedule::display() const {
+  std::stringstream s;
   std::string uc_,class_;
   this->uc_to_str(uc_);
   this->class_to_str(class_);
-  std::cout << "Uc: " << uc_ << "\nClass: " << class_ << "\n";
+  s << "Uc: " << uc_ << "\nClass: " << class_ << "\n";
   for (auto i : this->classes) {
-    std::cout << "    ";
-    i->display();
+    s << "    " << i->display();
   }
-  std::cout << std::endl;
+  s << std::endl;
+  return s.str();
 }
 

@@ -21,7 +21,7 @@ private:
 
 public:
     CSVClassPerUC(const std::string& csv, uint8_t cap = 30);
-    ~CSVClassPerUC();
+    CSVClassPerUC();
     void display();
     void sort_by(std::string category);
     std::vector<ClassPerUC>* get_classes();

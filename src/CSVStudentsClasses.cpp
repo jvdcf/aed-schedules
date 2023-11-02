@@ -4,183 +4,210 @@
 #include "CSVStudentsClasses.hpp"
 #include "StudentsClasses.hpp"
 #include "Utils.hpp"
+#include <algorithm>
+#include <fstream>
+#include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
-#include <iostream>
-#include <algorithm>
-#include <fstream>
-
 
 /**
- * This constructor receives a string containing all the lines of a csv file and creates the AppSudentClass from it.
+ * This constructor receives a string containing all the lines of a csv file and
+ * creates the AppSudentClass from it.
  * @param csv
  */
-CSVStudentsClasses::CSVStudentsClasses(const std::string& csv) {
-    // CSV file into memory
-    std::ifstream file = std::ifstream(csv);
-    std::string contents;
-    std::ostringstream sstr;
-    sstr << file.rdbuf();
-    contents = sstr.str();
+CSVStudentsClasses::CSVStudentsClasses(const std::string &csv) {
+  // CSV file into memory
+  this->filename = csv;
+  std::ifstream file = std::ifstream(csv);
+  std::string contents;
+  std::ostringstream sstr;
+  sstr << file.rdbuf();
+  contents = sstr.str();
 
-    // Parse string
-    std::stringstream s(contents);
-    std::string line;
-    this->entries = std::vector<StudentsClasses>();
-    getline(s,line,'\n');
-    std::vector<std::string> bufs;
-    parse_csv_line(line,bufs);
-    this->student_code_cath_name = bufs[0];
-    this->student_name_cath_name = bufs[1];
-    this->uc_cath_name = bufs[2];
-    this->class_cath_name = bufs[3];
-    line.clear();
-    while (std::getline(s,line,'\n')) {
-        this->entries.push_back(StudentsClasses(line));
-    }
+  // Parse string
+  std::stringstream s(contents);
+  std::string line;
+  this->entries = std::vector<StudentsClasses>();
+  getline(s, line, '\n');
+  std::vector<std::string> bufs;
+  parse_csv_line(line, bufs);
+  this->student_code_cath_name = bufs[0];
+  this->student_name_cath_name = bufs[1];
+  this->uc_cath_name = bufs[2];
+  this->class_cath_name = bufs[3];
+  line.clear();
+  while (std::getline(s, line, '\n')) {
+    this->entries.push_back(StudentsClasses(line));
+  }
 }
 
+CSVStudentsClasses::CSVStudentsClasses() { this->entries = {}; }
+
 /**
- * Erases the contents of students_classes.csv and saves there the updated values.
+ * Erases the contents of students_classes.csv and saves there the updated
+ * values.
  */
 CSVStudentsClasses::~CSVStudentsClasses() {
-    std::ofstream ofs;
-    ofs.open("../schedule/students_classes.csv", std::ofstream::out | std::ofstream::trunc);
-    ofs << student_code_cath_name << ',' << student_name_cath_name << ','
-        << uc_cath_name << ',' << class_cath_name << '\n';
-    for (StudentsClasses entry: entries) {
-        std::string value;
-        entry.student_code_to_str(value);
-        ofs << value << ',';
-        ofs << entry.get_student_name() << ',';
-        entry.uc_to_str(value);
-        ofs << value << ',';
-        entry.class_to_str(value);
-        ofs << value << ',' << '\n';
-    }
-    ofs.close();
+  std::ofstream ofs;
+  ofs.open("../schedule/students_classes.csv",
+           std::ofstream::out | std::ofstream::trunc);
+  ofs << student_code_cath_name << ',' << student_name_cath_name << ','
+      << uc_cath_name << ',' << class_cath_name << '\n';
+  for (StudentsClasses entry : entries) {
+    std::string value;
+    entry.student_code_to_str(value);
+    ofs << value << ',';
+    ofs << entry.get_student_name() << ',';
+    entry.uc_to_str(value);
+    ofs << value << ',';
+    entry.class_to_str(value);
+    ofs << value << ',' << '\n';
+  }
+  ofs.close();
 }
 
 // Methods
-void CSVStudentsClasses::sort_by(const std::string& category) {
-    if (category == "StudentCode") {
-        std::stable_sort(this->entries.begin(), this->entries.end(),
-                  [](const StudentsClasses& a, const StudentsClasses& b) {return a.get_student_code() < b.get_student_code();});
+void CSVStudentsClasses::sort_by(const std::string &category) {
+  if (category == "StudentCode") {
+    std::stable_sort(this->entries.begin(), this->entries.end(),
+                     [](const StudentsClasses &a, const StudentsClasses &b) {
+                       return a.get_student_code() < b.get_student_code();
+                     });
 
-    } else if (category == "StudentName") {
-        std::stable_sort(this->entries.begin(), this->entries.end(),
-                  [](const StudentsClasses& a, const StudentsClasses& b) {return a.get_student_name() < b.get_student_name();});
+  } else if (category == "StudentName") {
+    std::stable_sort(this->entries.begin(), this->entries.end(),
+                     [](const StudentsClasses &a, const StudentsClasses &b) {
+                       return a.get_student_name() < b.get_student_name();
+                     });
 
-    } else if (category == "UcCode") {
-        std::stable_sort(this->entries.begin(), this->entries.end(),
-                         [](const ClassPerUC &first, const ClassPerUC &second) {
-                             std::string first_uc, second_uc;
-                             first.uc_to_str(first_uc);
-                             second.uc_to_str(second_uc);
-                             return first_uc < second_uc;
-                         });
-    } else if (category == "ClassCode") {
-        std::stable_sort(this->entries.begin(), this->entries.end(),
-                         [](const ClassPerUC &first, const ClassPerUC &second) {
-                             return first.get_class_code() < second.get_class_code();
-                         });
+  } else if (category == "UcCode") {
+    std::stable_sort(this->entries.begin(), this->entries.end(),
+                     [](const ClassPerUC &first, const ClassPerUC &second) {
+                       std::string first_uc, second_uc;
+                       first.uc_to_str(first_uc);
+                       second.uc_to_str(second_uc);
+                       return first_uc < second_uc;
+                     });
+  } else if (category == "ClassCode") {
+    std::stable_sort(this->entries.begin(), this->entries.end(),
+                     [](const ClassPerUC &first, const ClassPerUC &second) {
+                       return first.get_class_code() < second.get_class_code();
+                     });
 
+  } else {
+    std::cerr << "Error: invalid category" << '\n';
+    std::exit(1);
+  }
+}
+
+std::vector<StudentsClasses>::iterator
+CSVStudentsClasses::search_by_uc(uint16_t uc_code) {
+  sort_by(uc_cath_name);
+  auto ret = entries.end();
+  size_t mid = entries.size() / 2;
+
+  while (true) { // Binary search
+    if (mid == entries.size()) {
+      return ret;
+    } else if (entries[mid].get_uc_code() == uc_code) {
+      ret = entries.begin() + mid;
+      break;
+    } else if (entries[mid].get_uc_code() > uc_code) {
+      mid = mid / 2;
     } else {
-        std::cerr << "Error: invalid category" << '\n';
-        std::exit(1);
+      mid = mid + mid / 2;
     }
+  }
+
+  while (true) {
+    if ((ret - 1)->get_uc_code() != uc_code) {
+      return ret;
+    } else
+      --ret;
+  }
 }
 
-std::vector<StudentsClasses>::iterator CSVStudentsClasses::search_by_uc(uint16_t uc_code) {
-    sort_by(uc_cath_name);
-    auto ret = entries.end();
-    size_t mid = entries.size() / 2;
+std::vector<StudentsClasses>::iterator
+CSVStudentsClasses::search_by_student(uint32_t student_code) {
+  sort_by(student_code_cath_name);
+  auto ret = entries.end();
+  size_t mid = entries.size() / 2;
 
-    while (true) { // Binary search
-        if (mid == entries.size()) {
-            return ret;
-        } else if (entries[mid].get_uc_code() == uc_code) {
-            ret = entries.begin() + mid;
-            break;
-        } else if (entries[mid].get_uc_code() > uc_code) {
-            mid = mid / 2;
-        } else {
-            mid = mid + mid / 2;
-        }
+  while (true) { // Binary search
+    if (mid == entries.size()) {
+      return ret;
+    } else if (entries[mid].get_student_code() == student_code) {
+      ret = entries.begin() + mid;
+      break;
+    } else if (entries[mid].get_student_code() > student_code) {
+      mid = mid / 2;
+    } else {
+      mid = mid + mid / 2;
     }
+  }
 
-    while (true) {
-        if ((ret - 1)->get_uc_code() != uc_code) {
-            return ret;
-        } else --ret;
-    }
+  while (true) {
+    if ((ret - 1)->get_student_code() != student_code) {
+      return ret;
+    } else
+      --ret;
+  }
 }
 
-std::vector<StudentsClasses>::iterator CSVStudentsClasses::search_by_student(uint32_t student_code) {
-    sort_by(student_code_cath_name);
-    auto ret = entries.end();
-    size_t mid = entries.size() / 2;
+std::vector<StudentsClasses>::iterator
+CSVStudentsClasses::search_by_class(uint16_t class_code) {
+  sort_by(class_cath_name);
+  auto ret = entries.end();
+  size_t mid = entries.size() / 2;
 
-    while (true) { // Binary search
-        if (mid == entries.size()) {
-            return ret;
-        } else if (entries[mid].get_student_code() == student_code) {
-            ret = entries.begin() + mid;
-            break;
-        } else if (entries[mid].get_student_code() > student_code) {
-            mid = mid / 2;
-        } else {
-            mid = mid + mid / 2;
-        }
+  while (true) { // Binary search
+    if (mid == entries.size()) {
+      return ret;
+    } else if (entries[mid].get_class_code() == class_code) {
+      ret = entries.begin() + mid;
+      break;
+    } else if (entries[mid].get_class_code() > class_code) {
+      mid = mid / 2;
+    } else {
+      mid = mid + mid / 2;
     }
+  }
 
-    while (true) {
-        if ((ret - 1)->get_student_code() != student_code) {
-            return ret;
-        } else --ret;
-    }
-}
-
-
-std::vector<StudentsClasses>::iterator CSVStudentsClasses::search_by_class(uint16_t class_code) {
-    sort_by(class_cath_name);
-    auto ret = entries.end();
-    size_t mid = entries.size() / 2;
-
-    while (true) { // Binary search
-        if (mid == entries.size()) {
-            return ret;
-        } else if (entries[mid].get_class_code() == class_code) {
-            ret = entries.begin() + mid;
-            break;
-        } else if (entries[mid].get_class_code() > class_code) {
-            mid = mid / 2;
-        } else {
-            mid = mid + mid / 2;
-        }
-    }
-
-    while (true) {
-        if ((ret - 1)->get_class_code() != class_code) {
-            return ret;
-        } else --ret;
-    }
+  while (true) {
+    if ((ret - 1)->get_class_code() != class_code) {
+      return ret;
+    } else
+      --ret;
+  }
 }
 
 // Debug
-void CSVStudentsClasses::display() const {
-    std::cout << this->student_code_cath_name << ','
-              << this->student_name_cath_name << ','
-              << this->uc_cath_name << ','
-              << this->class_cath_name << '\n';
-    for (const auto& e : this->entries) {
-        e.display();
-    }
+std::string CSVStudentsClasses::display() const {
+  std::stringstream s;
+  s << this->student_code_cath_name << ','
+            << this->student_name_cath_name << ',' << this->uc_cath_name << ','
+            << this->class_cath_name << '\n';
+  for (const auto &e : this->entries) {
+    s << e.display();
+  }
+  return s.str();
 }
 
-std::vector<StudentsClasses> *CSVStudentsClasses::get_students() {return &this->entries;}
-
-void CSVStudentsClasses::set_students(const std::vector<StudentsClasses> &entries) {
-    this->entries = entries;
+std::vector<StudentsClasses> *CSVStudentsClasses::get_students() {
+  return &this->entries;
 }
+
+void CSVStudentsClasses::set_students(
+    const std::vector<StudentsClasses> &entries) {
+  this->entries = entries;
+}
+
+void CSVStudentsClasses::write_to_file() {
+  std::ofstream ofs(this->filename);
+  ofs << this->display();
+}
+
+void CSVStudentsClasses::set_filename(const std::string& name) {
+  this->filename = name; 
+} 

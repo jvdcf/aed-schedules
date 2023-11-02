@@ -41,21 +41,8 @@ CSVClassPerUC::CSVClassPerUC(const std::string& csv, uint8_t cap) {
     }
 }
 
-/**
- * @brief Erases the contents of classes_per_uc.csv and saves there the updated values.
- */
-CSVClassPerUC::~CSVClassPerUC() {
-    std::ofstream ofs;
-    ofs.open("../schedule/classes_per_uc.csv", std::ofstream::out | std::ofstream::trunc);
-    ofs << uc_cath_name << ',' << class_cath_name << '\n';
-    for (ClassPerUC entry: entries) {
-        std::string value;
-        entry.uc_to_str(value);
-        ofs << value << ',';
-        entry.class_to_str(value);
-        ofs << value << ',' << '\n';
-    }
-    ofs.close();
+CSVClassPerUC::CSVClassPerUC() {
+  this->cap = 30;
 }
 
 /**

@@ -67,7 +67,7 @@ public:
   void type_to_str(std::string &out) const;
 
   // Other Methods:
-  void display() const override;
+  std::string display() const override;
 };
 
 

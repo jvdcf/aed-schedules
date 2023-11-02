@@ -12,15 +12,15 @@
  */
 class CSVClasses {
 private:
-    /// Vector with every line of the file
-    std::vector<Lesson> entries;
+  /// Vector with every line of the file
+  std::vector<Lesson> entries;
 
 public:
-    CSVClasses(const std::string& csv);
-    std::vector<Lesson>* get_lessons();
-    void display();
-    void sort();
+  CSVClasses(const std::string &csv);
+  CSVClasses();
+  std::vector<Lesson> *get_lessons();
+  std::string display();
+  void sort();
 };
-
 
 #endif // APPCLASSES_H

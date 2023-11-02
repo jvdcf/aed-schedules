@@ -29,7 +29,7 @@ public:
 
   void sort();
 
-  void display() const;
+  std::string display() const;
 };
 
 

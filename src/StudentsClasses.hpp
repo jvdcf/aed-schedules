@@ -28,7 +28,7 @@ public:
     // void student_name_to_str(std::string& student_name) const; (= get_student_name())
 
     // Debug
-    void display() const override;
+  std::string display() const override;
 };
 
 

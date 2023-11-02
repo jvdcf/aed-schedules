@@ -72,7 +72,7 @@ public:
     void uc_to_str(std::string &out) const;
   
 
-  virtual void display() const;
+  virtual std::string display() const;
 };
 
 
