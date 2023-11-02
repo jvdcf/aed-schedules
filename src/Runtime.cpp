@@ -16,6 +16,7 @@
 #include <iomanip>
 #include <ios>
 #include <iostream>
+#include <limits>
 #include <ostream>
 #include <queue>
 #include <sstream>
@@ -140,7 +141,7 @@ void Runtime::run() {
     } else {
       std::cout << "> ";
     }
-    getline(std::cin, in);
+    getline(std::cin >> std::skipws, in);
     stream = std::istringstream(in);
     while (std::getline(stream, buf, ' ')) {
       line.push_back(buf);
@@ -168,7 +169,9 @@ void Runtime::process_args(std::vector<std::string> args) {
   if (args[0] == "quit") {
     char answer;
     std::cout << "Do you wish to save any changes you have made? [y/N]" << std::endl;
-    std::cin >> std::noskipws >> answer;
+    std::cin >> std::noskipws >> answer >> std::skipws;
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     if (answer == 'y') {
       std::cout << "Saving..." << std::endl;
       this->save_all();
@@ -407,7 +410,9 @@ void Runtime::handle_process(Process p) {
       if (res == OperationResult::Conflicts) {
         std::string answer;
         std::cout << "WARNING: Conflict found, some classes overlap non critically. Do you wish to proceed adding? [y/N] ";
-        std::cin >> std::noskipws >> answer;
+        std::cin >> std::noskipws >> answer >> std::skipws;
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         if (answer == "y") {
           students.erase(s);
           s.add_to_class(target);
@@ -458,7 +463,9 @@ void Runtime::handle_process(Process p) {
         if (res == OperationResult::Conflicts) {
           std::string answer;
           std::cout << "WARNING: Conflict found, some classes overlap non critically. Do you wish to proceed switching? [y/N] ";
-          std::cin >> std::noskipws >> answer;
+          std::cin >> std::noskipws >> answer >> std::skipws;
+          std::cin.clear();
+          std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
           if (answer == "y") {
             students.erase(s1);
             students.erase(s2);
