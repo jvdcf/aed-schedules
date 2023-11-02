@@ -22,7 +22,7 @@ private:
   std::vector<ClassSchedule*> classes;
 
   ClassSchedule* find_class(uint16_t uc_code);
-  OperationResult is_overlapping(std::vector<ClassSchedule*>& c_shed, bool ignore_conflicts = false);
+  OperationResult is_overlapping(std::vector<ClassSchedule*>& c_shed);
 
 public:
   Student(uint32_t code, std::string name);

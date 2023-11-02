@@ -34,7 +34,8 @@ std::vector<ClassSchedule *> &Student::get_schedule() { return this->classes; }
  * @param ignore_conflicts
  * @return
  */
-OperationResult Student::is_overlapping(std::vector<ClassSchedule *>& c_sched, bool ignore_conflicts) {
+OperationResult Student::is_overlapping(std::vector<ClassSchedule *>& c_sched) {
+  OperationResult result = OperationResult::Success;
   for (int i = 0; i < c_sched.size(); i++) {
     for (int j = i + 1; j < c_sched.size(); j++) {
 
@@ -45,14 +46,14 @@ OperationResult Student::is_overlapping(std::vector<ClassSchedule *>& c_sched, b
           if (l2->get_start_hour() + l2->get_duration() <= l1->get_start_hour()) continue;
 
           if (l1->get_type() == Type::T || l2->get_type() == Type::T) {
-            if (ignore_conflicts) return OperationResult::Conflicts;
+            result = OperationResult::Conflicts;
           }
           return OperationResult::Error;
         }
       }
     }
   }
-  return OperationResult::Success;
+  return result;
 }
 
 /**
@@ -104,7 +105,7 @@ OperationResult Student::verify_add(ClassSchedule *c, bool ignore_conflicts) {
   // No time conflicts | O(n²)
   std::vector<ClassSchedule *> c_sched = this->get_schedule();
   c_sched.push_back(c);
-  OperationResult result = is_overlapping(c_sched, ignore_conflicts);
+  OperationResult result = is_overlapping(c_sched);
   if (result != OperationResult::Success) return result;
 
   return OperationResult::Success;
