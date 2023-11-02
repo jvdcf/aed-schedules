@@ -12,8 +12,6 @@
  */
 class CSVClassPerUC {
 private:
-  std::string uc_cath_name;
-  std::string class_cath_name;
   /// Vector with every line of the csv file
   std::vector<ClassPerUC> entries;
   /// Capacity on any class
@@ -21,9 +19,8 @@ private:
 
 public:
     CSVClassPerUC(const std::string& csv, uint8_t cap = 30);
-    ~CSVClassPerUC();
     void display();
-    void sort_by(std::string category);
+    void sort();
     std::vector<ClassPerUC>* get_classes();
     uint8_t get_cap() const;
 };

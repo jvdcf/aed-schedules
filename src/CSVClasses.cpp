@@ -45,7 +45,8 @@ void CSVClasses::display() {
 
 /**
  * @brief Sorts the entries.
- * @details Theoretical Complexity: O(n log n), n being the number of lines in the csv file.
+ * @details Order (from most important to least important): uc_code > class_code > day > start_hour > duration > type.
+ * Theoretical Complexity: O(n log n), n being the number of lines in the csv file.
  */
 void CSVClasses::sort() {
   std::sort(this->entries.begin(), this->entries.end(), [](const Lesson &a, const Lesson &b) {
