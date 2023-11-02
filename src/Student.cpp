@@ -140,6 +140,7 @@ OperationResult Student::verify_switch(Student& other, uint16_t uc_code) {
 void Student::add_to_class(ClassSchedule *c) {
   c->add_student();
   this->classes.push_back(c);
+  this->sort();
 }
 
 /**
