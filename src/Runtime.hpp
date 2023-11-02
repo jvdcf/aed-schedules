@@ -32,8 +32,6 @@ private:
 public:
   Runtime(CSVStudentsClasses &sc, CSVClassPerUC &cpu, CSVClasses &c);
 
-  ~Runtime();
-
   // Sorting
 
   // Searching

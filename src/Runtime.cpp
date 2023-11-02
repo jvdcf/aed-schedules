@@ -63,28 +63,6 @@ Runtime::Runtime(CSVStudentsClasses &sc, CSVClassPerUC &cpu, CSVClasses &c) {
 }
 
 /**
- * Since new classes are not created, the only file to be updated is the
- * student_classes.csv. Thus, the only CSV class that needs to be updated is the
- * CSVStudentClasses. To update this class, we create a new vector that will
- * substitute the entries attribute in CSVStudentClasses.
- * @brief Updates the data in the CSV classes.
- */
-Runtime::~Runtime() {
-  std::vector<StudentsClasses> entries;
-  for (Student student : this->students) {
-    for (ClassSchedule *classSchedule : student.get_schedule()) {
-      std::ostringstream oss;
-      oss << student.get_code() << ',' << student.get_name() << ','
-          << classSchedule->get_uc_code() << ','
-          << classSchedule->get_class_code() << ',';
-      std::string line = oss.str();
-      entries.push_back(StudentsClasses(line));
-    }
-  }
-  students_classes_->set_students(entries);
-}
-
-/**
  * Using Binary Search, find the ClassSchedule inside of the vector classes with
  * the same uc_code ans class_code. Theoretical Complexity: O(log n)
  * @param id
