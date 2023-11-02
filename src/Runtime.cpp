@@ -423,6 +423,60 @@ void Runtime::handle_process(Process p) {
     }
   }
 
+  if (p.get_type() == TypeOfRequest::Switch) {
+    uint32_t student_code1;
+    uint32_t student_code2;
+    try {
+      student_code1 = std::stoi(ops[0]);
+    } catch (std::exception e) {
+      std::cerr << "ERROR: The string " << ops[0] << " is not a student_code."
+                << std::endl;
+      return;
+    }
+    try {
+      student_code2 = std::stoi(ops[0]);
+    } catch (std::exception e) {
+      std::cerr << "ERROR: The string " << ops[1] << " is not a student_code."
+                << std::endl;
+      return;
+    }
+    uint16_t uc_code = parse_uc_gen(ops[2]);
+    if (auto itr = students.find(Student(student_code1, "")); itr != students.end()) {
+      if (auto itr2 = students.find(Student(student_code2, "")); itr != students.end()) { 
+        Student s1 = *itr;
+        Student s2 = *itr2;
+        OperationResult res = s1.verify_switch(s2, uc_code);
+        if (res == OperationResult::Success) {
+          students.erase(s1);
+          students.erase(s2);
+          s1.switch_class_with(s2, uc_code);
+          history.push(p);
+          students.insert(s1);
+          students.insert(s2);
+          return;
+        }
+        if (res == OperationResult::Conflicts) {
+          std::string answer;
+          std::cout << "WARNING: Conflict found, some classes overlap non critically. Do you wish to proceed switching? [y/N] ";
+          std::cin >> std::noskipws >> answer;
+          if (answer == "y") {
+            students.erase(s1);
+            students.erase(s2);
+            s1.switch_class_with(s2, uc_code);
+            students.insert(s1);
+            students.insert(s2);
+            history.push(p);
+          } 
+          return;
+        }
+        if (res == OperationResult::Error) {
+          std::cerr << "ERROR: Critical conflicts found: at least one schedule is not valid. Skipping." << std::endl;
+          return;
+        }
+      }
+    }
+  }
+
   // handle print student
   if (p.get_type() == TypeOfRequest::Print_Student) {
     uint32_t student_code;

@@ -121,14 +121,15 @@ OperationResult Student::verify_switch(Student other, uint16_t uc_code) {
   std::erase(sched, this_class);
   sched.push_back(other_class);
   OperationResult result = is_overlapping(sched);
-  if (result != OperationResult::Success) return result;
+  //if (result != OperationResult::Success) return result;
 
   sched.clear();
 
   sched = other.get_schedule();
   std::erase(sched, other_class);
   sched.push_back(this_class);
-  result = other.is_overlapping(sched);
+  OperationResult tmp = other.is_overlapping(sched);
+  result = result > tmp ? result : tmp; 
   return result;
 }
 
