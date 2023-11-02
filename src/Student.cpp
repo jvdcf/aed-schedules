@@ -26,6 +26,42 @@ Student::Student(uint32_t code, std::string name) {
  */
 std::vector<ClassSchedule *> &Student::get_schedule() { return this->classes; }
 
+OperationResult Student::is_overlaping(std::vector<ClassSchedule *> c_sched) {
+  for (int i = 0; i < c_sched.size(); i++) {
+    for (int j = i + 1; j < c_sched.size(); j++) {
+
+      for (auto l1: classes[i]->get_class_schedule()) {
+        for (auto l2: classes[j]->get_class_schedule()) {
+          if (l1->get_day() != l2->get_day()) continue;
+          if (l1->get_start_hour() + l1->get_duration() <= l2->get_start_hour()) continue;
+          if (l2->get_start_hour() + l2->get_duration() <= l1->get_start_hour()) continue;
+
+          if (l1->get_type() == Type::T || l2->get_type() == Type::T) {
+            return OperationResult::Conflicts;
+          }
+          return OperationResult::Error;
+        }
+      }
+    }
+  }
+  return OperationResult::Success;
+}
+
+/**
+ * @brief Verifies if this Student is enrolled in a given class, so that it can be removed later.
+ * @param c
+ * @return bool
+ */
+bool Student::verify_remove(ClassSchedule* c) {
+  for (std::vector<ClassSchedule *>::iterator itr = this->classes.begin();
+       itr != this->classes.end(); ++itr) {
+    if (c == *itr) {
+      return true;
+    }
+  }
+  return false;
+}
+
 /**
  * @brief Verifies if adding this class is legal or not.
  * @details The following rules need to be followed:
@@ -102,10 +138,10 @@ OperationResult Student::verify_add(ClassSchedule *c) {
 
 /**
  * @brief Verifies if switching classes is legal or not.
- * @details No time conflits are allowed for both students.
+ * @details No time conflicts are allowed for both students.
  */
 OperationResult Student::verify_switch(Student other, uint16_t uc_code) {
-  // TODO
+
   return OperationResult::Success;
 }
 
@@ -166,22 +202,6 @@ bool Student::operator<(const Student &other) const {
  * @return code
  */
 uint32_t Student::get_code() const { return code; }
-
-
-/**
- * @brief Verifies if this Student is enrolled in a given class, so that it can be removed later.
- * @param c
- * @return bool
- */
-bool Student::verify_remove(ClassSchedule* c) {
-  for (std::vector<ClassSchedule *>::iterator itr = this->classes.begin();
-       itr != this->classes.end(); ++itr) {
-    if (c == *itr) {
-      return true;
-    }
-  }
-  return false;
-}
 
 /**
  * @brief Find a class with a given uc_code.
