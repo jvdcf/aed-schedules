@@ -8,13 +8,6 @@
 #include "Utils.hpp"
 #include <string>
 
-// class SmolKey {
-//   uint32_t uc_code_;
-//   public:
-//   SmolKey(uint32_t a);
-//   uint32_t get_key() const;
-
-// };
 
 /**
  * @brief A student and their respective classes.
