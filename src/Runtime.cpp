@@ -14,6 +14,7 @@
 #include <cstdlib>
 #include <exception>
 #include <iomanip>
+#include <ios>
 #include <iostream>
 #include <ostream>
 #include <queue>
@@ -167,7 +168,7 @@ void Runtime::process_args(std::vector<std::string> args) {
   if (args[0] == "quit") {
     std::string answer;
     std::cout << "Do you wish to save any changes you have made? [y/N]" << std::endl;
-    std::cin >> answer;
+    std::cin >> std::noskipws >> answer;
     if (answer == "y") {
       std::cout << "Saving..." << std::endl;
       this->save_all();
