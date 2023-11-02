@@ -434,7 +434,7 @@ void Runtime::handle_process(Process p) {
       return;
     }
     try {
-      student_code2 = std::stoi(ops[0]);
+      student_code2 = std::stoi(ops[1]);
     } catch (std::exception e) {
       std::cerr << "ERROR: The string " << ops[1] << " is not a student_code."
                 << std::endl;
