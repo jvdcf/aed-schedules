@@ -44,8 +44,16 @@ StudentsClasses::StudentsClasses(uint16_t uc_code, uint16_t class_code,
  * Theoretical Complexity: O(1).
  * @return the student code
  */
-uint32_t StudentsClasses::get_student_code() const { return student_code_; }
-const std::string &StudentsClasses::get_student_name() const {
+uint32_t StudentsClasses::get_student_code() const {
+  return student_code_;
+}
+
+/**
+ * @brief Accesses the student name
+ * Theoretical Complexity: O(1).
+ * @return a const reference to the student name.
+ */
+const std::string & StudentsClasses::get_student_name() const {
   return student_name_;
 }
 
@@ -67,13 +75,7 @@ StudentsClasses::parse_student_code(const std::string &student_code) const {
     std::exit(1);
   }
   return student_code_int;
-
-/**
- * @brief Accesses the student name
- * Theoretical Complexity: O(1).
- * @return a const reference to the student name.
- */
-const std::string & StudentsClasses::get_student_name() const {return student_name_;}
+}
 
 /**
  * This method converts the attribute student_code_ into a string and assigns
