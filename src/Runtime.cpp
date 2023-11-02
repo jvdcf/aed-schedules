@@ -309,7 +309,7 @@ void Runtime::process_args(std::vector<std::string> args) {
         << "    student_count:  takes 0 arguments: student_count\n"
         << "        Displays the number of students enrolled.\n\n"
         << "    student_list:  takes 0 or 2 arguments: student_count [<first_position> <number_of_students>]\n"
-        << "        Displays the students enrolled with the option (denoted in []) of specifying a beggining and number of students to display.\n\n"
+        << "        Displays the students enrolled with the option (denoted in []) of specifying a beginning and number of students to display.\n\n"
         << "    quit:           takes 0 arguments: quit\n"
         << "        Quits the program.\n\n"
         << "    help:           takes 0 arguments: help\n"
