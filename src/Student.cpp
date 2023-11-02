@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <algorithm>
 
 /**
  * @brief The constructor assigns the code and name to the respective attributes.
@@ -53,13 +54,7 @@ OperationResult Student::is_overlapping(std::vector<ClassSchedule *>& c_sched) {
  * @return bool
  */
 bool Student::verify_remove(ClassSchedule* c) {
-  for (std::vector<ClassSchedule *>::iterator itr = this->classes.begin();
-       itr != this->classes.end(); ++itr) {
-    if (c == *itr) {
-      return true;
-    }
-  }
-  return false;
+  return std::binary_search(this->classes.begin(), this->classes.end(), c);
 }
 
 /**
