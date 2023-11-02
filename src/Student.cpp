@@ -27,7 +27,7 @@ Student::Student(uint32_t code, std::string name) {
  */
 std::vector<ClassSchedule *> &Student::get_schedule() { return this->classes; }
 
-OperationResult Student::is_overlapping(std::vector<ClassSchedule *>& c_sched) {
+OperationResult Student::is_overlapping(std::vector<ClassSchedule *>& c_sched, bool ignore_conflicts) {
   for (int i = 0; i < c_sched.size(); i++) {
     for (int j = i + 1; j < c_sched.size(); j++) {
 
@@ -38,7 +38,7 @@ OperationResult Student::is_overlapping(std::vector<ClassSchedule *>& c_sched) {
           if (l2->get_start_hour() + l2->get_duration() <= l1->get_start_hour()) continue;
 
           if (l1->get_type() == Type::T || l2->get_type() == Type::T) {
-            return OperationResult::Conflicts;
+            if (ignore_conflicts) return OperationResult::Conflicts;
           }
           return OperationResult::Error;
         }
