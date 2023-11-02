@@ -26,6 +26,9 @@ public:
   void remove_student();
   uint64_t get_student_count() const;
   const std::vector<Lesson*> & get_class_schedule();
+
+  void sort();
+
   void display() const;
 };
 

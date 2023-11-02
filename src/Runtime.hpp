@@ -29,6 +29,8 @@ private:
   uint8_t cap;
   bool is_batching;
 
+  void print_schedule(const std::vector<Lesson*>& schedule) const;
+
 public:
   Runtime(CSVStudentsClasses &sc, CSVClassPerUC &cpu, CSVClasses &c);
 
@@ -36,6 +38,8 @@ public:
 
   // Searching
   ClassSchedule* find_class(uint32_t id);
+  std::vector<ClassSchedule*> find_uc(uint16_t uc_code);
+
   // TODO
   void run();
   void process_args(std::vector<std::string> args);

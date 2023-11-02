@@ -158,8 +158,6 @@ bool Student::operator<(const Student &other) const {
 
 uint32_t Student::get_code() const { return code; }
 
-
-
 bool Student::verify_remove(ClassSchedule* c) {
   for (std::vector<ClassSchedule *>::iterator itr = this->classes.begin();
        itr != this->classes.end(); ++itr) {
@@ -186,25 +184,4 @@ ClassSchedule* Student::find_class(uint16_t uc_code) {
   return nullptr;
 }
 
-
 const std::string& Student::get_name() const {return name;}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
