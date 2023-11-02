@@ -12,6 +12,7 @@
 
 /**
  * @brief This constructor receives a string containing all the lines of a csv file and creates the AppClass from it.
+ * Theoretical Complexity: O(n), n being the number of characters in a csv line.
  * @param csv
  */
 CSVClasses::CSVClasses(const std::string& csv) {
@@ -52,7 +53,8 @@ std::string CSVClasses::display() {
 
 /**
  * @brief Sorts the entries.
- * @details Theoretical Complexity: O(n log n), n being the number of lines in the csv file.
+ * @details Order (from most important to least important): uc_code > class_code > day > start_hour > duration > type.
+ * Theoretical Complexity: O(n log n), n being the number of lines in the csv file.
  */
 void CSVClasses::sort() {
   std::sort(this->entries.begin(), this->entries.end(), [](const Lesson &a, const Lesson &b) {

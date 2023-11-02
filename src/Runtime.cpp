@@ -32,7 +32,7 @@ Runtime::Runtime(CSVStudentsClasses &sc, CSVClassPerUC &cpu, CSVClasses &c) {
   c.sort();
 
   // 2. Populate classSchedules
-  cpu.sort_by("id");
+  cpu.sort();
   int idx = 0;
   for (ClassPerUC &entry : *cpu.get_classes()) {
     ClassSchedule cs(entry.get_uc_code(), entry.get_class_code());
@@ -48,7 +48,7 @@ Runtime::Runtime(CSVStudentsClasses &sc, CSVClassPerUC &cpu, CSVClasses &c) {
   }
 
   // 3. Populate students
-  sc.sort_by(std::string("StudentCode"));
+  sc.sort();
   auto sc_vector = sc.get_students();
   Student s(sc_vector->at(0).get_student_code(),
             sc_vector->at(0).get_student_name());

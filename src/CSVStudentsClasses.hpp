@@ -7,22 +7,20 @@
 #include <string>
 #include <vector>
 
+/**
+ * @brief Representation of the file students_classes.csv
+ */
 class CSVStudentsClasses {
 private:
-  std::string student_code_cath_name;
-  std::string student_name_cath_name;
-  std::string uc_cath_name;
-  std::string class_cath_name;
+  /// Vector with every line of the file
   std::vector<StudentsClasses> entries;
+  /// Target file to save
   std::string filename;
 
 public:
   // Constructor
   CSVStudentsClasses(const std::string &csv);
   CSVStudentsClasses();
-
-  // Destructor
-  virtual ~CSVStudentsClasses();
 
   // Getter
   std::vector<StudentsClasses> *get_students();
@@ -31,11 +29,7 @@ public:
   void set_students(const std::vector<StudentsClasses> &entries);
 
   // Methods
-  void sort_by(const std::string &category);
-  std::vector<StudentsClasses>::iterator
-  search_by_student(uint32_t student_code);
-  std::vector<StudentsClasses>::iterator search_by_uc(uint16_t uc_code);
-  std::vector<StudentsClasses>::iterator search_by_class(uint16_t class_code);
+  void sort();
   void write_to_file();
   void set_filename(const std::string& name);
 
