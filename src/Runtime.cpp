@@ -584,7 +584,16 @@ void Runtime::handle_process(Process p) {
     }
 
     std::cout << "Class " << ops[1] << ":\n"
-              << "Number of students: " << cs->get_student_count() << '\n';
+              << "Number of students: " << cs->get_student_count() << "\n\n";
+
+    std::cout << "Students enrolled:\n";
+    for (uint32_t s : cs->get_students_enrolled()) {
+      if (auto itr = students.find(Student(s,"")); itr != students.end()) {
+        Student stud = *itr;
+        std::cout << "| Code: " << stud.get_code() << " Name: " << stud.get_name() << std::endl;
+      } 
+    }
+    std::cout << std::endl;
 
     print_schedule(cs->get_class_schedule());
     return;
