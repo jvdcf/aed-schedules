@@ -44,8 +44,10 @@ The _SchedulEd_ interface offers the following options:
 | Shows information about a class, including their students and schedule.
 - `student_count`   
 | Counts the total number of students inside the database.
-- `student_list [<first_position> <number_of_students>]`   
-| Lists all students in the database, starting at the given position and showing the given number of students. If no arguments are given, it lists all students.
+- `student_list <name | code> [<first_position> <number_of_students>]`   
+| Lists all students in the database, starting at the given position and showing the given number of students.
+If no arguments are given, it lists all students.
+The students are sorted by name or code, depending on the first argument.
 
 
 ### Requests
@@ -77,8 +79,12 @@ Some requests may be accepted, rejected or cause conflicts, depending on the cur
   > _If any of the new schedules have overlapping lessons with a theoretical class, the request has conflicts and the user is prompted to continue or to cancel the operation._  
   > _If this rule is broken, the request is rejected._
 
+- `enroll <student_code> <student_name>`  
+| Adds a new student to the database.  
+  > **Rule:** If there is already a student with the given code, the request is rejected.
+
 - `undo`   
-| Reverts the last request made.
+| Reverts the last request (add, remove or switch) made.
   > **Rule:** If there are no requests to undo, the undo is rejected.  
 
 
