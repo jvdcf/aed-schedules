@@ -11,9 +11,9 @@
 #include <vector>
 
 /**
- * The constructor reads the line and assigns each string value to its
+ * @brief The constructor reads the line and assigns each string value to its
  * attribute.
- * Theoretical Complexity: O(n), n being the number of values in the line.
+ * @details Theoretical Complexity: O(n), n being the number of values in the line.
  * @param line
  */
 StudentsClasses::StudentsClasses(std::string &line) {

@@ -29,7 +29,9 @@ make
    - Working directory: `~/AED2324_PRJ1_G23`
 3. Run the configuration.
 
+
 ------
+
 
 # Usage
 The _SchedulEd_ interface offers the following options:
@@ -95,3 +97,11 @@ Some requests may be accepted, rejected or cause conflicts, depending on the cur
 | Exits the program safely. The user is prompted to save or not the database before exiting.
 - `help`   
 | Prints a list of all available commands in the terminal.
+
+
+---
+
+# Notes
+- Unfortunately, the maximum capacity of a class is hard coded to 30 students.
+- The terminal embedded in CLion can behave a bit differently than the system's terminal.
+  If possible, use the system's terminal to run the program.
