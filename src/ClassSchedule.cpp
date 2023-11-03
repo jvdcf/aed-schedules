@@ -20,15 +20,16 @@ ClassSchedule::ClassSchedule(uint16_t uc_code, uint16_t class_code) {
   this->students = {};
 }
 
+
 /**
- * @brief Add one student to the counter.
+ * @brief Add one student to the list.
  */
 void ClassSchedule::add_student(uint32_t s) {
   students.push_back(s);
-  this->sort();
+  std::sort(this->students.begin(), this->students.end());
 }
 /**
- * @brief Remove one student of the counter.
+ * @brief Remove one student from the list.
  */
 void ClassSchedule::remove_student(uint32_t s) {
   for (auto itr = students.begin(); itr != students.end(); ++itr) {
