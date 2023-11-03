@@ -17,6 +17,7 @@ enum class TypeOfRequest {
   Save,
   Undo,
   PopHistory,
+  Enroll,
 };
 
 /**
