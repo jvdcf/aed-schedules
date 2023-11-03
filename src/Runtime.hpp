@@ -25,27 +25,22 @@ private:
   std::stack<Process> history;
   CSVStudentsClasses * students_classes_;
 
-  //std::vector<Lesson>* lessons;
-  uint8_t cap;
-  bool is_batching;
-
-  void print_schedule(const std::vector<Lesson*>& schedule) const;
-
-public:
-  Runtime(CSVStudentsClasses &sc, CSVClassPerUC &cpu, CSVClasses &c);
-
-  // Sorting
-
   // Searching
   ClassSchedule* find_class(uint32_t id);
   std::vector<ClassSchedule*> find_uc(uint16_t uc_code);
 
-  // TODO
-  void run();
+  // Helper Methods
   void process_args(std::vector<std::string> args);
   void handle_process(Process p);
-  void execute_queue();
   void save_all();
+  void print_schedule(const std::vector<Lesson*>& schedule) const;
+
+public:
+  // Constructor
+  Runtime(CSVStudentsClasses &sc, CSVClassPerUC &cpu, CSVClasses &c);
+
+  // Runner
+  void run();
 };
 
 

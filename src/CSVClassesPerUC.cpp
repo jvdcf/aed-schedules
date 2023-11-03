@@ -16,8 +16,7 @@
  * @param csv
  * @param cap
  */
-CSVClassPerUC::CSVClassPerUC(const std::string &csv, uint8_t cap) {
-  this->cap = cap;
+CSVClassPerUC::CSVClassPerUC(const std::string &csv) {
 
   // CSV file into memory
   std::ifstream file = std::ifstream(csv);
@@ -45,7 +44,7 @@ CSVClassPerUC::CSVClassPerUC(const std::string &csv, uint8_t cap) {
   }
 }
 
-CSVClassPerUC::CSVClassPerUC() { this->cap = 30; }
+CSVClassPerUC::CSVClassPerUC() { this->entries = std::vector<ClassPerUC>();}
 
 /**
  * @brief This method prints the csv file.
@@ -75,9 +74,3 @@ void CSVClassPerUC::sort() {
  * @return Pointer to entries.
  */
 std::vector<ClassPerUC> *CSVClassPerUC::get_classes() { return &this->entries; }
-
-/**
- * @brief Getter for the capacity of every class.
- * @return cap
- */
-uint8_t CSVClassPerUC::get_cap() const { return cap; }

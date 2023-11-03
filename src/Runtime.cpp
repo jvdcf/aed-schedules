@@ -23,10 +23,14 @@
 #include <string>
 #include <vector>
 
+/**
+ * @brief organizes the data in the CSV objects in a more efficient way
+ * @param sc
+ * @param cpu
+ * @param c
+ */
 Runtime::Runtime(CSVStudentsClasses &sc, CSVClassPerUC &cpu, CSVClasses &c) {
   students_classes_ = &sc;
-  cap = cpu.get_cap();
-  is_batching = false;
   procs = std::queue<Process>();
 
   // 1. Populate lessons
@@ -126,8 +130,12 @@ std::vector<ClassSchedule *> Runtime::find_uc(uint16_t uc_code) {
   return ret;
 }
 
-// ----------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 
+/**
+ * @brief Reads the user requests and executes them.
+ * @details The reading is done by the process_args method and the execution is done by the handle_process.
+ */
 void Runtime::run() {
   std::string in;
   std::istringstream stream;
@@ -136,11 +144,7 @@ void Runtime::run() {
   std::vector<std::string> line;
   std::cout << "Welcome to SchedulEd. Type 'help' to learn more." << std::endl;
   while (!exit) {
-    if (is_batching) {
-      std::cout << "Batching> ";
-    } else {
-      std::cout << "> ";
-    }
+    std::cout << "> ";
     getline(std::cin, in);
     stream = std::istringstream(in);
     while (std::getline(stream, buf, ' ')) {
@@ -151,20 +155,22 @@ void Runtime::run() {
       in.clear();
       continue;
     }
-    if (!is_batching) {
-      process_args(line);
-      in.clear();
-      line.clear();
-      while (procs.size() != 0) {
-        Process p = procs.front();
-        procs.pop();
-        handle_process(p);
-      }
+    process_args(line);
+    in.clear();
+    line.clear();
+    while (procs.size() != 0) {
+      Process p = procs.front();
+      procs.pop();
+      handle_process(p);
     }
     in.clear();
   }
 }
 
+/**
+ * @brief reads the user commands and creates a process to be executed.
+ * @param args
+ */
 void Runtime::process_args(std::vector<std::string> args) {
   if (args[0] == "quit") {
     char answer;
@@ -176,7 +182,6 @@ void Runtime::process_args(std::vector<std::string> args) {
       this->students_classes_->write_to_file();
     }
     std::cout << "Quitting..." << std::endl;
-    // TODO: Call saving functions
     std::exit(0);
   }
   if (args[0] == "remove") {
@@ -367,6 +372,10 @@ void Runtime::process_args(std::vector<std::string> args) {
             << std::endl;
 }
 
+/**
+ * @brief executes the commands.
+ * @param p
+ */
 void Runtime::handle_process(Process p) {
   std::vector<std::string> ops = p.get_ops();
 
@@ -406,8 +415,8 @@ void Runtime::handle_process(Process p) {
     return;
   }
 
- // handle add--------------------------------------------------------------------------------------------------------
- if (p.get_type() == TypeOfRequest::Add) {
+  // handle add--------------------------------------------------------------------------------------------------------
+  if (p.get_type() == TypeOfRequest::Add) {
     uint32_t student_code;
     try {
       student_code = std::stoi(ops[0]);
@@ -443,7 +452,7 @@ void Runtime::handle_process(Process p) {
           s.add_to_class(target);
           students.insert(s);
           history.push(p);
-        } 
+        }
         return;
       }
       if (res == OperationResult::Error) {
@@ -453,6 +462,7 @@ void Runtime::handle_process(Process p) {
     }
   }
 
+  // handle switch------------------------------------------------------------------------------------------------------
   if (p.get_type() == TypeOfRequest::Switch) {
     uint32_t student_code1;
     uint32_t student_code2;
