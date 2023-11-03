@@ -23,6 +23,12 @@
 #include <string>
 #include <vector>
 
+/**
+ * @brief organizes the data in the CSV objects in a more efficient way
+ * @param sc
+ * @param cpu
+ * @param c
+ */
 Runtime::Runtime(CSVStudentsClasses &sc, CSVClassPerUC &cpu, CSVClasses &c) {
   students_classes_ = &sc;
   cap = cpu.get_cap();
@@ -126,8 +132,12 @@ std::vector<ClassSchedule *> Runtime::find_uc(uint16_t uc_code) {
   return ret;
 }
 
-// ----------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 
+/**
+ * @brief Reads the user requests and executes them.
+ * @details The reading is done by the process_args method and the execution is done by the handle_process.
+ */
 void Runtime::run() {
   std::string in;
   std::istringstream stream;
@@ -165,6 +175,10 @@ void Runtime::run() {
   }
 }
 
+/**
+ * @brief reads the user commands and creates a process to be executed.
+ * @param args
+ */
 void Runtime::process_args(std::vector<std::string> args) {
   if (args[0] == "quit") {
     char answer;
@@ -367,6 +381,10 @@ void Runtime::process_args(std::vector<std::string> args) {
             << std::endl;
 }
 
+/**
+ * @brief executes the commands.
+ * @param p
+ */
 void Runtime::handle_process(Process p) {
   std::vector<std::string> ops = p.get_ops();
 
