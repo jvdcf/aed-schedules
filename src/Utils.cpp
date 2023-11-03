@@ -114,7 +114,7 @@ void parse_csv_line(std::string s, std::vector<std::string> &res) {
 double uc_variance(double mean, const std::vector<ClassSchedule *> &c) {
   uint64_t size = c.size();
   auto variance_func = [&mean,&size](double acc, const ClassSchedule* val) {
-    return acc + (((double)val->get_student_count() - mean) * ((double)val->get_student_count() - mean)) / ((double)size - 1);
+    return acc + (((double)val->get_student_count() - mean) * ((double)val->get_student_count() - mean)) / ((double)size - 1.0);
   };
   return std::accumulate(c.begin(), c.end(), 0.0, variance_func);
 }
