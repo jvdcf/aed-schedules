@@ -3,7 +3,9 @@
  * This file defines some functions that are gonna be useful in other classes
  */
 #include "Utils.hpp"
+#include <cstdint>
 #include <iostream>
+#include <numeric>
 
 /**
  * This function converts a string to a 8 bit hash.
@@ -102,3 +104,20 @@ void parse_csv_line(std::string s, std::vector<std::string> &res) {
   while (getline(line, buf, ','))
     res.push_back(buf);
 }
+
+/**
+ * This function calculates the standard deviance for the number of students in each class of a given UC, taking a mean as the input. 
+ * Theoretical Complexity: O(n), n being the number of classes in a given UC.
+ * @param mean
+ * @param c
+ */
+double uc_variance(double mean, const std::vector<ClassSchedule *> &c) {
+  uint64_t size = c.size();
+  auto variance_func = [&mean,&size](double acc, const ClassSchedule* val) {
+    return acc + (((double)val->get_student_count() - mean) * ((double)val->get_student_count() - mean)) / ((double)size - 1);
+  };
+  return std::accumulate(c.begin(), c.end(), 0.0, variance_func);
+}
+
+
+

@@ -437,11 +437,23 @@ void Runtime::handle_process(Process p) {
       if (res == OperationResult::Success) {
         // Balanced classes | O(n)
         std::vector<uint64_t> occupancy;
-        for (ClassSchedule* class_ : this->find_uc(parse_uc_gen(ops[1]))) {
+        uint64_t sum1 = 0;
+        uint64_t sum2 = 0;
+        auto classes_ = this->find_uc(parse_uc_gen(ops[1]));
+        for (ClassSchedule* class_ : classes_) {
           occupancy.push_back(class_->get_student_count());
+          sum1 += class_->get_student_count();
+          sum2 += class_->get_student_count();
+          if (class_ == target) {
+            sum2 += 1;
+          }
         }
+        double mean1 = (double)sum1 / (double)classes_.size(); 
+        double mean2 = (double)sum2 / (double)classes_.size(); 
+        double std_deviance_before = uc_variance(mean1, classes_);
+        double std_deviance_after  = uc_variance(mean2, classes_);
         auto [min, max] = std::minmax_element(occupancy.begin(), occupancy.end());
-        if (*max - *min > 4) {
+        if (*max - *min > 4 && (std_deviance_after > std_deviance_before)) {
           std::cerr << "ERROR: Critical conflicts found: the classes will not be balanced. Skipping." << std::endl;
           return;
         }
@@ -459,6 +471,28 @@ void Runtime::handle_process(Process p) {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         if (answer == "y") {
+          // Balanced classes | O(n)
+          std::vector<uint64_t> occupancy;
+          uint64_t sum1 = 0;
+          uint64_t sum2 = 0;
+          auto classes_ = this->find_uc(parse_uc_gen(ops[1]));
+          for (ClassSchedule* class_ : classes_) {
+            occupancy.push_back(class_->get_student_count());
+            sum1 += class_->get_student_count();
+            sum2 += class_->get_student_count();
+            if (class_ == target) {
+              sum2 += 1;
+            }
+          }
+          double mean1 = (double)sum1 / (double)classes_.size(); 
+          double mean2 = (double)sum2 / (double)classes_.size(); 
+          double std_deviance_before = uc_variance(mean1, classes_);
+          double std_deviance_after  = uc_variance(mean2, classes_);
+          auto [min, max] = std::minmax_element(occupancy.begin(), occupancy.end());
+          if (*max - *min > 4 && (std_deviance_after > std_deviance_before)) {
+            std::cerr << "ERROR: Critical conflicts found: the classes will not be balanced. Skipping." << std::endl;
+            return;
+          }
           students.erase(s);
           s.add_to_class(target);
           students.insert(s);
