@@ -277,33 +277,19 @@ void Runtime::process_args(std::vector<std::string> args) {
     return;
   }
 
-  if (args[0] == "enroll") {
-    if (args.size() != 3) {
-      std::cerr << "ERROR: USAGE: enroll <new_student_code> <new_student_name>" << std::endl;
-      return;
-    }
-    Process t(TypeOfRequest::Enroll);
-    t.add_operand(args[1]);
-    t.add_operand(args[2]);
-    procs.push(t);
-    return;
-  }
-
   if (args[0] == "student_list") {
-    if (args.size() == 2) {
+    if (args.size() == 1) {
       Process t(TypeOfRequest::Print_Student_List);
-      t.add_operand(args[1]);
       procs.push(t);
       return;
-    } else if (args.size() == 4) {
+    } else if (args.size() == 3) {
       Process t(TypeOfRequest::Print_Student_List);
       t.add_operand(args[1]);
       t.add_operand(args[2]);
-      t.add_operand(args[3]);
       procs.push(t);
       return;
     } else {
-      std::cerr << "ERROR: USAGE: student_list <'name'|'code'> [<first_position> "
+      std::cerr << "ERROR: USAGE: student_list [<first_position> "
                    "<number_of_students>]"
                 << std::endl;
       return;
@@ -331,33 +317,31 @@ void Runtime::process_args(std::vector<std::string> args) {
 
   if (args[0] == "help") {
     std::cout
-      << "The available commands are:\n"
-      << "    print student:  takes 1 argument:       print student  <student_code>\n"
-      << "        Prints the student name, enrolled classes and schedule.\n\n"
-      << "    print uc:       takes 1 argument:       print uc       <uc_code>\n"
-      << "        Prints all the classes associated with this UC.\n\n"
-      << "    print class:    takes 2 argument:       print class    <uc_code> <class_code>\n"
-      << "        Prints the number of students enrolled and the schedule.\n\n"
-      << "    add:            takes 3 arguments:      add            <student_code> <uc_code> <class_code>\n"
-      << "        Adds a student to a class if possible.\n\n"
-      << "    remove:         takes 2 arguments:      remove         <student_code> <uc_code>\n"
-      << "        Removes a student from a class if possible.\n\n"
-      << "    switch:         takes 3 arguments:      switch         <student_code> <student_code> <uc_code>\n"
-      << "        Switches the class of two students.\n\n"
-      << "    student_count:  takes 0 arguments:      student_count\n"
-      << "        Displays the number of students enrolled.\n\n"
-      << "    student_list:   takes 1 or 3 arguments: student_count  <'name'|'code> [<first_position> <number_of_students>]\n"
-      << "        Displays the students enrolled with the option (denoted in []) of specifying a beginning and number of students to display.\n\n"
-      << "    undo:           takes 0 arguments:      undo\n"
-      << "        Reverts the last change.\n\n"
-      << "    quit:           takes 0 arguments:      quit\n"
-      << "        Quits the program.\n\n"
-      << "    enroll:         takes 2 arguments:      enroll         <new_student_code> <new_student_name>\n"
-      << "        Quits the program.\n\n"
-      << "    save:           takes 0 or 1 arguments: save           [<filename>]\n"
-      << "        Saves the changes to the csv which contains the students and their relations to the classes, and optionally takes a filename.\n\n"
-      << "    help:           takes 0 arguments:      help\n"
-      << "        Prints this help.\n\n";
+        << "The available commands are:\n"
+        << "    print student:  takes 1 argument:       print student  <student_code>\n"
+        << "        Prints the student name, enrolled classes and schedule.\n\n"
+        << "    print uc:       takes 1 argument:       print uc       <uc_code>\n"
+        << "        Prints all the classes associated with this UC.\n\n"
+        << "    print class:    takes 2 argument:       print class    <uc_code> <class_code>\n"
+        << "        Prints the number of students enrolled and the schedule.\n\n"
+        << "    add:            takes 3 arguments:      add            <student_code> <uc_code> <class_code>\n"
+        << "        Adds a student to a class if possible.\n\n"
+        << "    remove:         takes 2 arguments:      remove         <student_code> <uc_code>\n"
+        << "        Removes a student from a class if possible.\n\n"
+        << "    switch:         takes 3 arguments:      switch         <student_code> <student_code> <uc_code>\n"
+        << "        Switches the class of two students.\n\n"
+        << "    student_count:  takes 0 arguments:      student_count\n"
+        << "        Displays the number of students enrolled.\n\n"
+        << "    student_list:   takes 0 or 2 arguments: student_count  [<first_position> <number_of_students>]\n"
+        << "        Displays the students enrolled with the option (denoted in []) of specifying a beginning and number of students to display.\n\n"
+        << "    undo:           takes 0 arguments:      undo\n"
+        << "        Reverts the last change.\n\n"
+        << "    quit:           takes 0 arguments:      quit\n"
+        << "        Quits the program.\n\n"
+        << "    save:           takes 0 or 1 arguments: save           [<filename>]\n"
+        << "        Saves the changes to the csv which contains the students and their relations to the classes, and optionally takes a filename.\n\n"
+        << "    help:           takes 0 arguments:      help\n"
+        << "        Prints this help.\n\n";
     return;
   }
 
@@ -600,16 +584,7 @@ void Runtime::handle_process(Process p) {
     }
 
     std::cout << "Class " << ops[1] << ":\n"
-              << "Number of students: " << cs->get_student_count() << "\n\n";
-
-    std::cout << "Students enrolled:\n";
-    for (uint32_t s : cs->get_students_enrolled()) {
-      if (auto itr = students.find(Student(s,"")); itr != students.end()) {
-        Student stud = *itr;
-        std::cout << "| Code: " << stud.get_code() << " Name: " << stud.get_name() << std::endl;
-      } 
-    }
-    std::cout << std::endl;
+              << "Number of students: " << cs->get_student_count() << '\n';
 
     print_schedule(cs->get_class_schedule());
     return;
@@ -627,10 +602,10 @@ void Runtime::handle_process(Process p) {
     std::vector<std::string> args = p.get_ops();
     uint64_t start = 0;
     uint64_t end = students.size();
-    if (args.size() == 3) {
+    if (args.size() == 2) {
       try {
-        start = std::stoi(args[1]);
-        end = std::stoi(args[2]);
+        start = std::stoi(args[0]);
+        end = std::stoi(args[1]);
       } catch (std::exception e) {
         std::cerr << "ERROR: The function optionally takes two numbers as "
                      "arguments. At least one is not a number."
@@ -638,45 +613,18 @@ void Runtime::handle_process(Process p) {
         return;
       }
     }
-    if (args[0] == "code") {
-      for (auto itr = this->students.begin(); itr != students.end(); ++itr) {
-        if (start == 0) {
-          if (end != 0) {
-            std::cout << "| Code: " << itr->get_code()
-                      << " Name: " << itr->get_name() << std::endl;
-            --end;
-          } else {
-            break;
-          }
+    for (auto itr = this->students.begin(); itr != students.end(); ++itr) {
+      if (start == 0) {
+        if (end != 0) {
+          std::cout << "| Code: " << itr->get_code()
+                    << " Name: " << itr->get_name() << std::endl;
+          --end;
         } else {
-          --start;
+          break;
         }
+      } else {
+        --start;
       }
-    } else if (args[0] == "name") {
-      std::vector<Student> studs;
-      for (auto itr = this->students.begin(); itr != students.end(); ++itr) {
-        const Student& s = *itr;
-        studs.push_back(s);
-      }
-      std::sort(studs.begin(), studs.end(), [](const Student& a, const Student& b) {
-        return a.get_name() < b.get_name();
-      });
-      for (auto itr = studs.begin(); itr != studs.end(); ++itr) {
-        if (start == 0) {
-          if (end != 0) {
-            std::cout << "| Code: " << itr->get_code()
-                      << " Name: " << itr->get_name() << std::endl;
-            --end;
-          } else {
-            break;
-          }
-        } else {
-          --start;
-        }
-      }
-
-    } else {
-      std::cerr << "ERROR: Unknown sort directive '" << args[0] <<"', please consider using either 'code' or 'name'" << std::endl;
     }
     return;
   }
@@ -722,29 +670,9 @@ void Runtime::handle_process(Process p) {
   }
 
   // handle pop
-  if (p.get_type() == TypeOfRequest::PopHistory) {
-      history.pop();
-  }
-
-  //handle enroll
-  if (p.get_type() == TypeOfRequest::Enroll) {
-    uint32_t student_code;
-    try {
-      student_code = std::stoi(ops[0]);
-    } catch (std::exception e) {
-      std::cerr << "ERROR: The string " << ops[0] << " is not a student_code."
-                << std::endl;
-      return;
+    if (p.get_type() == TypeOfRequest::PopHistory) {
+        history.pop();
     }
-    std::string name = ops[1];
-    if (auto itr = students.find(Student(student_code, "")); itr == students.end()) {
-      students.insert(Student(student_code, name));
-      return;
-    } else {
-      std::cerr << "ERROR: There is already such student with code " << student_code << "." << std::endl;
-      return;
-    }
-  }
 }
 
 void Runtime::print_schedule(const std::vector<Lesson *> &schedule) const {

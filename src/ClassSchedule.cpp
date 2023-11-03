@@ -17,28 +17,17 @@ ClassSchedule::ClassSchedule(uint16_t uc_code, uint16_t class_code) {
   this->uc_code_ = uc_code;
   this->class_code_ = class_code;
   this->classes = std::vector<Lesson*>();
-  this->students = {};
+  this->n_students = 0;
 }
 
-
 /**
- * @brief Add one student to the list.
+ * @brief Add one student to the counter.
  */
-void ClassSchedule::add_student(uint32_t s) {
-  students.push_back(s);
-  std::sort(this->students.begin(), this->students.end());
-}
+void ClassSchedule::add_student() {n_students += 1;}
 /**
- * @brief Remove one student from the list.
+ * @brief Remove one student of the counter.
  */
-void ClassSchedule::remove_student(uint32_t s) {
-  for (auto itr = students.begin(); itr != students.end(); ++itr) {
-    if (*itr == s) {
-      students.erase(itr);
-      break;
-    }
-  } 
-}
+void ClassSchedule::remove_student() {n_students -= 1;}
 
 /**
  * @brief Add a Lesson to the vector of this class.
@@ -76,7 +65,7 @@ bool ClassSchedule::remove_entry(Lesson* c) {
  * @return student_count
  */
 uint64_t ClassSchedule::get_student_count() const {
-  return this->students.size();
+  return this->n_students;
 }
 
 /**
@@ -85,10 +74,6 @@ uint64_t ClassSchedule::get_student_count() const {
  */
 const std::vector<Lesson*> & ClassSchedule::get_class_schedule() {
   return this->classes;
-}
-
-const std::vector<uint32_t>& ClassSchedule::get_students_enrolled() {
-  return this->students;
 }
 
 void ClassSchedule::sort() {
