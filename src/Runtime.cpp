@@ -440,7 +440,7 @@ void Runtime::handle_process(Process p) {
         double sum = 0.0;
         auto classes_ = this->find_uc(parse_uc_gen(ops[1]));
         for (ClassSchedule* class_ : classes_) {
-          occupancy.push_back(class_->get_student_count());
+          occupancy.push_back(class_->get_student_count() + (class_==target ? 1 : 0));
           sum += (double)class_->get_student_count();
         }
         double mean = sum / (double)classes_.size(); 
@@ -459,7 +459,7 @@ void Runtime::handle_process(Process p) {
             class_->remove_student(student_code);
           }
         }
-        if ((*max - *min >= 4) && (std_deviance_after > std_deviance_before)) {
+        if ((*max - *min > 4) && (std_deviance_after > std_deviance_before)) {
           std::cerr << "ERROR: Critical conflicts found: the classes will not be balanced. Skipping." << std::endl;
           return;
         }
@@ -482,7 +482,7 @@ void Runtime::handle_process(Process p) {
           double sum = 0.0;
           auto classes_ = this->find_uc(parse_uc_gen(ops[1]));
           for (ClassSchedule* class_ : classes_) {
-            occupancy.push_back(class_->get_student_count());
+            occupancy.push_back(class_->get_student_count() + (class_==target ? 1 : 0));
             sum += (double)class_->get_student_count();
           }
           double mean = sum / (double)classes_.size(); 
@@ -501,7 +501,7 @@ void Runtime::handle_process(Process p) {
               class_->remove_student(student_code);
             }
           }
-          if ((*max - *min >= 4) && (std_deviance_after > std_deviance_before)) {
+          if ((*max - *min > 4) && (std_deviance_after > std_deviance_before)) {
             std::cerr << "ERROR: Critical conflicts found: the classes will not be balanced. Skipping." << std::endl;
             return;
           }
