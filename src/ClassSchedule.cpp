@@ -2,6 +2,7 @@
  * @file ClassSchedule.cpp
  */
 #include "ClassSchedule.hpp"
+#include "Student.hpp"
 #include <cstdint>
 #include <cstdio>
 #include <sstream>
@@ -125,4 +126,3 @@ std::string ClassSchedule::display() const {
   s << std::endl;
   return s.str();
 }
-

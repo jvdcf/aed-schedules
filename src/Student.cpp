@@ -3,6 +3,7 @@
  */
 #include "Student.hpp"
 #include "Utils.hpp"
+#include "ClassSchedule.hpp"
 #include <cstdint>
 #include <iterator>
 #include <string>
