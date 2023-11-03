@@ -1,4 +1,4 @@
-    /**
+/**
  * @file Student.hpp
  */
 #ifndef STUDENT_H
@@ -34,12 +34,9 @@ public:
   void add_to_class(ClassSchedule* c);
   OperationResult verify_add(ClassSchedule* c);
   OperationResult verify_switch(Student& other, uint16_t uc_code);
-  bool verify_remove(ClassSchedule* c);
   void remove_from_class(ClassSchedule* c);
   void switch_class_with(Student& other, uint16_t uc_code);
   void sort();
-
-
 };
 
 
