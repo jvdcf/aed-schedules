@@ -18,22 +18,13 @@ private:
   std::string filename;
 
 public:
-  // Constructor
   CSVStudentsClasses(const std::string &csv);
   CSVStudentsClasses();
-
-  // Getter
   std::vector<StudentsClasses> *get_students();
-
-  // Setter
   void set_students(const std::vector<StudentsClasses> &entries);
-
-  // Methods
   void sort();
   void write_to_file();
   void set_filename(const std::string& name);
-
-  // Contents
   std::string display() const;
 };
 

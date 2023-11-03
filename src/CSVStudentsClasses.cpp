@@ -13,8 +13,9 @@
 #include <vector>
 
 /**
- * This constructor receives a string containing all the lines of a csv file and
+ * @brief This constructor receives a string containing all the lines of a csv file and
  * creates the AppSudentClass from it.
+ * @details Theoretical Complexity: O(n), n being the number of lines of the csv file.
  * @param csv
  */
 CSVStudentsClasses::CSVStudentsClasses(const std::string &csv) {
@@ -45,6 +46,10 @@ CSVStudentsClasses::CSVStudentsClasses(const std::string &csv) {
   }
 }
 
+/**
+ * @brief Default constructor.
+ * @details Creates an empty class. Avoid using this constructor when possible.
+ */
 CSVStudentsClasses::CSVStudentsClasses() { this->entries = {}; }
 
 /**
@@ -70,16 +75,30 @@ std::vector<StudentsClasses> *CSVStudentsClasses::get_students() {
   return &this->entries;
 }
 
+/**
+ * @brief Setter for the vector of StudentsClasses.
+ * @details Useful to later save into a file.
+ * @param entries
+ */
 void CSVStudentsClasses::set_students(
     const std::vector<StudentsClasses> &entries) {
   this->entries = entries;
 }
 
+/**
+ * @brief Saves the contents of the class into a file.
+ * @details Theoretical Complexity: O(n), n being the number of lines of the csv file.
+ */
 void CSVStudentsClasses::write_to_file() {
   std::ofstream ofs(this->filename);
   ofs << this->display();
 }
 
+/**
+ * @brief Setter for the filename.
+ * @details Indicates where the class will now be saved.
+ * @param name
+ */
 void CSVStudentsClasses::set_filename(const std::string& name) {
   this->filename = name; 
 } 
