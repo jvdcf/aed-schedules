@@ -459,7 +459,7 @@ void Runtime::handle_process(Process p) {
             class_->remove_student(student_code);
           }
         }
-        if ((*max - *min > 4) && (std_deviance_after > std_deviance_before)) {
+        if ((*max - *min >= 4) && (std_deviance_after > std_deviance_before)) {
           std::cerr << "ERROR: Critical conflicts found: the classes will not be balanced. Skipping." << std::endl;
           return;
         }
@@ -501,7 +501,7 @@ void Runtime::handle_process(Process p) {
               class_->remove_student(student_code);
             }
           }
-          if ((*max - *min > 4) && (std_deviance_after > std_deviance_before)) {
+          if ((*max - *min >= 4) && (std_deviance_after > std_deviance_before)) {
             std::cerr << "ERROR: Critical conflicts found: the classes will not be balanced. Skipping." << std::endl;
             return;
           }
