@@ -110,7 +110,6 @@ void ClassPerUC::uc_to_str(std::string &out) const {
  */
 void ClassPerUC::class_to_str(std::string &out) const {
   std::stringstream s;
-  // TODO: use exceptions to handle errors instead of closing.
   if ((class_code_ >> 8) == 19) {
     out = "ClassCode";
     return;
