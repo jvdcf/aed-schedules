@@ -3,10 +3,8 @@
  */
 #include "StudentsClasses.hpp"
 #include "Utils.hpp"
-#include <cstdint>
 #include <cstdlib>
 #include <exception>
-#include <iomanip>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -41,7 +39,7 @@ StudentsClasses::StudentsClasses(uint16_t uc_code, uint16_t class_code,
 
 /**
  * @brief Accesses the student code.
- * Theoretical Complexity: O(1).
+ * @details Theoretical Complexity: O(1).
  * @return the student code
  */
 uint32_t StudentsClasses::get_student_code() const {
@@ -50,7 +48,7 @@ uint32_t StudentsClasses::get_student_code() const {
 
 /**
  * @brief Accesses the student name
- * Theoretical Complexity: O(1).
+ * @details Theoretical Complexity: O(1).
  * @return a const reference to the student name.
  */
 const std::string & StudentsClasses::get_student_name() const {
@@ -59,7 +57,7 @@ const std::string & StudentsClasses::get_student_name() const {
 
 /**
  * @brief Converts the student code from string to a 32 bits unsigned integer.
- * Theoretical Complexity: O(1).
+ * @details Theoretical Complexity: O(1).
  * @param student_code
  * @return a 32 bits unsigned integer corresponding to the student code.
  */
@@ -78,9 +76,9 @@ StudentsClasses::parse_student_code(const std::string &student_code) const {
 }
 
 /**
- * This method converts the attribute student_code_ into a string and assigns
+ * @brief This method converts the attribute student_code_ into a string and assigns
  * the parameter out with its string value.
- * Theoretical Complexity: O(1).
+ * @details Theoretical Complexity: O(1).
  * @param student_code
  */
 void StudentsClasses::student_code_to_str(std::string &student_code) const {
@@ -88,8 +86,9 @@ void StudentsClasses::student_code_to_str(std::string &student_code) const {
 }
 
 /**
- * This method prints the csv line of the current state of the object.
- * Theoretical Complexity: O(1).
+ * @brief This method prints the csv line of the current state of the object.
+ * @details Theoretical Complexity: O(1).
+ * @return a string with the csv line.
  */
 std::string StudentsClasses::display() const {
   std::stringstream s;
