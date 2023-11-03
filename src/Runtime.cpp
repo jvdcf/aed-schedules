@@ -290,18 +290,20 @@ void Runtime::process_args(std::vector<std::string> args) {
   }
 
   if (args[0] == "student_list") {
-    if (args.size() == 1) {
+    if (args.size() == 2) {
       Process t(TypeOfRequest::Print_Student_List);
+      t.add_operand(args[1]);
       procs.push(t);
       return;
-    } else if (args.size() == 3) {
+    } else if (args.size() == 4) {
       Process t(TypeOfRequest::Print_Student_List);
       t.add_operand(args[1]);
       t.add_operand(args[2]);
+      t.add_operand(args[3]);
       procs.push(t);
       return;
     } else {
-      std::cerr << "ERROR: USAGE: student_list [<first_position> "
+      std::cerr << "ERROR: USAGE: student_list <'name'|'code'> [<first_position> "
                    "<number_of_students>]"
                 << std::endl;
       return;
@@ -344,7 +346,7 @@ void Runtime::process_args(std::vector<std::string> args) {
       << "        Switches the class of two students.\n\n"
       << "    student_count:  takes 0 arguments:      student_count\n"
       << "        Displays the number of students enrolled.\n\n"
-      << "    student_list:   takes 0 or 2 arguments: student_count  [<first_position> <number_of_students>]\n"
+      << "    student_list:   takes 1 or 3 arguments: student_count  <'name'|'code> [<first_position> <number_of_students>]\n"
       << "        Displays the students enrolled with the option (denoted in []) of specifying a beginning and number of students to display.\n\n"
       << "    undo:           takes 0 arguments:      undo\n"
       << "        Reverts the last change.\n\n"
@@ -625,10 +627,10 @@ void Runtime::handle_process(Process p) {
     std::vector<std::string> args = p.get_ops();
     uint64_t start = 0;
     uint64_t end = students.size();
-    if (args.size() == 2) {
+    if (args.size() == 3) {
       try {
-        start = std::stoi(args[0]);
-        end = std::stoi(args[1]);
+        start = std::stoi(args[1]);
+        end = std::stoi(args[2]);
       } catch (std::exception e) {
         std::cerr << "ERROR: The function optionally takes two numbers as "
                      "arguments. At least one is not a number."
@@ -636,18 +638,45 @@ void Runtime::handle_process(Process p) {
         return;
       }
     }
-    for (auto itr = this->students.begin(); itr != students.end(); ++itr) {
-      if (start == 0) {
-        if (end != 0) {
-          std::cout << "| Code: " << itr->get_code()
-                    << " Name: " << itr->get_name() << std::endl;
-          --end;
+    if (args[0] == "code") {
+      for (auto itr = this->students.begin(); itr != students.end(); ++itr) {
+        if (start == 0) {
+          if (end != 0) {
+            std::cout << "| Code: " << itr->get_code()
+                      << " Name: " << itr->get_name() << std::endl;
+            --end;
+          } else {
+            break;
+          }
         } else {
-          break;
+          --start;
         }
-      } else {
-        --start;
       }
+    } else if (args[0] == "name") {
+      std::vector<Student> studs;
+      for (auto itr = this->students.begin(); itr != students.end(); ++itr) {
+        const Student& s = *itr;
+        studs.push_back(s);
+      }
+      std::sort(studs.begin(), studs.end(), [](const Student& a, const Student& b) {
+        return a.get_name() < b.get_name();
+      });
+      for (auto itr = studs.begin(); itr != studs.end(); ++itr) {
+        if (start == 0) {
+          if (end != 0) {
+            std::cout << "| Code: " << itr->get_code()
+                      << " Name: " << itr->get_name() << std::endl;
+            --end;
+          } else {
+            break;
+          }
+        } else {
+          --start;
+        }
+      }
+
+    } else {
+      std::cerr << "ERROR: Unknown sort directive '" << args[0] <<"', please consider using either 'code' or 'name'" << std::endl;
     }
     return;
   }
