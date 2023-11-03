@@ -587,8 +587,11 @@ void Runtime::handle_process(Process p) {
               << "Number of students: " << cs->get_student_count() << "\n\n";
 
     std::cout << "Students enrolled:\n";
-    for (Student* stud : cs->get_students_enrolled()) {
-      std::cout << "| Code: " << stud->get_code() << " Name: " << stud->get_name() << std::endl;
+    for (uint32_t s : cs->get_students_enrolled()) {
+      if (auto itr = students.find(Student(s,"")); itr != students.end()) {
+        Student stud = *itr;
+        std::cout << "| Code: " << stud.get_code() << " Name: " << stud.get_name() << std::endl;
+      } 
     }
     std::cout << std::endl;
 

@@ -17,31 +17,27 @@ ClassSchedule::ClassSchedule(uint16_t uc_code, uint16_t class_code) {
   this->uc_code_ = uc_code;
   this->class_code_ = class_code;
   this->classes = std::vector<Lesson*>();
-  this->students = std::vector<Student*>{};
+  this->students = {};
 }
 
 
 /**
  * @brief Add one student to the list.
  */
-void ClassSchedule::add_student(Student* s) {
+void ClassSchedule::add_student(uint32_t s) {
   students.push_back(s);
-  std::sort(this->students.begin(), this->students.end(), [](Student *a, Student *b) {
-    return a->get_code() < b->get_code();
-  });
+  std::sort(this->students.begin(), this->students.end());
 }
 /**
  * @brief Remove one student from the list.
  */
-bool ClassSchedule::remove_student(Student* s) {
+void ClassSchedule::remove_student(uint32_t s) {
   for (auto itr = students.begin(); itr != students.end(); ++itr) {
     if (*itr == s) {
       students.erase(itr);
-      return true;
+      break;
     }
-  }
-  std::cerr << "Error: Student not found in class " << this->get_id() << std::endl;
-  return false;
+  } 
 }
 
 /**
@@ -91,7 +87,7 @@ const std::vector<Lesson*> & ClassSchedule::get_class_schedule() {
   return this->classes;
 }
 
-const std::vector<Student*>& ClassSchedule::get_students_enrolled() {
+const std::vector<uint32_t>& ClassSchedule::get_students_enrolled() {
   return this->students;
 }
 

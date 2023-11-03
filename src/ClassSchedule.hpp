@@ -7,7 +7,6 @@
 #include <vector>
 #include "ClassesPerUC.hpp"
 #include "Lesson.hpp"
-#include "Student.hpp"
 
 
 /**
@@ -15,8 +14,8 @@
  */
 class ClassSchedule : public ClassPerUC {
 private:
-  /// Pointers to all of the students enrolled in this class.
-  std::vector<Student*> students;
+  /// Derivative attribute that indicates the number of students enrolled in this class.
+  std::vector<uint32_t> students;
   /// Pointers to all of the lessons associated to this class.
   std::vector<Lesson*> classes;
   
@@ -24,10 +23,10 @@ public:
   ClassSchedule(uint16_t uc_code, uint16_t class_code);
   bool add_entry(Lesson* entry);
   bool remove_entry(Lesson* entry);
-  void add_student(Student* s);
-  bool remove_student(Student* s);
+  void add_student(uint32_t s);
+  void remove_student(uint32_t s);
   uint64_t get_student_count() const;
-  const std::vector<Student*>& get_students_enrolled();
+  const std::vector<uint32_t>& get_students_enrolled();
   const std::vector<Lesson*> & get_class_schedule();
 
   void sort();
