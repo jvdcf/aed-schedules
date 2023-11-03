@@ -437,6 +437,17 @@ void Runtime::handle_process(Process p) {
       Student s = *itr;
       OperationResult res = s.verify_add(target);
       if (res == OperationResult::Success) {
+        // Balanced classes | O(n)
+        std::vector<uint64_t> occupancy;
+        for (ClassSchedule* class_ : this->find_uc(parse_uc_gen(ops[1]))) {
+          occupancy.push_back(class_->get_student_count());
+        }
+        auto [min, max] = std::minmax_element(occupancy.begin(), occupancy.end());
+        if (*max - *min > 4) {
+          std::cerr << "ERROR: Critical conflicts found: the classes will not be balanced. Skipping." << std::endl;
+          return;
+        }
+
         students.erase(s);
         s.add_to_class(target);
         students.insert(s);
