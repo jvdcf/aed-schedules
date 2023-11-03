@@ -4,7 +4,7 @@
 
 /**
  * @brief Constructs a request of a certain type.
- * This request is not yet completed, as the operands are still to be added.
+ * @details This request is not yet completed, as the operands are still to be added.
  * Theoretical Complexity: O(1).
  * @param t
  */
@@ -15,7 +15,7 @@ Process::Process(TypeOfRequest t) {
 
 /**
  * @brief Adds a string to the operands vector
- * Theoretical Complexity: O(1).
+ * @details Theoretical Complexity: O(1).
  * @param op
  */
 void Process::add_operand(std::string op) {
@@ -24,8 +24,8 @@ void Process::add_operand(std::string op) {
 
 /**
  * @brief Accesses the type of request.
- * Theoretical Complexity: O(1).
- * @return
+ * @details Theoretical Complexity: O(1).
+ * @return TypeOfRequest
  */
 TypeOfRequest Process::get_type() {
   return type;
@@ -33,8 +33,8 @@ TypeOfRequest Process::get_type() {
 
 /**
  * @brief Accesses the vector of operands.
- * Theoretical Complexity: O(1).
- * @return
+ * @details Theoretical Complexity: O(1).
+ * @return Pointer to the vector of operands.
  */
 std::vector<std::string>& Process::get_ops() {
   return operands;
