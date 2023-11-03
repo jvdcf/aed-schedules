@@ -25,8 +25,8 @@ make
 1. Open the project folder in CLion.
 2. Edit or add the configuration `AED2324_PRJ1_G23` with the correct program arguments and working directory.  
    For example:
-    - Program arguments: `-cpu schedule/classes_per_uc.csv -c schedule/classes.csv -sc schedule/students_classes.csv`
-    - Working directory: `~/AED2324_PRJ1_G23`
+   - Program arguments: `-cpu schedule/classes_per_uc.csv -c schedule/classes.csv -sc schedule/students_classes.csv`
+   - Working directory: `~/AED2324_PRJ1_G23`
 3. Run the configuration.
 
 ------
@@ -34,21 +34,58 @@ make
 # Usage
 The _SchedulEd_ interface offers the following options:
 
+
 ### Listing
-- `print student <student_code>` | Shows information about a student, including their name, classes enrolled and schedule.
-- `print uc <uc_code>` | Shows information about a UC, including their classes and number of students enrolled in each one.
-- `print class <uc_code> <class_code>` | Shows information about a class, including their students and schedule.
-- `student_count` | Counts the total number of students inside the database.
-- `student_list [<first_position> <number_of_students>]` | Lists all students in the database, starting at the given position and showing the given number of students. If no arguments are given, it lists all students.
+- `print student <student_code>`   
+| Shows information about a student, including their name, classes enrolled and schedule.
+- `print uc <uc_code>`    
+| Shows information about a UC, including their classes and number of students enrolled in each one.
+- `print class <uc_code> <class_code>`   
+| Shows information about a class, including their students and schedule.
+- `student_count`   
+| Counts the total number of students inside the database.
+- `student_list [<first_position> <number_of_students>]`   
+| Lists all students in the database, starting at the given position and showing the given number of students. If no arguments are given, it lists all students.
+
 
 ### Requests
 Some requests may be accepted, rejected or cause conflicts, depending on the current state of the database.
-- `add <student_code> <uc_code> <class_code>` | 
-- `remove <student_code> <uc_code>`
-- `switch <student_code> <student_code> <uc_code>`
-- `undo`
+- `add <student_code> <uc_code> <class_code>`   
+| Adds a student to a given class.  
+  > **Rules:**
+  > Number of UCs must be 7 or lower;  
+  > The class must have a vacancy;  
+  > No time conflicts;  
+  > Only one class per UC;  
+  > All classes must be balanced (Difference lower than or equal to 4).  
+  > 
+  > _If the new schedule has overlapping lessons with a theoretical class, the request has conflicts and the user is prompted to continue or to cancel the operation._  
+  > _If any other rule is broken, the request is rejected._
+
+- `remove <student_code> <uc_code>`   
+| Removes a student from a given UC.  
+  > **Rule:** The student must be enrolled in the given UC.
+  > 
+  > _If this rule is broken, the request is rejected._
+
+- `switch <student_code> <student_code> <uc_code>`   
+| Switch the UC of two students.  
+  > **Rules:**  
+  > Both students must be enrolled in the given UC.  
+  > No time conflicts are allowed for both students.  
+  > 
+  > _If any of the new schedules have overlapping lessons with a theoretical class, the request has conflicts and the user is prompted to continue or to cancel the operation._  
+  > _If this rule is broken, the request is rejected._
+
+- `undo`   
+| Reverts the last request made.
+  > **Rule:** If there are no requests to undo, the undo is rejected.  
+
 
 ### Control
-- `save`
-- `quit`
-- `help`
+- `save [<filename>]`   
+| Saves the current state of the database to a given file. If no filename is given, the last filename the program used to save is used. This is first defined by the `-sc` flag in the terminal.
+- `quit`   
+| Exits the program safely. The user is prompted to save or not the database before exiting.
+- `help`   
+| Prints a list of all available commands in the terminal.
