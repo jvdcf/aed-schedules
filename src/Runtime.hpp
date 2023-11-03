@@ -16,13 +16,20 @@
 #include <string>
 #include <vector>
 
-
+/**
+ * @brief The "SchedulEd" interface and all of the logic behind the connections between the classes.
+ */
 class Runtime {
 private:
+  /// Where all of the students are stored.
   std::set<Student> students;
+  /// Where all of the classes are stored.
   std::vector<ClassSchedule> classes;
+  /// All of the process to be executed.
   std::queue<Process> procs;
+  /// All of the processes that have been executed successfully.
   std::stack<Process> history;
+  /// Pointer to the CSV representation. Used to save the data.
   CSVStudentsClasses * students_classes_;
 
   // Searching

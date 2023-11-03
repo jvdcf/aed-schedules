@@ -8,9 +8,6 @@
 #include "StudentsClasses.hpp"
 #include "Utils.hpp"
 #include <algorithm>
-#include <cstddef>
-#include <cstdint>
-#include <cstdio>
 #include <cstdlib>
 #include <exception>
 #include <iomanip>
@@ -24,20 +21,20 @@
 #include <vector>
 
 /**
- * @brief organizes the data in the CSV objects in a more efficient way
+ * @brief Organizes the data in the CSV objects in a more efficient way
+ * @details Theoretical complexity: O(n * log n), n being the number of objects of each CSV class.
  * @param sc
  * @param cpu
  * @param c
  */
 Runtime::Runtime(CSVStudentsClasses &sc, CSVClassPerUC &cpu, CSVClasses &c) {
+  // 1. Preparations | O(n * log n)
   students_classes_ = &sc;
   procs = std::queue<Process>();
-
-  // 1. Populate lessons
   auto lessons = c.get_lessons();
   c.sort();
 
-  // 2. Populate classSchedules
+  // 2. Populate classSchedules | O(m * log m + n * m)
   cpu.sort();
   int idx = 0;
   for (ClassPerUC &entry : *cpu.get_classes()) {
@@ -53,7 +50,7 @@ Runtime::Runtime(CSVStudentsClasses &sc, CSVClassPerUC &cpu, CSVClasses &c) {
     classes.push_back(cs);
   }
 
-  // 3. Populate students
+  // 3. Populate students | O(p * log p)
   sc.sort();
   auto sc_vector = sc.get_students();
   Student s(sc_vector->at(0).get_student_code(),
@@ -72,8 +69,9 @@ Runtime::Runtime(CSVStudentsClasses &sc, CSVClassPerUC &cpu, CSVClasses &c) {
 }
 
 /**
- * Using Binary Search, find the ClassSchedule inside of the vector classes with
- * the same uc_code ans class_code. Theoretical Complexity: O(log n)
+ * @brief Using Binary Search, find the ClassSchedule inside of the vector classes with
+ * the same uc_code ans class_code.
+ * @details Theoretical Complexity: O(log n), n being the number of classes.
  * @param id
  * @return Pointer to the found ClassSchedule
  */
@@ -98,6 +96,8 @@ ClassSchedule *Runtime::find_class(uint32_t id) {
 
 /**
  * @brief Find all the classes with the same uc_code.
+ * @details Theoretical Complexity: O(log n + m), n being the number of classes
+ * and m being the distance between the first class with the uc_code and the pivot.
  * @param uc_code
  * @return Vector with pointers to the found ClassSchedules, or empty vector if
  * not found.
@@ -373,7 +373,19 @@ void Runtime::process_args(std::vector<std::string> args) {
 }
 
 /**
- * @brief executes the commands.
+ * @brief Executes the commands.
+ * @details Theoretical complexity of every command:
+ * print student: O(log n + m * p), n being the number of students, m the number of classes and p the number of lessons of the class.
+ * student_count: O(1)
+ * student_list code: O(n), n being the number of students.
+ * student_list name: O(n * log n + m), n being the number of students to show and m the number of students.
+ * print class: O(log n + m log p + q), n being the number of classes, m the number of students from a class, p the number of students and q the number of lessons of the class.
+ * print uc: O(log n + m + p), n being the number of classes, m the distance between the first class with the uc_code and the pivot and p the number of classes of the UC.
+ * enroll: O(log n), n being the number of students.
+ * add: O(n² + m), n being the number of classes a student is enrolled in and m the number of classes of the UC.
+ * remove: O(n), n being the number of classes a student is enrolled in.
+ * switch: O(n²), n being the number of classes a student is enrolled in.
+ * save: O(n), n being the number of students.
  * @param p
  */
 void Runtime::handle_process(Process p) {
@@ -854,12 +866,12 @@ void Runtime::print_schedule(const std::vector<Lesson *> &schedule) const {
 }
 
 /**
- * Since new classes are not created, the only file to be updated is the
+ * @brief Updates the data in the CSV classes.
+ * @details Since new classes are not created, the only file to be updated is the
  * student_classes.csv. Thus, the only CSV class that needs to be updated is the
  * CSVStudentClasses. To update this class, we create a new vector that will
  * substitute the entries attribute in CSVStudentClasses.
  * Theoretical complexity: O(n), n being the number of entries in the vector of the CSVStudentClasses.
- * @brief Updates the data in the CSV classes.
  */
 void Runtime::save_all() {
   std::vector<StudentsClasses> ret;
