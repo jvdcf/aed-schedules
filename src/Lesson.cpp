@@ -3,7 +3,6 @@
  */
 #include "Lesson.hpp"
 #include "Utils.hpp"
-#include <iomanip>
 #include <sstream>
 using namespace std;
 
