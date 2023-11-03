@@ -24,8 +24,8 @@ ClassSchedule::ClassSchedule(uint16_t uc_code, uint16_t class_code) {
  * @details Theoretical complexity: O(n log n), where n is the number of students in the vector.
  * @param student_code
  */
-void ClassSchedule::add_student(uint32_t s) {
-  students.push_back(s);
+void ClassSchedule::add_student(uint32_t student_code) {
+  students.push_back(student_code);
   std::sort(this->students.begin(), this->students.end());
 }
 
@@ -34,9 +34,9 @@ void ClassSchedule::add_student(uint32_t s) {
  * @details Theoretical complexity: O(n), where n is the number of students in the vector.
  * @param student_code
  */
-void ClassSchedule::remove_student(uint32_t s) {
+void ClassSchedule::remove_student(uint32_t student_code) {
   for (auto itr = students.begin(); itr != students.end(); ++itr) {
-    if (*itr == s) {
+    if (*itr == student_code) {
       students.erase(itr);
       break;
     }
