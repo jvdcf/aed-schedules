@@ -3,14 +3,10 @@
  */
 #include "ClassesPerUC.hpp"
 #include "Utils.hpp"
-#include <cstdint>
-#include <cstdio>
 #include <cstdlib>
-#include <cstring>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
-#include <stdexcept>
 #include <string>
 #include <vector>
 
