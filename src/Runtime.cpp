@@ -278,13 +278,14 @@ void Runtime::process_args(std::vector<std::string> args) {
   }
 
   if (args[0] == "enroll") {
-    if (args.size() != 3) {
+    if (args.size() < 3) {
       std::cerr << "ERROR: USAGE: enroll <new_student_code> <new_student_name>" << std::endl;
       return;
     }
     Process t(TypeOfRequest::Enroll);
-    t.add_operand(args[1]);
-    t.add_operand(args[2]);
+    for (int i = 1; i < args.size(); ++i) {
+      t.add_operand(args[i]);
+    }
     procs.push(t);
     return;
   }
@@ -353,7 +354,7 @@ void Runtime::process_args(std::vector<std::string> args) {
       << "    quit:           takes 0 arguments:      quit\n"
       << "        Quits the program.\n\n"
       << "    enroll:         takes 2 arguments:      enroll         <new_student_code> <new_student_name>\n"
-      << "        Quits the program.\n\n"
+      << "        Creates a new student.\n\n"
       << "    save:           takes 0 or 1 arguments: save           [<filename>]\n"
       << "        Saves the changes to the csv which contains the students and their relations to the classes, and optionally takes a filename.\n\n"
       << "    help:           takes 0 arguments:      help\n"
@@ -737,6 +738,9 @@ void Runtime::handle_process(Process p) {
       return;
     }
     std::string name = ops[1];
+    for (int i = 2; i < ops.size(); ++i) {
+      name += " " + ops[i];
+    }
     if (auto itr = students.find(Student(student_code, "")); itr == students.end()) {
       students.insert(Student(student_code, name));
       return;
