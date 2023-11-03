@@ -93,15 +93,6 @@ OperationResult Student::verify_add(ClassSchedule *c) {
       return OperationResult::Error;
   }
 
-  // Balanced classes | O(n)
-  std::vector<uint64_t> occupancy;
-  for (ClassSchedule* class_ : this->get_schedule()) {
-    occupancy.push_back(class_->get_student_count());
-  }
-  occupancy.push_back(c->get_student_count());
-  auto [min, max] = std::minmax_element(occupancy.begin(), occupancy.end());
-  if (*max - *min > 4) return OperationResult::Error;
-
   // No time conflicts | O(n²)
   std::vector<ClassSchedule *> c_sched = this->get_schedule();
   c_sched.push_back(c);
