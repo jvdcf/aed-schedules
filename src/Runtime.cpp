@@ -408,6 +408,8 @@ void Runtime::handle_process(Process p) {
           return;
         }
       }
+      std::cerr << "ERROR: Student " << student_code
+                << " is not enrolled in " << ops[1] << std::endl;
     } else {
       std::cerr << "ERROR: There is no such student with code: " << student_code
                 << std::endl;
