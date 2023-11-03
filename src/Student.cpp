@@ -138,8 +138,7 @@ OperationResult Student::verify_switch(Student& other, uint16_t uc_code) {
  * @param c
  */
 void Student::add_to_class(ClassSchedule *c) {
-  c->add_student(this->get_code());
-
+  c->add_student(this);
   this->classes.push_back(c);
   this->sort();
 }
@@ -149,7 +148,7 @@ void Student::add_to_class(ClassSchedule *c) {
  * @param c
  */
 void Student::remove_from_class(ClassSchedule *c) {
-  c->remove_student(this->get_code());
+  c->remove_student(this);
   int i = 0;
   for (i = 0; i < classes.size(); ++i) {
     if (classes[i] == c) {
