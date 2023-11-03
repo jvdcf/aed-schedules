@@ -11,13 +11,10 @@
 /**
  * @brief This constructor receives a string containing all the lines of a csv
  * file and creates the AppClassPerUC from it.
- * @details The cap parameter is the capacity of each class (30 by default).
- * Theoretical complexity: O(n), where n is the number of lines in the csv file.
+ * @details Theoretical complexity: O(n), where n is the number of lines in the csv file.
  * @param csv
- * @param cap
  */
 CSVClassPerUC::CSVClassPerUC(const std::string &csv) {
-
   // CSV file into memory
   std::ifstream file = std::ifstream(csv);
   std::string contents;
