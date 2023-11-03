@@ -54,7 +54,7 @@ The students are sorted by name or code, depending on the first argument.
 Some requests may be accepted, rejected or cause conflicts, depending on the current state of the database.
 - `add <student_code> <uc_code> <class_code>`   
 | Adds a student to a given class.  
-  > **Rules:**
+  > **Rules:**  
   > Number of UCs must be 7 or lower;  
   > The class must have a vacancy;  
   > No time conflicts;  
