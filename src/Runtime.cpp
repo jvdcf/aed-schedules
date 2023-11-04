@@ -352,7 +352,7 @@ void Runtime::process_args(std::vector<std::string> args) {
       << "        Switches the class of two students.\n\n"
       << "    student_count:  takes 0 arguments:      student_count\n"
       << "        Displays the number of students enrolled.\n\n"
-      << "    student_list:   takes 1 or 3 arguments: student_count  <'name'|'code> [<first_position> <number_of_students>]\n"
+      << "    student_list:   takes 1 or 3 arguments: student_count  <'name'|'code'> [<first_position> <number_of_students>]\n"
       << "        Displays the students enrolled with the option (denoted in []) of specifying a beginning and number of students to display.\n\n"
       << "    undo:           takes 0 arguments:      undo\n"
       << "        Reverts the last change.\n\n"
