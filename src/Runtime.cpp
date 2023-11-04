@@ -833,6 +833,11 @@ void Runtime::handle_process(Process p) {
   }
 }
 
+/**
+ * @brief Prints the schedule from a vector of lessons.
+ * @details Used in print student and print class.
+ * @param schedule
+ */
 void Runtime::print_schedule(const std::vector<Lesson *> &schedule) const {
   std::cout << "Schedule:\n"
             << "(Type | Start Time | Duration | UC | Class)\n";
