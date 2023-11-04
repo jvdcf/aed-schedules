@@ -21,7 +21,6 @@ public:
     void display();
     void sort();
     std::vector<ClassPerUC>* get_classes();
-    uint8_t get_cap() const;
 };
 
 

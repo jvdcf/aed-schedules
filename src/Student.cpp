@@ -3,8 +3,6 @@
  */
 #include "Student.hpp"
 #include "Utils.hpp"
-#include <cstdint>
-#include <iterator>
 #include <string>
 #include <vector>
 #include <iostream>
@@ -31,8 +29,7 @@ std::vector<ClassSchedule *> &Student::get_schedule() { return this->classes; }
  * @brief Verifies if there are any time conflicts between the lessons of a given vector of classes.
  * @details Theoretical complexity: O(n²), n being the number of lessons inside the vector.
  * @param c_sched
- * @param ignore_conflicts
- * @return
+ * @return Error, Conflicts or Success
  */
 OperationResult Student::is_overlapping(const std::vector<ClassSchedule *>& c_sched) {
   OperationResult result = OperationResult::Success;
@@ -54,16 +51,6 @@ OperationResult Student::is_overlapping(const std::vector<ClassSchedule *>& c_sc
     }
   }
   return result;
-}
-
-/**
- * @brief Verifies if this Student is enrolled in a given class, so that it can be removed later.
- * @details Theoretical complexity: O(log(n)), n being the number of classes.
- * @param c
- * @return bool
- */
-bool Student::verify_remove(ClassSchedule* c) {
-  return std::binary_search(this->classes.begin(), this->classes.end(), c);
 }
 
 /**
@@ -103,6 +90,8 @@ OperationResult Student::verify_add(ClassSchedule *c) {
 /**
  * @brief Verifies if switching classes is legal or not.
  * @details No time conflicts are allowed for both students.
+ * Theoretical complexity: O(n²), n being the number of lessons inside the vector.
+ * @return Error, Conflicts or Success
  */
 OperationResult Student::verify_switch(Student& other, uint16_t uc_code) {
   ClassSchedule* this_class = find_class(uc_code);
@@ -126,6 +115,7 @@ OperationResult Student::verify_switch(Student& other, uint16_t uc_code) {
 
 /**
  * @brief Add this Student to a particular class.
+ * @details Theoretical complexity: O(n log n), n being the number of classes.
  * @param c
  */
 void Student::add_to_class(ClassSchedule *c) {
@@ -137,6 +127,7 @@ void Student::add_to_class(ClassSchedule *c) {
 
 /**
  * @brief Remove this Student from a given class.
+ * @details Theoretical complexity: O(n), n being the number of classes.
  * @param c
  */
 void Student::remove_from_class(ClassSchedule *c) {
@@ -151,7 +142,8 @@ void Student::remove_from_class(ClassSchedule *c) {
 }
 
 /**
- * Switch the classes of Student and other Student with a given uc_code
+ * @brief Switch the classes of Student and other Student with a given uc_code
+ * @details Theoretical complexity: O(n log n), n being the number of classes for each student.
  * @param other
  * @param uc_code
  */
@@ -188,7 +180,7 @@ uint32_t Student::get_code() const { return code; }
  * @brief Find a class with a given uc_code.
  * @details Theoretical complexity: O(log(n)), n being the number of classes.
  * @param uc_code
- * @return
+ * @return Pointer to the class or nullptr if not found.
  */
 ClassSchedule* Student::find_class(uint16_t uc_code) {
   size_t high = classes.size();
@@ -212,6 +204,11 @@ ClassSchedule* Student::find_class(uint16_t uc_code) {
  */
 const std::string& Student::get_name() const {return name;}
 
+/**
+ * @brief Sorts the classes vector.
+ * @details Order (from most important to least important): uc_code > class_code.
+ * Theoretical Complexity: O(n log n), n being the number of classes.
+ */
 void Student::sort() {
   std::sort(this->classes.begin(), this->classes.end(), [](const ClassSchedule *a, const ClassSchedule *b) {
     return a->get_id() < b->get_id();

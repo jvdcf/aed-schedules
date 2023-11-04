@@ -8,31 +8,24 @@
 #include "ClassesPerUC.hpp"
 
 /**
- * This stores the information of a line of the file students_classes.csv
+ * @details This stores the information of a line of the file students_classes.csv
  * @brief Stores a class that a student has in a UC.
  */
 class StudentsClasses : public ClassPerUC {
 private:
+    /// Code of the student. See parse_student_code() for more info about the hash.
     uint32_t student_code_;
+    /// Name of the student.
     std::string student_name_;
 
 public:
-    // Constructor
     StudentsClasses(std::string& line);
-    StudentsClasses(uint16_t uc_code, uint16_t class_code, const std::string& name, uint32_t student_code); 
-    // Getters
+    StudentsClasses(uint16_t uc_code, uint16_t class_code, const std::string& name, uint32_t student_code);
     uint32_t get_student_code() const;
     const std::string &get_student_name() const;
-
-    // Parsers
     uint32_t parse_student_code(const std::string& student_code) const;
-
-    // String format
     void student_code_to_str(std::string& student_code) const;
-    // void student_name_to_str(std::string& student_name) const; (= get_student_name())
-
-    // Debug
-  std::string display() const override;
+    std::string display() const override;
 };
 
 

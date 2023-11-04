@@ -2,7 +2,6 @@
  * @file ClassSchedule.cpp
  */
 #include "ClassSchedule.hpp"
-#include <cstdint>
 #include <cstdio>
 #include <sstream>
 #include <vector>
@@ -20,20 +19,24 @@ ClassSchedule::ClassSchedule(uint16_t uc_code, uint16_t class_code) {
   this->students = {};
 }
 
-
 /**
  * @brief Add one student to the list.
+ * @details Theoretical complexity: O(n log n), where n is the number of students in the vector.
+ * @param student_code
  */
-void ClassSchedule::add_student(uint32_t s) {
-  students.push_back(s);
+void ClassSchedule::add_student(uint32_t student_code) {
+  students.push_back(student_code);
   std::sort(this->students.begin(), this->students.end());
 }
+
 /**
  * @brief Remove one student from the list.
+ * @details Theoretical complexity: O(n), where n is the number of students in the vector.
+ * @param student_code
  */
-void ClassSchedule::remove_student(uint32_t s) {
+void ClassSchedule::remove_student(uint32_t student_code) {
   for (auto itr = students.begin(); itr != students.end(); ++itr) {
-    if (*itr == s) {
+    if (*itr == student_code) {
       students.erase(itr);
       break;
     }
@@ -55,23 +58,6 @@ bool ClassSchedule::add_entry(Lesson* c) {
 }
 
 /**
- * @deprecated
- * @brief Remove a Lesson to the vector of this class.
- * @param c
- * @return bool (If the action is valid or not.)
- */
-bool ClassSchedule::remove_entry(Lesson* c) {
-  // Probably unecessary
-  for (std::vector<Lesson*>::iterator itr = this->classes.begin();  itr != this->classes.end(); ++itr) {
-    if (*itr == c) {
-      this->classes.erase(itr);
-      return true;
-    }
-  }
-  return false;
-}
-
-/**
  * @brief Getter for student_count.
  * @return student_count
  */
@@ -80,17 +66,25 @@ uint64_t ClassSchedule::get_student_count() const {
 }
 
 /**
- * @brief Getter for class_schedule.
- * @return class_schedule
+ * @brief Getter for classes vector.
+ * @return classes
  */
 const std::vector<Lesson*> & ClassSchedule::get_class_schedule() {
   return this->classes;
 }
 
+/**
+ * @brief Getter for students vector.
+ * @return students
+ */
 const std::vector<uint32_t>& ClassSchedule::get_students_enrolled() {
   return this->students;
 }
 
+/**
+ * @brief Sort all of the lesson pointers inside of the vector classes.
+ * @details Theoretical complexity: O(n log n), where n is the number of lessons in the vector.
+ */
 void ClassSchedule::sort() {
   std::sort(this->classes.begin(), this->classes.end(), [](Lesson *a, Lesson *b) {
     if (a->get_day() == b->get_day()) {
@@ -121,4 +115,3 @@ std::string ClassSchedule::display() const {
   s << std::endl;
   return s.str();
 }
-

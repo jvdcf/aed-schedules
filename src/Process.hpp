@@ -1,5 +1,11 @@
+/**
+ * @file Process.hpp
+ */
+#ifndef PROCESS_H
+#define PROCESS_H
 #include <string>
 #include <vector>
+
 
 /**
  * @brief Used to efficiently store the type of request.
@@ -25,17 +31,17 @@ enum class TypeOfRequest {
  */
 class Process {
 private:
+  /// The type of request it was made.
   TypeOfRequest type;
+  /// The arguments for the function.
   std::vector<std::string> operands;
 
 public:
-  // Costructor
   Process(TypeOfRequest t);
-
-  // Methods
   void add_operand(std::string s);
-
-  // Getters
   TypeOfRequest get_type();
   std::vector<std::string>& get_ops();
 };
+
+
+#endif // PROCESS_H
