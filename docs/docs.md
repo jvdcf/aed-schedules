@@ -8,7 +8,7 @@ This project was carried out by students from group 23: Duarte Souto Assunção,
 The project was developed in C++ and uses the CMake tool to compile the source code and this documentation.
 ### Using the terminal
 ```
-cmake CMakeLists.txt
+cmake -DCMAKE_BUILD_TYPE=Release CMakeLists.txt
 make
 ./AED2324_PRJ1_G23 -cpu classes_per_uc.csv -c classes.csv -sc students_classes.csv
 ```
@@ -105,3 +105,4 @@ Some requests may be accepted, rejected or cause conflicts, depending on the cur
 - Unfortunately, the maximum capacity of a class is hard coded to 30 students.
 - The terminal embedded in CLion can behave a bit differently than the system's terminal.
   If possible, use the system's terminal to run the program.
+- This program is tested for Linux only. As such, it only takes Linux-compatible CSV files on Linux. It might work on Windows, but that is untested.

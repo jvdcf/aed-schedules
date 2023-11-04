@@ -58,7 +58,7 @@ int main(int argc, char** argv) {
                 << "Where '-cpu' is the flag that specifies a CSV file which contains the list of classes per each UC\n"
                 << "Where '-c' is the flag that specifies a CSV file which contains the list of classes an their schedules\n"
                 << "Where '-sc' is the flag that specifies a CSV file which contains the list of students and their association with each class\n\n"
-                << "This program is tested for Linux only. As such, it only takes Linux-compatible CSV files on Linux. It might work on Windows, but that is untested.\n"
+                << "DISCLAIMER: This program is tested for Linux only. As such, it only takes Linux-compatible CSV files on Linux. It might work on Windows, but that is untested.\n"
                 << std::endl;
       std::exit(1);
   }
