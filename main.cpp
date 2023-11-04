@@ -24,7 +24,8 @@ int main(int argc, char** argv) {
       << "    schdulEd -cpu classes_per_uc.csv -c classes.csv -sc students_classes.csv\n\n"
       << "Where '-cpu' is the flag that specifies a CSV file which contains the list of classes per each UC\n"
       << "Where '-c' is the flag that specifies a CSV file which contains the list of classes an their schedules\n"
-      << "Where '-sc' is the flag that specifies a CSV file which contains the list of students and their association with each class\n"
+      << "Where '-sc' is the flag that specifies a CSV file which contains the list of students and their association with each class\n\n"
+      << "DISCLAIMER: This program is tested for Linux only. As such, it only takes Linux-compatible CSV files on Linux. It might work on Windows, but that is untested.\n"
       << std::endl;
     std::exit(1);
   }
